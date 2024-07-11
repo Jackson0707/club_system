@@ -13,7 +13,7 @@ import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
 import com.example.club_system.vo.TeacherLoginReq;
 import com.example.club_system.vo.TeacherSearchReq;
-import com.example.club_system.vo.TeacherUpdataPwdReq;
+import com.example.club_system.vo.TeacherUpdatePwdReq;
 
 //@RestController 包含了 @Controller 和 @ResponseBody
 //@Controller 是指將此類別交由 spring boot 託管成 Controller 物件
@@ -26,8 +26,8 @@ public class TeacherDatabaseController {
 	private TeacherDatabaseService teacherDatabaseService;
 
 	@PostMapping(value = "teacherDatabase/updata_password")
-	public BasicRes updataPwd(@Valid @RequestBody TeacherUpdataPwdReq req) {
-		return teacherDatabaseService.updataPwd(req.getTeacherId(), req.getOldPwd(), req.getNewPwd());
+	public BasicRes updataPwd(@Valid @RequestBody TeacherUpdatePwdReq req) {
+		return teacherDatabaseService.updatePwd(req.getTeacherId(), req.getOldPwd(), req.getNewPwd());
 	}
 
 	@PostMapping(value = "teacherDatabase/login")
@@ -48,5 +48,10 @@ public class TeacherDatabaseController {
 	@PostMapping(value = "teacherDatabase/delete")
 	public BasicRes delete(@Valid @RequestBody TeacherDeleteReq req) {
 		return teacherDatabaseService.delete(req);
+	}
+	
+	@PostMapping(value = "teacherDatabase/loginAdmin")
+	public BasicRes loginAdmin(@Valid @RequestBody TeacherLoginReq req) {
+		return teacherDatabaseService.login(req.getTeacherId(), req.getPwd());
 	}
 }

@@ -4,16 +4,16 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DeleteReq {
+public class ClubDeleteReq {
 
-	@JsonProperty("id_list")
+	@JsonProperty("club_id")
 	private List<Integer> idList;
 
-	public DeleteReq() {
+	public ClubDeleteReq() {
 		super();
 	}
 
-	public DeleteReq(List<Integer> idList) {
+	public ClubDeleteReq(List<Integer> idList) {
 		super();
 		this.idList = idList;
 	}
@@ -25,9 +25,9 @@ public class DeleteReq {
 	public void setIdList(List<Integer> idList) {
 		this.idList = idList;
 	}
+
 	
+
 	
-	
-	
-	
+
 }

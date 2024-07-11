@@ -13,26 +13,39 @@ public class TeacherDatabase {
 
 	@Column(name = "status")
 	private String status;
-	
+
 	// 因為 PK 是 AI(Auto Incremental) ，所以要加上此 Annotation
 	// strategy:指的是 AI 的生成策略
 	// GenerationType.IDENTITY:代表 PK 數字由資料庫來自動增加
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "teacher_id")
-	private int teacherId ;
-	
+	private int teacherId;
+
 	@Column(name = "pwd")
 	private String pwd;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "email")
 	private String email;
 
+	@Column(name = "type")
+	private String type;
+
 	public TeacherDatabase() {
 		super();
+	}
+
+	public TeacherDatabase(String status, int teacherId, String pwd, String name, String email, String type) {
+		super();
+		this.status = status;
+		this.teacherId = teacherId;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.type = type;
 	}
 
 	public TeacherDatabase(String status, int teacherId, String pwd, String name, String email) {
@@ -83,7 +96,13 @@ public class TeacherDatabase {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

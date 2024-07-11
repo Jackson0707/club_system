@@ -1,6 +1,12 @@
 package com.example.club_system.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,7 +15,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.club_system.constants.ResMessage;
+import com.example.club_system.entity.Club;
+import com.example.club_system.entity.Student;
 import com.example.club_system.entity.TeacherDatabase;
+import com.example.club_system.repository.ClubDao;
+import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.TeacherDatabaseService;
 import com.example.club_system.vo.BasicRes;
@@ -26,10 +36,18 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
+	private StudentDao studentDao;
+
+	@Autowired
+	private ClubDao clubDao;
+
+	@Autowired
 	private TeacherDatabaseDao teacherDatabaseDao;
 
+	private ObjectMapper mapper = new ObjectMapper();
+
 	@Override
-	public BasicRes updataPwd(int teacherId, String oldpwd, String newpwd) {
+	public BasicRes updatePwd(int teacherId, String oldpwd, String newpwd) {
 		// 檢查參數
 		if (!StringUtils.hasText(String.valueOf(teacherId)) || !StringUtils.hasText(oldpwd)//
 				|| !StringUtils.hasText(newpwd)) {
@@ -112,7 +130,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 			// 若存在-->更新;不存在-->新增
 			// req 中沒有該欄位時，預設是 0 ，因為 TeacherId 的資料型態是 int
 			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(), req.getTeacherId(), //
-					encoder.encode(req.getPwd()), req.getName(), req.getEmail()));
+					encoder.encode(req.getPwd()), req.getName(), req.getEmail(), req.getType()));
 
 		} catch (JsonProcessingException e) {
 			return new BasicRes(ResMessage.PROCESSING_EXCEPTION.getCode(),
@@ -181,6 +199,100 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 			System.out.println(ResMessage.SUCCESS.getMessage());
 			return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 		}
+	}
+
+	@Override
+	public BasicRes loginAdmin(int teacherId, String pwd) {
+		Optional<TeacherDatabase> op = teacherDatabaseDao.findById(teacherId);
+		// 確認帳號存在
+		if (op.isEmpty()) {// op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
+			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+		}
+
+		// 從 op 中取回 Atm 資訊
+		TeacherDatabase teacherDatabase = op.get();
+
+		// 判斷密碼是否正確
+		if (!encoder.matches(pwd, teacherDatabase.getPwd())) { // 前面有驚嘆號 表示密碼比對失敗
+			return new BasicRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
+		}
+		if (teacherDatabase.getType() != "管理員") {
+			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+		}
+		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+	}
+
+	@Override
+	public BasicRes clubRandom() {
+
+		// 宣告變數，紀錄社團可增加名額，一開始抓取所有社團的最大上限人數，用 HashMap 儲存 V
+		// 先抓出所有學生的資料，將 club 志願序存到陣列中 V
+		// 宣告一個陣列，儲存已經有社團id的學生
+		// HashMap 第一輪(第一志願序)：社團id作為 key，學生id 作為 value，
+		// 以陣列的方式儲存成 3:[23, 25, ] 2:[36]
+		// if 陣列長度沒超過，就不用抽籤，用陣列長度減去可容納長度，存回紀錄社團名額的變數中
+		// 社團選擇人數超過社團上限人數，隨機抽取目前社團剩餘的席次
+		// 社團人數滿人，社團剩餘人數歸零，在第二輪塞選中就會接跳過該社團(抽籤，並將社團可容納人數歸零)
+		// 第二輪，如果學生id在陣列裡面，就跳過。依第二志願序，存到 HashMap
+		// 判斷每個社團可否再容納人
+		// 沒有，就跳過該社團的抽籤
+		// 有，抽籤，取值時用Entry
+
+		// 社團上限人數
+		List<Club> clubs = clubDao.findAll(); // 先取出Club這個entity中的多筆資料的所有值
+		Map<Integer, Integer> clubMax = new HashMap<>();
+		for (int i = 0; i < clubs.size(); i++) { // 先用for迴圈把所有資料列出來
+			Club club = clubs.get(i); // 用一個變數來接for迴圈整理出來的資料
+			clubMax.put(club.getClubId(), club.getMax()); // 利用 .put功能把想要塞如的值加進map裡面
+		}
+		System.out.println(clubMax);
+
+		// 學生志願序
+		List<Student> studentChoice = studentDao.findAll();
+		// 下面中的Integer[]，原本是String，但因為前端傳進資料庫中的型態為陣列，但因為要把她轉成int會較容易連接到相對應的社團Id
+		// 因為陣列的資料型態為String，將他強制轉型需要在[]前棉加上Integer
+		Map<Integer, Integer[]> studentChoiceArr = new HashMap<>();
+		for (int i = 0; i < studentChoice.size(); i++) {
+			Student student = studentChoice.get(i);
+			Integer[] choiceArr; // 宣告一個陣列來接值
+			try {
+				choiceArr = mapper.readValue(student.getChoiceList(), Integer[].class);
+				studentChoiceArr.put(student.getStudentId(), choiceArr);
+			} catch (JsonProcessingException e) {
+				return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+//				e.printStackTrace();
+			}
+
+		}
+
+		// 已經有Id的學生
+		List<Student> clubStudentValue = studentDao.findAll();
+		Map<Integer, Integer> clubStudentArr = new HashMap<>();
+		for (int i = 0; i < clubStudentValue.size(); i++) {
+			Student clubStudent = clubStudentValue.get(i);
+			clubStudentArr.put(clubStudent.getStudentId(), clubStudent.getClubId());
+		}
+		System.out.println(clubStudentArr);
+
+		
+		
+		// 實作抽籤
+		// 第一次抽籤: key:社團id, value:學生id
+		
+		
+		ArrayList<Integer> studentId = new ArrayList<>();
+		studentId.add(studentChoiceArr.get(studentChoiceArr)[0]);
+		
+		Map<ArrayList<Integer>, Integer> firstRandom = new HashMap<>();
+		
+		
+		
+		
+		
+		
+
+
+		return null;
 	}
 
 }

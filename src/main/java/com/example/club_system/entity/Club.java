@@ -7,22 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "club")
 public class Club {
-
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name="club_id")
 	private int clubId;
 	
-	@Column(name="academic_year")
-	private int academicYear;
-	
 	@Column(name="semester")
-	private int semester;
+	private String semester;
 	
 	@Column(name="name")
 	private String name;
@@ -59,17 +57,18 @@ public class Club {
 	
 	@Column(name="draw_time")
 	private LocalDate drawTime;
+	
+	private String picture;
 
 	public Club() {
 		super();
 	}
 
-	public Club(int clubId, int academicYear, int semester, String name, String intro, int teacherId, int pay,
-			String classroom, int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime,
-			LocalDate clubStartTime, LocalDate clubEndTime, LocalDate drawTime) {
+	public Club(int clubId, String semester, String name, String intro, int teacherId, int pay, String classroom,
+			int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime, LocalDate clubStartTime,
+			LocalDate clubEndTime, LocalDate drawTime) {
 		super();
 		this.clubId = clubId;
-		this.academicYear = academicYear;
 		this.semester = semester;
 		this.name = name;
 		this.intro = intro;
@@ -85,6 +84,31 @@ public class Club {
 		this.drawTime = drawTime;
 	}
 
+	public Club(int clubId, String semester, String name, String intro, int teacherId, int pay, String classroom,
+			int max) {
+		super();
+		this.clubId = clubId;
+		this.semester = semester;
+		this.name = name;
+		this.intro = intro;
+		this.teacherId = teacherId;
+		this.pay = pay;
+		this.classroom = classroom;
+		this.max = max;
+	}
+
+	public Club(String semester, String name, String intro, int teacherId, int pay, String classroom, int max) {
+		super();
+		this.semester = semester;
+		this.name = name;
+		this.intro = intro;
+		this.teacherId = teacherId;
+		this.pay = pay;
+		this.classroom = classroom;
+		this.max = max;
+	}
+
+
 	public int getClubId() {
 		return clubId;
 	}
@@ -93,19 +117,11 @@ public class Club {
 		this.clubId = clubId;
 	}
 
-	public int getAcademicYear() {
-		return academicYear;
-	}
-
-	public void setAcademicYear(int academicYear) {
-		this.academicYear = academicYear;
-	}
-
-	public int getSemester() {
+	public String getSemester() {
 		return semester;
 	}
 
-	public void setSemester(int semester) {
+	public void setSemester(String semester) {
 		this.semester = semester;
 	}
 
@@ -204,6 +220,8 @@ public class Club {
 	public void setDrawTime(LocalDate drawTime) {
 		this.drawTime = drawTime;
 	}
+
+	
 	
 	
 }

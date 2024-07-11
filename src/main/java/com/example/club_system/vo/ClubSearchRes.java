@@ -4,16 +4,16 @@ import java.util.List;
 
 import com.example.club_system.entity.Club;
 
-public class SearchReq {
+public class ClubSearchRes extends BasicRes{
 
 	private List<Club> clubList;
 
-	public SearchReq() {
+	public ClubSearchRes() {
 		super();
 	}
 
-	public SearchReq(List<Club> clubList) {
-		super();
+	public ClubSearchRes(int statusCode, String message,List<Club> clubList) {
+		super(statusCode, message);
 		this.clubList = clubList;
 	}
 

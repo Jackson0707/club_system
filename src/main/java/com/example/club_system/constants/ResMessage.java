@@ -3,7 +3,9 @@ package com.example.club_system.constants;
 public enum ResMessage {
 
 	SUCCESS(200,"Success!!"),
+	UPDATE_ID_NOT_FOUND(404, "Club id not found"),
 	PARAM_CLUB_ID_EXIST(400,"Param club id exist!!"),//
+	PARAM_CLUB_ID_NOT_EXIST(400,"Param club id not exist!!"),//
 	PARAM_CLUB_NAME_ERROR(400,"Param club name error!!"),//
 	PARAM_CLUB_INTRO_ERROR(400,"Param club intro error!!"),//
 	PARAM_PAY_ERROR(400,"Param pay error!!"),//
@@ -18,7 +20,10 @@ public enum ResMessage {
 	BAD_REQUEST(400,"Bad request"),//
 	PLEASE_LOGIN_FIRST(400,"Please login first"),//
 	UPDATE_TEACHER_ID_NOT_FOUND(404,"Update teacher id not found"),//未找到更新 老師ID
-	PROCESSING_EXCEPTION(400,"ProcessingException!!"); //
+	PROCESSING_EXCEPTION(400,"ProcessingException!!"), //
+	UPDATE_STUDENT_ID_NOT_FOUND(404, "Update student id not found"),//
+	STUDENT_ID_ERROR(400, "Student id error");
+	
 	
 	
 	private int code;

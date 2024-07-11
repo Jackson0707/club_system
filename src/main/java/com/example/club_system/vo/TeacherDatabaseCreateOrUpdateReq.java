@@ -6,14 +6,16 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TeacherDatabaseCreateOrUpdateReq {
-
-	@NotBlank(message = "Param status error!!")
-	private String status;
+	
 
 	@JsonProperty("teacher_id")
 	@NotNull(message = "Param teacher id error!!")
 	private int teacherId;
 
+	@JsonProperty("type")
+	@NotNull(message = "Param teacher id error!!")
+	private String type;
+	
 	@NotBlank(message = "Param password error!!")
 	private String pwd;
 
@@ -22,12 +24,35 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 	@NotBlank(message = "Param email error!!")
 	private String email;
+	
+	@NotBlank(message = "Param status error!!")
+	private String status;
 
 	public TeacherDatabaseCreateOrUpdateReq() {
 		super();
 	}
 
-	public TeacherDatabaseCreateOrUpdateReq(@NotBlank(message = "Param status error!!") String status,
+	
+	
+	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") int teacherId,
+			@NotBlank(message = "Param teacher id error!!") String type,
+			@NotBlank(message = "Param password error!!") String pwd,
+			@NotBlank(message = "Param teacher name error!!") String name,
+			@NotBlank(message = "Param email error!!") String email,
+			@NotBlank(message = "Param status error!!") String status) {
+		super();
+		this.teacherId = teacherId;
+		this.type = type;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.status = status;
+	}
+
+
+
+	public TeacherDatabaseCreateOrUpdateReq(
+			@NotBlank(message = "Param status error!!") String status,//
 			@NotNull(message = "Param teacher id error!!") int teacherId,
 			@NotBlank(message = "Param password error!!") String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
@@ -40,7 +65,8 @@ public class TeacherDatabaseCreateOrUpdateReq {
 		this.email = email;
 	}
 
-	public TeacherDatabaseCreateOrUpdateReq(@NotBlank(message = "Param status error!!") String status,
+	public TeacherDatabaseCreateOrUpdateReq(
+			@NotBlank(message = "Param status error!!") String status,//
 			@NotBlank(message = "Param password error!!") String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email) {
@@ -89,6 +115,14 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 
