@@ -16,6 +16,7 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
+import com.example.club_system.vo.TeacherSearchReq;
 
 //@CrossOrigin
 @RestController
@@ -34,10 +35,16 @@ public class ClubController {
 		return clubService.delete(req);
 	}
 	
-	@GetMapping(value ="Club/search/{name}")
-	public ClubSearchRes searchByName(@PathVariable String name) {
-		return clubService.searchByName(name);
+	@PostMapping(value = "Club/search")
+	public BasicRes search(@Valid @RequestBody ClubSearchReq req) {
+		return clubService.search(req);
 	}
+	
+	
+//	@GetMapping(value ="Club/search/{name}")
+//	public ClubSearchRes searchByName(@PathVariable String name) {
+//		return clubService.searchByName(name);
+//	}
 	
 //	@GetMapping(value ="Club/search/{teacher_id}")
 //	public ClubSearchRes searchByTeacherId(@PathVariable String teacher_id) {

@@ -12,9 +12,7 @@ public interface ClubService {
 	
 	public BasicRes delete(ClubDeleteReq req);
 	
-//	public ClubSearchRes search(ClubSearchReq req);
-	
-	public ClubSearchRes searchByName(String name);
+	public ClubSearchRes search(ClubSearchReq req);
 	
 //	public ClubSearchRes searchByTeacherId(String teacher_id);
 	

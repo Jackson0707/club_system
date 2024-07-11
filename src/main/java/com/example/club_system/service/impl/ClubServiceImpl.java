@@ -14,6 +14,7 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
+import com.example.club_system.vo.StudentSearchRes;
 import com.example.club_system.vo.TeacherSearchReq;
 import com.example.club_system.vo.TeacherSearchRes;
 
@@ -75,7 +76,7 @@ public class ClubServiceImpl implements ClubService {
 			try {
 				for(Integer id : req.getIdList()) {
 					System.out.println(id);
-					clubDao.delete(id);
+					clubDao.deleteById(id);;
 				}
 				
 			} catch (Exception e) {
@@ -87,57 +88,51 @@ public class ClubServiceImpl implements ClubService {
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-//	// 搜尋社團
-//	@Override
-//	public ClubSearchRes search(ClubSearchReq req) {
-//		String name = req.getName();
-//
-//		String semester = req.getSemester();
-//		
-//		int teacherId = req.getTeacherId();
-//
-//		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
-//		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
-//		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
-//		if (!StringUtils.hasText(name)) {
-//			name = "";
-//		}
-//		if (!StringUtils.hasText(semester)) {
-//			semester = "";
-//		}
-//		if(teacherId == 0) {
-//			teacherId = req.getTeacherId();
-//		}
-//		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//				clubDao.findByNameContainingNameAndTeacherIdAndSemester(name, semester, teacherId));
-//	}
-
+	// 搜尋社團
 	@Override
-	public ClubSearchRes searchByName(String name) {
+	public ClubSearchRes search(ClubSearchReq req) {
 		
-		ClubSearchRes clubSearchRes = new ClubSearchRes();
-		System.out.println(clubDao.selectByName(name));
-		clubSearchRes.setClubList(clubDao.selectByName(name));
+		int clubId = req.getClubId();
 		
-		return  clubSearchRes;
-	}
+		String name = req.getName();
 
-//	@Override
-//	public ClubSearchRes searchByTeacherId(String teacher_id) {
-//		ClubSearchRes clubSearchRes = new ClubSearchRes();
-//		System.out.println(clubDao.selectByTeacherId(teacher_id));
-//		clubSearchRes.setClubList(clubDao.selectByTeacherId(teacher_id));
-//		
-//		return  clubSearchRes;
-//	}
-//
-//	@Override
-//	public ClubSearchRes searchBySemester(String semester) {
-//		ClubSearchRes clubSearchRes = new ClubSearchRes();
-//		System.out.println(clubDao.selectBySemester(semester));
-//		clubSearchRes.setClubList(clubDao.selectBySemester(semester));
-//		
-//		return  clubSearchRes;
-//	}
+		String semester = req.getSemester();
+		
+		int teacherId = req.getTeacherId();
+		
+//		int teacherId = req.getTeacherId();
+
+		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
+		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
+		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
+		if (!StringUtils.hasText(name)) {
+			name = "";
+		}
+		if (!StringUtils.hasText(semester)) {
+			semester = "";
+		}
+		if (clubId == 0 && teacherId == 0) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByNameContainingAndSemester(name, semester));
+		}
+		if (clubId == 0 && teacherId != 0) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByNameContainingAndSemesterAndTeacherId(name, semester, teacherId));
+		}
+		if (clubId != 0 && teacherId == 0) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByNameContainingAndClubIdAndSemester(clubId, name, semester));
+		}
+		if (clubId != 0 && teacherId != 0) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByClubIdAndTeacherId(clubId, teacherId));
+		}
+		if(clubId != 0 ) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByClubId(clubId));
+		}
+		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),//
+				clubDao.findByNameContainingAndClubIdAndSemesterAndTeacherId(clubId, name, semester, teacherId));
+	}
 
 }
