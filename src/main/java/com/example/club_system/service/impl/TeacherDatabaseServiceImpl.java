@@ -145,6 +145,8 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		String name = req.getName();
 
 		String status = req.getStatus();
+		
+		int clubId = req.getClubId();
 
 		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
 		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
@@ -155,8 +157,13 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		if (!StringUtils.hasText(status)) {
 			status = "";
 		}
-		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-				teacherDatabaseDao.findByNameContainingAndStatusContainingOrderByTeacherIdAsc(name, status));
+//		if (clubId != 0) {
+			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
+					teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(name, status,
+							clubId));
+//		}
+//		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+//				teacherDatabaseDao.findByNameContainingAndStatusContainingOrderByTeacherIdAsc(name, status));
 	}
 
 	@Override

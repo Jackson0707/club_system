@@ -8,6 +8,9 @@ public class TeacherSearchReq {
 
 	private String status;
 	
+	@JsonProperty("club_id")
+	private int clubId;
+	
 	@JsonProperty("teacher_id")
 	private int teacherId;
 
@@ -21,6 +24,10 @@ public class TeacherSearchReq {
 
 	public int getTeacherId() {
 		return teacherId;
+	}
+
+	public int getClubId() {
+		return clubId;
 	}
 
 

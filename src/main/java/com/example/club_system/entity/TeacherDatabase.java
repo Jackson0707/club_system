@@ -22,6 +22,9 @@ public class TeacherDatabase {
 	@Column(name = "teacher_id")
 	private int teacherId;
 
+	@Column(name = "club_id")
+	private int clubId;
+
 	@Column(name = "pwd")
 	private String pwd;
 
@@ -36,6 +39,18 @@ public class TeacherDatabase {
 
 	public TeacherDatabase() {
 		super();
+	}
+
+	public TeacherDatabase(String status, int teacherId, int clubId, String pwd, String name, String email,
+			String type) {
+		super();
+		this.status = status;
+		this.teacherId = teacherId;
+		this.clubId = clubId;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.type = type;
 	}
 
 	public TeacherDatabase(String status, int teacherId, String pwd, String name, String email, String type) {
@@ -103,6 +118,18 @@ public class TeacherDatabase {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getClubId() {
+		return clubId;
+	}
+
+	public void setClubId(int clubId) {
+		this.clubId = clubId;
+	}
+
+	public void setCluId(int cluId) {
+		this.clubId = cluId;
 	}
 
 }

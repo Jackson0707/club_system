@@ -9,6 +9,6 @@ import com.example.club_system.entity.TeacherDatabase;
 
 @Repository
 public interface TeacherDatabaseDao extends JpaRepository<TeacherDatabase, Integer> {
-
-	List<TeacherDatabase> findByNameContainingAndStatusContainingOrderByTeacherIdAsc(String name, String status);
+	List<TeacherDatabase> findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(String name,
+			String status, int clubId);
 }

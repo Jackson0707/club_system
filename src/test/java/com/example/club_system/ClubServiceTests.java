@@ -304,13 +304,17 @@ public class ClubServiceTests {
 		    int studentId = studentDrawList.get(randomStudentIndex); // 隨機抽的學生Id
 		    Integer[] studentChoices = studentChoiceMap.get(studentId); // Map中相對應的學生Id
 
-		    boolean studentAssigned = false;
+//		    boolean studentAssigned = false;
+		    
+		    
 
 		    System.out.println(randomStudentIndex);
 		    // 索引值從0開始遍歷學生的志願
 		    for (int i = 0; i < studentChoices.length; i++) {
 		        int clubId = studentChoices[i];
+		        System.out.printf("第 %d 個志願序: %d \n", i, clubId);
 		        // 檢查這個社團是否還有空位
+		        System.out.println("此志願序是否可進入?"+availableClubs.contains(clubId));
 		        if (availableClubs.contains(clubId)) {
 		            // 分配學生到這個社團
 		            drawResult.put(studentId, clubId);
@@ -321,10 +325,11 @@ public class ClubServiceTests {
 		            
 		            // 如果社團滿了，從可用社團列表中移除
 		            if (remainingSpots == 0) {
-		                availableClubs.remove(Integer.valueOf(clubId));
+		            	System.out.println("我進來了");
+		                availableClubs.remove(availableClubs.indexOf(clubId));
 		            }
-
-		            studentAssigned = true;
+		            System.out.println("此社團剩餘可容納人數: "+remainingSpots);
+		            System.out.println("此社團可否再容納人？"+availableClubs.contains(clubId));
 		            break;
 		        }
 		    }
@@ -333,11 +338,22 @@ public class ClubServiceTests {
 		    studentDrawList.remove(randomStudentIndex);
 
 		    // 如果學生未被分配，輸出訊息
-		    if (!studentAssigned) {
-		        System.out.println("學生 " + studentId + " 沒有社團");
-		    }
+//		    if (!studentAssigned) {
+//		        System.out.println("學生 " + studentId + " 沒有社團");
+//		    }
 		    System.out.println(drawResult);
 		}
+		
+		
+		  // 更新數據庫
+//	    for (Map.Entry<Integer, Integer> entry : drawResult.entrySet()) {
+//	        int studentId = entry.getKey();
+//	        int clubId = entry.getValue();
+//	        List<Student> finalResult = new ArrayList<>();
+//	        finalResult.addAll(studentList);
+//	        
+//	        studentDao.saveAll(null);
+//	    }
 		
 	}
 }

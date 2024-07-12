@@ -11,6 +11,10 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	@JsonProperty("teacher_id")
 	@NotNull(message = "Param teacher id error!!")
 	private int teacherId;
+	
+	@JsonProperty("club_id")
+	@NotNull(message = "Param club id error!!")
+	private int clubId;
 
 	@JsonProperty("type")
 	@NotNull(message = "Param teacher id error!!")
@@ -34,6 +38,29 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 	
 	
+	
+	
+	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") int teacherId,
+			@NotNull(message = "Param club id error!!") int clubId,
+			@NotNull(message = "Param teacher id error!!") String type,
+			@NotBlank(message = "Param password error!!") String pwd,
+			@NotBlank(message = "Param teacher name error!!") String name,
+			@NotBlank(message = "Param email error!!") String email,
+			@NotBlank(message = "Param status error!!") String status) {
+		super();
+		this.teacherId = teacherId;
+		this.clubId = clubId;
+		this.type = type;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.status = status;
+	}
+
+
+
+
+
 	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") int teacherId,
 			@NotBlank(message = "Param teacher id error!!") String type,
 			@NotBlank(message = "Param password error!!") String pwd,
@@ -125,5 +152,18 @@ public class TeacherDatabaseCreateOrUpdateReq {
 		this.type = type;
 	}
 
+
+
+	public int getClubId() {
+		return clubId;
+	}
+
+
+
+	public void setClubId(int clubId) {
+		this.clubId = clubId;
+	}
+
+	
 
 }
