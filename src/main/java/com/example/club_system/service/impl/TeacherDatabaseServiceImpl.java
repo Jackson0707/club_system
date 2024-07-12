@@ -227,30 +227,38 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 
 		// 先遍歷每個學生的志願序
 		// 查看每個社團人數上限
-		// if社團人數夠，社團人數減1，hashmap存key學生是哪個value社團
+		// if社團人數夠，社團人數減1，hashmap存key學生是哪個 value社團
 		// else人數不夠，看第二志願社團人數上限
-		
-		List<Student> studentArr = studentDao.findAll(); 
-		HashMap<Integer, Integer[]> studentChoiceArr = new HashMap<>(); // 存放了 key:學生Id value:志願序
-		for(int i = 0; i < studentArr.size(); i++) {
-			Student studentArray = studentArr.get(i);
-			Integer [] student;
+
+		// 學生志願序 key:學號, value:志願序
+		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>(); // 存放了 key:學生Id value:志願序
+		List<Student> studentList = studentDao.findAll();
+		for (int i = 0; i < studentList.size(); i++) {
+			Student studentData = studentList.get(i); // 存放了學生所有資料
+			Integer[] choiceArr; // 先定義一個一空陣列來放之後志願序的值
 			try {
-				student = mapper.readValue(studentArray.getStudentId(), Integer[].class);
-						
+				choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class); // 空陣列已經放了志願序的值
+				studentChoiceMap.put(studentData.getStudentId(), choiceArr); // 把上面先建好的空HashMap放值進來配對
 			} catch (Exception e) {
+				System.out.println("資料有錯");
 			}
-			
+
 		}
-		
-		List<Club> clubmax = clubDao.findAll();
-		HashMap<Integer, Integer> clubMaxArr = new HashMap<>();
-		for(int i = 0; i< clubmax.size();i++) {
-			Club clubs = clubmax.get(i);
+
+		// 各社團的上限人數，key:社團Id, value:社團人數上限
+		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
+		List<Club> clubList = clubDao.findAll(); // 搜尋所有的社團資料
+		for (int i = 0; i < clubList.size(); i++) {
+			Club clubData = clubList.get(i);
+			clubMaxMap.put(clubData.getClubId(), clubData.getMax()); // key:社團Id, value:上限人數
 		}
-		
-		
-		
+
+		// 存儲分配結果
+		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
+
+		// 創建學生Id的列表，用於隨機選擇
+		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
+
 		return null;
 	}
 

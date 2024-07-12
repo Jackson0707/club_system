@@ -1,7 +1,6 @@
 package com.example.club_system;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,10 +48,10 @@ public class ClubServiceTests {
 		// 有，抽籤，取值時用Entry
 
 		// 社團上限人數
-		List<Club> clubs = clubDao.findAll(); // 先取出Club這個entity中的多筆資料的所有值
+		List<Club> clubs = clubDao.findAll(); // 先查詢Club這個entity中的多筆資料的所有值
 		Map<Integer, Integer> clubMax = new HashMap<>();
 		for (int i = 0; i < clubs.size(); i++) { // 先用for迴圈把所有資料列出來
-			Club club = clubs.get(i); // 用一個變數來接for迴圈整理出來的資料
+			Club club = clubs.get(i); // 用一個變數來接for迴圈整理出來的值
 			clubMax.put(club.getClubId(), club.getMax()); // 利用 .put功能把想要塞如的值加進map裡面
 		}
 		System.out.println(clubMax);
@@ -70,6 +69,7 @@ public class ClubServiceTests {
 				studentChoiceArr.put(student.getStudentId(), choiceArr);
 			} catch (JsonProcessingException e) {
 				System.out.println("JsonProcessingException");
+				System.out.println(studentChoiceArr);
 			}
 
 		}
@@ -79,28 +79,26 @@ public class ClubServiceTests {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		// 已經有Id的學生
 		List<Student> clubStudentValue = new ArrayList<>();
 		HashMap<Integer, Integer[]> clubStudentArr = new HashMap<>();
 		Set<Entry<Integer, Integer[]>> studentChoiceArrSet = studentChoiceArr.entrySet();
-		
+
 		for (Entry<Integer, Integer[]> item : studentChoiceArrSet) {
-			item.getKey();  // 學生ID
+			item.getKey(); // 學生ID
 			item.getValue();// 社團志願序
+
 			Integer[] clubStudentAllId = new Integer[studentChoice.size()];
-			if(!clubStudentArr.containsKey(item.getValue()[0])) {
+			if (!clubStudentArr.containsKey(item.getValue()[0])) {
 				clubStudentAllId[0] = item.getKey();
-				clubStudentArr.put(item.getValue()[0],clubStudentAllId);
-			}
-			else { 
+				clubStudentArr.put(item.getValue()[0], clubStudentAllId);
+			} else {
 				clubStudentAllId = clubStudentArr.get(item.getValue()[0]);
 			}
 		}
 		System.out.println(clubStudentArr);
-		
-		
-		
-		
+
 		// 實作抽籤
 		// HashMap 第一輪(第一志願序)：社團id作為 key，學生id 作為 value，
 		// 以陣列的方式儲存成 3:[23, 25, ] 2:[36]
@@ -111,28 +109,235 @@ public class ClubServiceTests {
 		// 判斷每個社團可否再容納人
 		// 沒有，就跳過該社團的抽籤
 		// 有，抽籤，取值時用Entry
-		
-		
+
 		Map<Integer, ArrayList<Integer>> firstRandom = new HashMap<>();
 
 		// 每個社團的學生列表
 		for (Integer clubId : clubMax.keySet()) {
-		    firstRandom.put(clubId, new ArrayList<>());
+			firstRandom.put(clubId, new ArrayList<>());
 		}
 
 		// 遍歷所有學生，將他們的第一志願加到對應的社團列表中
 		for (Entry<Integer, Integer[]> entry : studentChoiceArr.entrySet()) {
-		    Integer studentId = entry.getKey();
-		    Integer[] choices = entry.getValue();
-		    
-		    if (choices.length > 0) {
-		        Integer firstChoice = choices[0];
-		        firstRandom.get(firstChoice).add(studentId);
-		    }
+			Integer studentId = entry.getKey();
+			Integer[] choices = entry.getValue();
+
+			if (choices.length > 0) {
+				Integer firstChoice = choices[0];
+				firstRandom.get(firstChoice).add(studentId);
+			}
 		}
-		System.out.println(firstRandom +"結束");
+		System.out.println(firstRandom + "結束");
 
 		return;
 	}
 
+	@Test
+	public void clubRandom1() {
+
+		// 學生志願序 key:學號, value:志願序
+		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>();
+		List<Student> studentList = studentDao.findAll();
+		for (int i = 0; i < studentList.size(); i++) {
+			Student studentData = studentList.get(i);
+			Integer[] choiceArr;
+			try {
+				choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
+				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
+			} catch (Exception e) {
+				System.out.println("資料有錯");
+//		            return new BasicRes(ResMessage.FAIL.getCode(), "學生資料處理錯誤");
+			}
+		}
+
+		// 檢查各社團的上限人數
+		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
+		List<Club> clubList = clubDao.findAll();
+		for (int i = 0; i < clubList.size(); i++) {
+			Club clubData = clubList.get(i);
+			clubMaxMap.put(clubData.getClubId(), clubData.getMax());
+		}
+
+		// 存儲分配結果
+		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
+
+		// 創建學生Id的列表，用於隨機選擇
+		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
+
+		// 隨機分配學生到社團
+
+		while (!studentDrawList.isEmpty()) {
+			// 隨機選擇一個學生
+			int randomIndex = (int) (Math.random() * studentDrawList.size());
+			int studentId = studentDrawList.get(randomIndex);
+			Integer[] choices = studentChoiceMap.get(studentId);
+
+			boolean assigned = false;
+			for (int clubId : choices) {
+				int drawClubMax = clubMaxMap.get(clubId);
+				if (drawClubMax > 0) {
+					// 分配學生到這個社團
+					drawResult.put(studentId, clubId);
+					clubMaxMap.put(clubId, drawClubMax - 1);
+					assigned = true;
+					break;
+				}
+			}
+
+			if (assigned) {
+				studentDrawList.remove(randomIndex);
+			} else {
+				// 如果學生無法被分配到任何志願社團，可以在這裡處理
+				System.out.println("學生 " + studentId + " 無法被分配到任何志願社團");
+				studentDrawList.remove(randomIndex);
+			}
+		}
+		System.out.println(drawResult);
+
+//		    // 更新數據庫
+//		    for (Map.Entry<Integer, Integer> entry : assignedStudents.entrySet()) {
+//		        int studentId = entry.getKey();
+//		        int clubId = entry.getValue();
+//		        studentDao.save(studentId, clubId);
+//		    }
+
+//		    return new BasicRes(ResMessage.SUCCESS.getCode(), "社團分配完成");
+	}
+
+	@Test
+	public void random() {
+
+		// 學生志願序 key:學號, value:志願序
+		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>();
+		List<Student> studentList = studentDao.findAll();
+		for (Student studentData : studentList) {
+			try {
+				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
+				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
+			} catch (Exception e) {
+				System.out.println("資料有錯: " + studentData.getStudentId());
+			}
+		}
+
+		// 檢查各社團的上限人數
+		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
+		List<Club> clubList = clubDao.findAll();
+		for (Club clubData : clubList) {
+			clubMaxMap.put(clubData.getClubId(), clubData.getMax());
+		}
+
+		// 存儲抽籤結果
+		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
+
+		// 創建學生Id的列表，用來隨機選擇，拿到學生Id
+		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
+
+		// 隨機分配學生到社團
+		while (!studentDrawList.isEmpty()) {
+			// 隨機選擇一個學生
+			int randomIndex = (int) (Math.random() * studentDrawList.size());
+			int studentId = studentDrawList.get(randomIndex);
+
+			Integer[] choices = studentChoiceMap.get(studentId);
+			boolean assigned = false;
+
+			// 如果學生
+//			if(studentChoiceMap.entrySet()) {
+//				
+//			}
+			for (int clubId : choices) {
+				int clubMax = clubMaxMap.get(clubId);
+				if (clubMax > 0) {
+					// 分配學生到這個社團
+					drawResult.put(studentId, clubId);
+					clubMaxMap.put(clubId, clubMax - 1);
+//					assigned = true;
+					break;
+				}
+			}
+
+			if (assigned) {
+				studentDrawList.remove(randomIndex);
+			} else {
+				// 如果學生無法被分配到任何志願社團，可以在這裡處理
+				System.out.println("學生 " + studentId + " 無法被分配到任何志願社團");
+				studentDrawList.remove(randomIndex);
+			}
+		}
+
+		System.out.println(drawResult);
+	}
+
+	@Test
+	public void random1() {
+		// 學生志願序 key:學號, value:志願序
+		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>();
+		List<Student> studentList = studentDao.findAll();
+		for (Student studentData : studentList) {
+			try {
+				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
+				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
+			} catch (Exception e) {
+				System.out.println("資料有錯: " + studentData.getStudentId());
+			}
+		}
+
+		// 檢查各社團的上限人數
+		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
+		List<Club> clubList = clubDao.findAll();
+		for (Club clubData : clubList) {
+			clubMaxMap.put(clubData.getClubId(), clubData.getMax());
+		}
+
+		// 存儲抽籤結果
+		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
+
+		// 創建學生Id的列表，用來隨機選擇，拿到學生Id
+		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
+		
+		// 創建一個可以繼續分配的社團列表
+		List<Integer> availableClubs = new ArrayList<>(clubMaxMap.keySet());
+
+		while (!studentDrawList.isEmpty() && !availableClubs.isEmpty()) {
+		    // 隨機選擇一個學生
+		    int randomStudentIndex = (int) (Math.random() * studentDrawList.size());
+		    int studentId = studentDrawList.get(randomStudentIndex); // 隨機抽的學生Id
+		    Integer[] studentChoices = studentChoiceMap.get(studentId); // Map中相對應的學生Id
+
+		    boolean studentAssigned = false;
+
+		    System.out.println(randomStudentIndex);
+		    // 索引值從0開始遍歷學生的志願
+		    for (int i = 0; i < studentChoices.length; i++) {
+		        int clubId = studentChoices[i];
+		        // 檢查這個社團是否還有空位
+		        if (availableClubs.contains(clubId)) {
+		            // 分配學生到這個社團
+		            drawResult.put(studentId, clubId);
+		            
+		            // 更新社團剩餘名額
+		            int remainingSpots = clubMaxMap.get(clubId) - 1;
+		            clubMaxMap.put(clubId, remainingSpots);
+		            
+		            // 如果社團滿了，從可用社團列表中移除
+		            if (remainingSpots == 0) {
+		                availableClubs.remove(Integer.valueOf(clubId));
+		            }
+
+		            studentAssigned = true;
+		            break;
+		        }
+		    }
+
+		    // 從待分配列表中移除該學生
+		    studentDrawList.remove(randomStudentIndex);
+
+		    // 如果學生未被分配，輸出訊息
+		    if (!studentAssigned) {
+		        System.out.println("學生 " + studentId + " 沒有社團");
+		    }
+		    System.out.println(drawResult);
+		}
+		
+	}
 }
