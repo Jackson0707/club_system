@@ -12,7 +12,9 @@ import com.example.club_system.service.ifs.TeacherDatabaseService;
 import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
+import com.example.club_system.vo.TeacherGetStudentReq;
 import com.example.club_system.vo.TeacherLoginReq;
+import com.example.club_system.vo.TeacherLoginRes;
 import com.example.club_system.vo.TeacherSearchReq;
 import com.example.club_system.vo.TeacherUpdatePwdReq;
 
@@ -55,5 +57,10 @@ public class TeacherDatabaseController {
 	@PostMapping(value = "teacherDatabase/loginAdmin")
 	public BasicRes loginAdmin(@Valid @RequestBody TeacherLoginReq req) {
 		return teacherDatabaseService.login(req.getTeacherId(), req.getPwd());
+	}
+	
+	@PostMapping(value = "teacherDatabase/clubStudentData")
+	public TeacherLoginRes clubStudentData(@Valid @RequestBody TeacherGetStudentReq req) {
+		return teacherDatabaseService.teacherClubStudent(req);
 	}
 }

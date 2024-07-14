@@ -57,6 +57,7 @@ public class Club {
 	@Column(name="draw_time")
 	private LocalDate drawTime;
 	
+	@Column(name="picture")
 	private String picture;
 
 	public Club() {

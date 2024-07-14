@@ -1,11 +1,7 @@
 package com.example.club_system.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +21,8 @@ import com.example.club_system.service.ifs.TeacherDatabaseService;
 import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
+import com.example.club_system.vo.TeacherGetStudentReq;
+import com.example.club_system.vo.TeacherLoginRes;
 import com.example.club_system.vo.TeacherSearchReq;
 import com.example.club_system.vo.TeacherSearchRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -145,7 +143,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		String name = req.getName();
 
 		String status = req.getStatus();
-		
+
 		int clubId = req.getClubId();
 
 		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
@@ -158,9 +156,9 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 			status = "";
 		}
 //		if (clubId != 0) {
-			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
-					teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(name, status,
-							clubId));
+		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
+				teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(name, status,
+						clubId));
 //		}
 //		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 //				teacherDatabaseDao.findByNameContainingAndStatusContainingOrderByTeacherIdAsc(name, status));
@@ -230,43 +228,34 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	}
 
 	@Override
-	public BasicRes clubRandom() {
-
-		// 先遍歷每個學生的志願序
-		// 查看每個社團人數上限
-		// if社團人數夠，社團人數減1，hashmap存key學生是哪個 value社團
-		// else人數不夠，看第二志願社團人數上限
-
-		// 學生志願序 key:學號, value:志願序
-		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>(); // 存放了 key:學生Id value:志願序
-		List<Student> studentList = studentDao.findAll();
-		for (int i = 0; i < studentList.size(); i++) {
-			Student studentData = studentList.get(i); // 存放了學生所有資料
-			Integer[] choiceArr; // 先定義一個一空陣列來放之後志願序的值
-			try {
-				choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class); // 空陣列已經放了志願序的值
-				studentChoiceMap.put(studentData.getStudentId(), choiceArr); // 把上面先建好的空HashMap放值進來配對
-			} catch (Exception e) {
-				System.out.println("資料有錯");
-			}
-
+	public TeacherLoginRes teacherClubStudent(TeacherGetStudentReq req) {
+		Optional<TeacherDatabase> clubTeacherData = teacherDatabaseDao.findById(req.getTeacherId());
+		
+		if(clubTeacherData.isEmpty()) {
+			return new TeacherLoginRes(ResMessage.TEACHER_ID_NOT_FOUND.getCode(), 
+					ResMessage.TEACHER_ID_NOT_FOUND.getMessage());
 		}
-
-		// 各社團的上限人數，key:社團Id, value:社團人數上限
-		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
-		List<Club> clubList = clubDao.findAll(); // 搜尋所有的社團資料
-		for (int i = 0; i < clubList.size(); i++) {
-			Club clubData = clubList.get(i);
-			clubMaxMap.put(clubData.getClubId(), clubData.getMax()); // key:社團Id, value:上限人數
+		TeacherDatabase teacher = clubTeacherData.get();
+		
+		Optional<Club> op = clubDao.findById(teacher.getClubId());
+		
+		if(op.isEmpty()) {
+			return new TeacherLoginRes(ResMessage.PARAM_CLUB_ID_NOT_EXIST.getCode(), 
+					ResMessage.PARAM_CLUB_ID_NOT_EXIST.getMessage());
 		}
-
-		// 存儲分配結果
-		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
-
-		// 創建學生Id的列表，用於隨機選擇
-		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
-
-		return null;
+		
+		Club clubData = op.get();
+		
+		List<Student> clubStdentList = studentDao.findByClubId(teacher.getClubId());
+		
+		List<Student> clubStudent = new ArrayList<>(clubStdentList);
+		
+		
+		return new TeacherLoginRes(ResMessage.SUCCESS.getCode(), 
+				ResMessage.SUCCESS.getMessage(),teacher.getName(),teacher.getClubId(), clubData.getName(),
+				clubStudent);
 	}
+
+
 
 }

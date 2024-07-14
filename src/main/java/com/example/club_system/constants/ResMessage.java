@@ -22,8 +22,8 @@ public enum ResMessage {
 	UPDATE_TEACHER_ID_NOT_FOUND(404,"Update teacher id not found"),//未找到更新 老師ID
 	PROCESSING_EXCEPTION(400,"ProcessingException!!"), //
 	UPDATE_STUDENT_ID_NOT_FOUND(404, "Update student id not found"),//
-	STUDENT_ID_ERROR(400, "Student id error");
-	
+	STUDENT_ID_ERROR(400, "Student id error"),
+	TEACHER_ID_NOT_FOUND(404,"Teacher id not found");//未找到更新 老師ID
 	
 	
 	private int code;

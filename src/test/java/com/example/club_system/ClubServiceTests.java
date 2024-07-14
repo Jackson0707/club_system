@@ -338,12 +338,12 @@ public class ClubServiceTests {
 		    studentDrawList.remove(randomStudentIndex);
 
 		    // 如果學生未被分配，輸出訊息
-//		    if (!studentAssigned) {
-//		        System.out.println("學生 " + studentId + " 沒有社團");
+//    if (!studentAssigned) {
+//       System.out.println("學生 " + studentId + " 沒有社團");
 //		    }
 		    System.out.println(drawResult);
-		}
-		
+//		}
+	
 		
 		  // 更新數據庫
 //	    for (Map.Entry<Integer, Integer> entry : drawResult.entrySet()) {
@@ -353,7 +353,7 @@ public class ClubServiceTests {
 //	        finalResult.addAll(studentList);
 //	        
 //	        studentDao.saveAll(null);
-//	    }
+	    }
 		
 	}
 }

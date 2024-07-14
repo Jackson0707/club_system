@@ -3,7 +3,10 @@ package com.example.club_system.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.club_system.entity.Club;
 
@@ -24,10 +27,10 @@ public interface ClubDao extends JpaRepository<Club, Integer> {
 	
 	List<Club> findByClubId(int sclubId);
 
-//	@Transactional
-//	@Modifying
-//	@Query(value = "delete from club where club_id = ?1", nativeQuery = true)
-//	public int delete(Integer club_id);
+	@Transactional
+	@Modifying
+	@Query(value = "delete from club where club_id = ?1", nativeQuery = true)
+	public int delete(Integer club_id);
 //
 //	@Query(value = "select * from club where club_id = ?1", nativeQuery = true)
 //	public List<Club> selectAll();

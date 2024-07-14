@@ -1,9 +1,10 @@
 package com.example.club_system.service.ifs;
 
 import com.example.club_system.vo.BasicRes;
-import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
+import com.example.club_system.vo.TeacherGetStudentReq;
+import com.example.club_system.vo.TeacherLoginRes;
 import com.example.club_system.vo.TeacherSearchReq;
 import com.example.club_system.vo.TeacherSearchRes;
 
@@ -21,5 +22,5 @@ public interface TeacherDatabaseService {
 
 	public BasicRes loginAdmin(int teacherId,String pwd);
 
-	public BasicRes clubRandom();
+	public TeacherLoginRes teacherClubStudent(TeacherGetStudentReq req);
 }

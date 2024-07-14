@@ -3,9 +3,8 @@ package com.example.club_system.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +14,7 @@ import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
+import com.example.club_system.vo.ClubSearchRes;
 
 @CrossOrigin
 @RestController
@@ -34,10 +34,14 @@ public class ClubController {
 	}
 	
 	@PostMapping(value = "Club/search")
-	public BasicRes search(@Valid @RequestBody ClubSearchReq req) {
+	public ClubSearchRes search(@Valid @RequestBody ClubSearchReq req) {
 		return clubService.search(req);
 	}
 	
+	@PostMapping(value = "Club/random")
+	public BasicRes clubRandom() {
+		return clubService.clubRandom();
+	}
 	
 //	@GetMapping(value ="Club/search/{name}")
 //	public ClubSearchRes searchByName(@PathVariable String name) {

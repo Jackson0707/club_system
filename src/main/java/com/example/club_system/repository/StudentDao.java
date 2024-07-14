@@ -34,6 +34,8 @@ public interface StudentDao extends JpaRepository<Student, StudentId> {
 
 	List<Student> findByStudentIdAndClubId(int studentId, int clubId);
 	
+	List<Student> findByClubId(int clubId);
+	
 	@Query(value="select * from student where choice_list like concat('?1,%')", nativeQuery = true)
 	List<Student> findByChoiceOne(int clubId);
 	
