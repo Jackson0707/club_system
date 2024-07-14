@@ -38,6 +38,8 @@ public class ClubController {
 		return clubService.search(req);
 	}
 	
+	
+	
 	@PostMapping(value = "Club/random")
 	public BasicRes clubRandom() {
 		return clubService.clubRandom();

@@ -20,6 +20,7 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
+import com.example.club_system.vo.StudentSearchRes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -101,11 +102,11 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public ClubSearchRes search(ClubSearchReq req) {
 		
-		int clubId = req.getClubId();
-		
 		String name = req.getName();
 
 		String semester = req.getSemester();
+		
+		int clubId = req.getClubId();
 		
 		int teacherId = req.getTeacherId();
 
@@ -118,30 +119,27 @@ public class ClubServiceImpl implements ClubService {
 		if (!StringUtils.hasText(semester)) {
 			semester = "";
 		}
+		
 		if (clubId == 0 && teacherId == 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemester(name, semester));
 		}
 		if (clubId == 0 && teacherId != 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemesterAndTeacherId(name, semester, teacherId));
+					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
 		}
 		if (clubId != 0 && teacherId == 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndClubIdAndSemester(clubId, name, semester));
+					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
 		}
 		if (clubId != 0 && teacherId != 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByClubIdAndTeacherId(clubId, teacherId));
 		}
-		if(clubId != 0 ) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByClubId(clubId));
-		}
-		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),//
-				clubDao.findByNameContainingAndClubIdAndSemesterAndTeacherId(clubId, name, semester, teacherId));
-	}
+		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), 
+				clubDao.findByNameContainingAndSemesterContainingAndTeacherIdContainingAndClubId(name, semester, teacherId, clubId));
 
+	}
 	
 	@Override
 	public BasicRes clubRandom() {

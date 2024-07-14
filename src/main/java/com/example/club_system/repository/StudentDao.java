@@ -18,7 +18,7 @@ public interface StudentDao extends JpaRepository<Student, StudentId> {
 
 	boolean existsBySemester(String semester);
 
-	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContaining(String name,
+	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGrade(String name,
 			String status, String semester, String grade);
 
 	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndStudentIdAndClubId(
@@ -36,14 +36,14 @@ public interface StudentDao extends JpaRepository<Student, StudentId> {
 	
 	List<Student> findByClubId(int clubId);
 	
-	@Query(value="select * from student where choice_list like concat('?1,%')", nativeQuery = true)
-	List<Student> findByChoiceOne(int clubId);
-	
-	@Query(value="select * from student where choice_list like concat('%,?1,%')", nativeQuery = true)
-	List<Student> findByChoiceTwo(int clubId);
-	
-	@Query(value="select * from student where choice_list like concat('%,?1')", nativeQuery = true)
-	List<Student> findByChoiceThree(int clubId);
+//	@Query(value="select * from student where choice_list like concat('?1,%')", nativeQuery = true)
+//	List<Student> findByChoiceOne(int clubId);
+//	
+//	@Query(value="select * from student where choice_list like concat('%,?1,%')", nativeQuery = true)
+//	List<Student> findByChoiceTwo(int clubId);
+//	
+//	@Query(value="select * from student where choice_list like concat('%,?1')", nativeQuery = true)
+//	List<Student> findByChoiceThree(int clubId);
 	
 	// 因為 Entity student 中有多個(2個或以上)屬性有加上@Id:即復合(多)主鍵，
 	// 所以透過 studentId 類別將這些屬性集中管理，因此在 Dao 中，繼承的 JpaRepository<T,ID>

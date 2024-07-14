@@ -164,7 +164,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 		if (studentId == 0 && clubId == 0) {
 			return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					studentDao.findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContaining(name,
+					studentDao.findByNameContainingAndStatusContainingAndSemesterContainingAndGrade(name,
 							status, semester, grade));
 		}
 		if (studentId == 0 && clubId != 0) {
