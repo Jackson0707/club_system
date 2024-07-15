@@ -10,6 +10,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.StringUtils;
 
 import com.example.club_system.constants.ResMessage;
 import com.example.club_system.entity.Club;
@@ -17,6 +18,8 @@ import com.example.club_system.entity.Student;
 import com.example.club_system.repository.ClubDao;
 import com.example.club_system.repository.StudentDao;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.ClubSearchReq;
+import com.example.club_system.vo.ClubSearchRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,7 +33,9 @@ public class ClubServiceTests {
 	StudentDao studentDao;
 
 	private ObjectMapper mapper = new ObjectMapper();
-
+	
+	
+	
 	@Test
 	public void clubRandom() {
 

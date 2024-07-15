@@ -119,16 +119,15 @@ public class ClubServiceImpl implements ClubService {
 		if (!StringUtils.hasText(semester)) {
 			semester = "";
 		}
-		
 		if (clubId == 0 && teacherId == 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemester(name, semester));
 		}
-		if (clubId == 0 && teacherId != 0) {
+		if ( teacherId != 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
 		}
-		if (clubId != 0 && teacherId == 0) {
+		if (clubId != 0 ) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
 		}
