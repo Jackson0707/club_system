@@ -36,7 +36,7 @@ public class TeacherDatabaseController {
 
 	@PostMapping(value = "teacherDatabase/login")
 	public BasicRes login(@Valid @RequestBody TeacherLoginReq req) {
-		return teacherDatabaseService.login(req.getTeacherId(), req.getPwd());
+		return teacherDatabaseService.login(req);
 	}
 
 	@PostMapping(value = "teacherDatabase/createOrUpdate")
@@ -56,7 +56,7 @@ public class TeacherDatabaseController {
 	
 	@PostMapping(value = "teacherDatabase/loginAdmin")
 	public BasicRes loginAdmin(@Valid @RequestBody TeacherLoginReq req) {
-		return teacherDatabaseService.login(req.getTeacherId(), req.getPwd());
+		return teacherDatabaseService.loginAdmin(req.getTeacherId(), req.getPwd());
 	}
 	
 	@PostMapping(value = "teacherDatabase/clubStudentData")

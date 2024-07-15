@@ -9,6 +9,10 @@ import com.example.club_system.entity.Club;
 
 @Repository
 public interface ClubDao extends JpaRepository<Club, Integer> {
+	
+//	List<Club> findBySemester(String semester);
+//	
+//	List<Club> findByName(String name);
 
 	List<Club> findByNameContainingAndSemester( String name, String semester);
 	

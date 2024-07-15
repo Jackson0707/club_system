@@ -28,10 +28,10 @@ public class ClubServiceImpl implements ClubService {
 
 	@Autowired
 	private StudentDao studentDao;
-	
+
 	@Autowired
 	private ClubDao clubDao;
-	
+
 	private ObjectMapper mapper = new ObjectMapper();
 
 	// 創建及更新社團資料
@@ -80,15 +80,16 @@ public class ClubServiceImpl implements ClubService {
 	// 刪除社團資料
 	@Override
 	public BasicRes delete(ClubDeleteReq req) {
-		
+
 		if (!CollectionUtils.isEmpty(req.getIdList())) {
 			// 刪除問卷
 			try {
-				for(Integer id : req.getIdList()) {
+				for (Integer id : req.getIdList()) {
 					System.out.println(id);
-					clubDao.deleteById(id);;
+					clubDao.deleteById(id);
+					;
 				}
-				
+
 			} catch (Exception e) {
 				// 當 deleteAllById 方法中，id 的值不存在，JPA 會報錯
 				// 因為在刪除之前， JPA會先搜帶入的 id 值，若沒結果就會報錯
@@ -101,13 +102,13 @@ public class ClubServiceImpl implements ClubService {
 	// 搜尋社團
 	@Override
 	public ClubSearchRes search(ClubSearchReq req) {
-		
+
 		String name = req.getName();
 
 		String semester = req.getSemester();
-		
+
 		int clubId = req.getClubId();
-		
+
 		int teacherId = req.getTeacherId();
 
 		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
@@ -118,16 +119,17 @@ public class ClubServiceImpl implements ClubService {
 		}
 		if (!StringUtils.hasText(semester)) {
 			semester = "";
+
 		}
 		if (clubId == 0 && teacherId == 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemester(name, semester));
 		}
-		if ( teacherId != 0) {
+		if (teacherId != 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
 		}
-		if (clubId != 0 ) {
+		if (clubId != 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
 		}
@@ -135,11 +137,12 @@ public class ClubServiceImpl implements ClubService {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByClubIdAndTeacherId(clubId, teacherId));
 		}
-		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), 
-				clubDao.findByNameContainingAndSemesterContainingAndTeacherIdContainingAndClubId(name, semester, teacherId, clubId));
+		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+				clubDao.findByNameContainingAndSemesterContainingAndTeacherIdContainingAndClubId(name, semester,
+						teacherId, clubId));
 
 	}
-	
+
 	@Override
 	public BasicRes clubRandom() {
 
@@ -194,7 +197,7 @@ public class ClubServiceImpl implements ClubService {
 					drawResult.put(randomStudentId, clubId);
 
 					// 更新社團剩餘名額
-					int remainingSpots = clubMaxMap.get(clubId) -1;
+					int remainingSpots = clubMaxMap.get(clubId) - 1;
 					clubMaxMap.put(clubId, remainingSpots);
 
 					// 如果社團滿了，從可用社團列表中移除
@@ -210,19 +213,25 @@ public class ClubServiceImpl implements ClubService {
 
 			// 從待分配列表中移除該學生
 			studentDrawList.remove(randomChooseStudent);
-			
+
 			System.out.println(drawResult);
 		}
+		
+		//把抽籤結果更新進資料庫
+		// drawResult 放了抽籤結果，key: 學號, value: 社團Id
+		
+		// 抽籤結果
+		List<Student> updatedStudentsClub = new ArrayList<>();
 
-		 // 更新數據庫
-		List<Student> updatedStudents = new ArrayList<>();
-		for (Student student : studentList) {
-		    Integer assignedClubId = drawResult.get(student.getStudentId());
-		    if (assignedClubId != null) {
-		        student.setClubId(assignedClubId);
-		        updatedStudents.add(student);
-		    }
-		}
+		// 學生Id的列表，拿到學生Id
+		List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
+		
+		// 拿到學生抽中的社團Id
+		List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
+		
+		
+		
+		
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 }

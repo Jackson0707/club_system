@@ -22,6 +22,7 @@ import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
 import com.example.club_system.vo.TeacherGetStudentReq;
+import com.example.club_system.vo.TeacherLoginReq;
 import com.example.club_system.vo.TeacherLoginRes;
 import com.example.club_system.vo.TeacherSearchReq;
 import com.example.club_system.vo.TeacherSearchRes;
@@ -95,28 +96,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 			String questionStr = mapper.writeValueAsString(req.getTeacherId());
 //					 若 req 中的 id > 0，表示更新已存在的資料;若 id = 0;則表示要新增
 			if (req.getTeacherId() > 0) {
-				// 以下兩種方式擇一
-				// 使用方法1，透過 findById，若有資料，就會回傳一整筆的資料(可能資料量會較大)
-				// 使用方法2，因為是透過 existsById 來判斷資料是否存在，所以回傳的資料永遠都只會是一個 bit(0 或 1)
-//						//方法1.透過 findById，若有資料，回傳整筆資料
-//						Optional<Quiz> op = quizDao.findById(req.getId());
-//						//判斷是否有資料
-//						if(op.isEmpty()) {//op.isEmpty():表示沒有資料
-//							return new BasicRes(ResMessage.UPDATE_ID_NOT_FOUND.getCode(),
-//									ResMessage.UPDATE_ID_NOT_FOUND.getMessage());
-//						}
-//						Quiz quiz = op.get();
-//						//設定新值(值從 req 來)
-//						//將 req 中的新值設定到舊的 quiz 中，不設定 Id，因為 Id 都一樣
-//						quiz.setName(req.getName());
-//						quiz.setDescription(req.getDescription());
-//						quiz.setStartDate(req.getStartDate());
-//						quiz.setEndDate(req.getEndDate());
-//						quiz.setQuestions(questionStr);
-//						quiz.setPublished(req.isPublished());
-				// 方法2.透過 existsById :回傳一個 bit 的值
-				// 這邊要判斷從 req 帶進來的 TeacherId 是否真的有存在於 DB 中
-				// 因為若 TeacherId 不存在，後續程式碼再呼叫 JPA 的 save 方法時，會變成新增
+				
 				boolean boo = teacherDatabaseDao.existsById(req.getTeacherId());
 				if (!boo) {// !boo 表示資料不存在
 					return new BasicRes(ResMessage.UPDATE_TEACHER_ID_NOT_FOUND.getCode(),
@@ -124,9 +104,6 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 				}
 			}
 
-			// new TeacherDatabase() 中帶入 req.getId() 是PK，在呼叫 save 時，會先去檢查 PK 是否有存在於 DB 中，
-			// 若存在-->更新;不存在-->新增
-			// req 中沒有該欄位時，預設是 0 ，因為 TeacherId 的資料型態是 int
 			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(), req.getTeacherId(), //
 					encoder.encode(req.getPwd()), req.getName(), req.getEmail(), req.getType()));
 
@@ -159,10 +136,10 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
 				teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(name, status,
 						clubId));
-//		}
+		}
 //		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 //				teacherDatabaseDao.findByNameContainingAndStatusContainingOrderByTeacherIdAsc(name, status));
-	}
+//	}
 
 	@Override
 	public BasicRes delete(TeacherDeleteReq req) {
@@ -182,27 +159,28 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	}
 
 	@Override
-	public BasicRes login(int teacherId, String pwd) {
-		// 確認帳號是否已存在
+	public TeacherLoginRes login(TeacherLoginReq req) {
+		// 確認帳號是否已存在m
 		// 1. 因為會對收集出來的資料作密碼比對，所以要用 findById 來撈資料
 		// 2. 只使用 findById 來撈資料的原因是存在資料庫中的 password 欄位的值是使用 BCryptPasswordEncoder
 		// 加密後的值，其特性是一樣的內容值，每次加密後得到的結果都會不同，所以無法直接透過加密後的值來比對資料庫中的內容
-		Optional<TeacherDatabase> op = teacherDatabaseDao.findById(teacherId);
+		Optional<TeacherDatabase> clubTeacherId = teacherDatabaseDao.findById(req.getTeacherId());
 		// 確認帳號存在
-		if (op.isEmpty()) {// op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
-			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+		if (clubTeacherId.isEmpty()) {// op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
+			return new TeacherLoginRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
 
-		// 從 op 中取回 Atm 資訊
-		TeacherDatabase teacherDatabase = op.get();
+		// 從 op 中取回 老師 資訊
+		TeacherDatabase teacherDatabase = clubTeacherId.get();
 
 		// 判斷密碼是否正確
-		if (!encoder.matches(pwd, teacherDatabase.getPwd())) { // 前面有驚嘆號 表示密碼比對失敗
-			return new BasicRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
+		if (!encoder.matches(req.getPwd(), teacherDatabase.getPwd())) { // 前面有驚嘆號 表示密碼比對失敗
+			return new TeacherLoginRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
 		{
 			System.out.println(ResMessage.SUCCESS.getMessage());
-			return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+			return new TeacherLoginRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),teacherDatabase.getTeacherId()
+					);
 		}
 	}
 
@@ -227,16 +205,21 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-	@Override
+	// 老師登入後取得的社團及學生資訊
+	@Override 
 	public TeacherLoginRes teacherClubStudent(TeacherGetStudentReq req) {
+		// clubTeacherData: 取得老師Id的所有資訊
 		Optional<TeacherDatabase> clubTeacherData = teacherDatabaseDao.findById(req.getTeacherId());
 		
 		if(clubTeacherData.isEmpty()) {
 			return new TeacherLoginRes(ResMessage.TEACHER_ID_NOT_FOUND.getCode(), 
 					ResMessage.TEACHER_ID_NOT_FOUND.getMessage());
 		}
+		
+		// clubTeacherData:裡面有該老師的所有資訊
 		TeacherDatabase teacher = clubTeacherData.get();
 		
+		// op: 用老師的的社團Id去撈該社團的所有資訊
 		Optional<Club> op = clubDao.findById(teacher.getClubId());
 		
 		if(op.isEmpty()) {
@@ -244,6 +227,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 					ResMessage.PARAM_CLUB_ID_NOT_EXIST.getMessage());
 		}
 		
+		// clubData: 拿到該社團Id的所有資訊
 		Club clubData = op.get();
 		
 		List<Student> clubStdentList = studentDao.findByClubId(teacher.getClubId());

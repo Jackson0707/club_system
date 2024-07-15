@@ -6,6 +6,7 @@ import com.example.club_system.entity.Student;
 
 public class TeacherLoginRes extends BasicRes{
 
+	private int teacherId;
 	
 	private String teacherName;
 	
@@ -21,6 +22,12 @@ public class TeacherLoginRes extends BasicRes{
 
 	public TeacherLoginRes(int statusCode, String message) {
 		super(statusCode, message);
+	}
+
+
+	public TeacherLoginRes(int statusCode, String message, int teacherId) {
+		super(statusCode, message);
+		this.teacherId = teacherId;
 	}
 
 	public TeacherLoginRes(int statusCode, String message, String teacherName, int clubId, String clubName, List<Student> studentList) {
@@ -62,6 +69,16 @@ public class TeacherLoginRes extends BasicRes{
 	public void setStudentList(List<Student> studentList) {
 		this.studentList = studentList;
 	}
+
+	public int getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(int teacherId) {
+		this.teacherId = teacherId;
+	}
+	
+	
 	
 	
 }

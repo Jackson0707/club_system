@@ -33,9 +33,7 @@ public class ClubServiceTests {
 	StudentDao studentDao;
 
 	private ObjectMapper mapper = new ObjectMapper();
-	
-	
-	
+
 	@Test
 	public void clubRandom() {
 
@@ -220,7 +218,7 @@ public class ClubServiceTests {
 				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
 				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
 			} catch (Exception e) {
-				System.out.println("資料有錯: " + studentData.getStudentId());
+//				System.out.println("資料有錯: " + studentData.getStudentId());
 			}
 		}
 
@@ -265,100 +263,25 @@ public class ClubServiceTests {
 				studentDrawList.remove(randomIndex);
 			} else {
 				// 如果學生無法被分配到任何志願社團，可以在這裡處理
-				System.out.println("學生 " + studentId + " 無法被分配到任何志願社團");
+//				System.out.println("學生 " + studentId + " 無法被分配到任何志願社團");
 				studentDrawList.remove(randomIndex);
+				
+				// drawResult 放了抽籤結果，key: 學號, value: 社團Id
+				// 更新數據庫
+//				List<Student> updatedStudentsClub = new ArrayList<>();
+				
+				// 學生Id的列表，拿到學生Id
+				List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
+				System.out.println("++++" + studentIdResult);
+				
+				// 學生抽籤抽到社團的列表，拿到學生抽重的社團
+				List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
+				System.out.println(studentClubResult);
 			}
 		}
-
+		
 		System.out.println(drawResult);
 	}
 
-	@Test
-	public void random1() {
-		// 學生志願序 key:學號, value:志願序
-		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>();
-		List<Student> studentList = studentDao.findAll();
-		for (Student studentData : studentList) {
-			try {
-				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
-				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
-			} catch (Exception e) {
-				System.out.println("資料有錯: " + studentData.getStudentId());
-			}
-		}
 
-		// 檢查各社團的上限人數
-		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
-		List<Club> clubList = clubDao.findAll();
-		for (Club clubData : clubList) {
-			clubMaxMap.put(clubData.getClubId(), clubData.getMax());
-		}
-
-		// 存儲抽籤結果
-		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
-
-		// 創建學生Id的列表，用來隨機選擇，拿到學生Id
-		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
-		
-		// 創建一個可以繼續分配的社團列表
-		List<Integer> availableClubs = new ArrayList<>(clubMaxMap.keySet());
-
-		while (!studentDrawList.isEmpty() && !availableClubs.isEmpty()) {
-		    // 隨機選擇一個學生
-		    int randomStudentIndex = (int) (Math.random() * studentDrawList.size());
-		    int studentId = studentDrawList.get(randomStudentIndex); // 隨機抽的學生Id
-		    Integer[] studentChoices = studentChoiceMap.get(studentId); // Map中相對應的學生Id
-
-//		    boolean studentAssigned = false;
-		    
-		    
-
-		    System.out.println(randomStudentIndex);
-		    // 索引值從0開始遍歷學生的志願
-		    for (int i = 0; i < studentChoices.length; i++) {
-		        int clubId = studentChoices[i];
-		        System.out.printf("第 %d 個志願序: %d \n", i, clubId);
-		        // 檢查這個社團是否還有空位
-		        System.out.println("此志願序是否可進入?"+availableClubs.contains(clubId));
-		        if (availableClubs.contains(clubId)) {
-		            // 分配學生到這個社團
-		            drawResult.put(studentId, clubId);
-		            
-		            // 更新社團剩餘名額
-		            int remainingSpots = clubMaxMap.get(clubId) - 1;
-		            clubMaxMap.put(clubId, remainingSpots);
-		            
-		            // 如果社團滿了，從可用社團列表中移除
-		            if (remainingSpots == 0) {
-		            	System.out.println("我進來了");
-		                availableClubs.remove(availableClubs.indexOf(clubId));
-		            }
-		            System.out.println("此社團剩餘可容納人數: "+remainingSpots);
-		            System.out.println("此社團可否再容納人？"+availableClubs.contains(clubId));
-		            break;
-		        }
-		    }
-
-		    // 從待分配列表中移除該學生
-		    studentDrawList.remove(randomStudentIndex);
-
-		    // 如果學生未被分配，輸出訊息
-//    if (!studentAssigned) {
-//       System.out.println("學生 " + studentId + " 沒有社團");
-//		    }
-		    System.out.println(drawResult);
-//		}
-	
-		
-		  // 更新數據庫
-//	    for (Map.Entry<Integer, Integer> entry : drawResult.entrySet()) {
-//	        int studentId = entry.getKey();
-//	        int clubId = entry.getValue();
-//	        List<Student> finalResult = new ArrayList<>();
-//	        finalResult.addAll(studentList);
-//	        
-//	        studentDao.saveAll(null);
-	    }
-		
-	}
 }

@@ -6,6 +6,7 @@ public class TeacherLoginReq {
 
 	private int teacherId;
 
+//	private int clubId;
 	
 	@JsonAlias("password")
 	private String pwd;
