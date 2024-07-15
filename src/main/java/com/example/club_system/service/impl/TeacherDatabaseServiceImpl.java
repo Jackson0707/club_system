@@ -208,6 +208,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	// 老師登入後取得的社團及學生資訊
 	@Override 
 	public TeacherLoginRes teacherClubStudent(TeacherGetStudentReq req) {
+		
 		// clubTeacherData: 取得老師Id的所有資訊
 		Optional<TeacherDatabase> clubTeacherData = teacherDatabaseDao.findById(req.getTeacherId());
 		
@@ -233,6 +234,8 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		List<Student> clubStdentList = studentDao.findByClubId(teacher.getClubId());
 		
 		List<Student> clubStudent = new ArrayList<>(clubStdentList);
+		
+		
 		
 		
 		return new TeacherLoginRes(ResMessage.SUCCESS.getCode(), 

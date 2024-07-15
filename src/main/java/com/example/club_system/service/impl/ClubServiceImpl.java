@@ -135,10 +135,10 @@ public class ClubServiceImpl implements ClubService {
 		}
 		if (clubId != 0 && teacherId != 0) {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByClubIdAndTeacherId(clubId, teacherId));
+					clubDao.findAllByClubIdContainingAndTeacherId(clubId, teacherId));
 		}
 		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-				clubDao.findByNameContainingAndSemesterContainingAndTeacherIdContainingAndClubId(name, semester,
+				clubDao.findAllByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester,
 						teacherId, clubId));
 
 	}
@@ -228,9 +228,7 @@ public class ClubServiceImpl implements ClubService {
 		
 		// 拿到學生抽中的社團Id
 		List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
-		
-		
-		
+				
 		
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}

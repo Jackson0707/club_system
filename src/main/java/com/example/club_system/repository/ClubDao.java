@@ -16,17 +16,17 @@ public interface ClubDao extends JpaRepository<Club, Integer> {
 
 	List<Club> findByNameContainingAndSemester( String name, String semester);
 	
-	List<Club> findByNameContainingAndSemesterContainingAndTeacherIdContainingAndClubId( String name, String semester, int teacherId, int clubId);
+	List<Club> findAllByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId( String name, String semester, int teacherId, int clubId);
 	
 	List<Club> findByNameContainingAndSemesterContainingAndTeacherId( String name, String semester, int teacherId);
 
 	List<Club> findByNameContainingAndSemesterContainingAndClubId( String name, String semester, int clubId);
 
-	List<Club> findByClubIdAndTeacherId(int sclubId, int teacherId);
+	List<Club> findAllByClubIdContainingAndTeacherId(int sclubId, int teacherId);
 	
-	List<Club> findByClubId(int sclubId);
+	List<Club> findAllByClubId(int sclubId);
 	
-	List<Club> findByTeacherId(int teacherId);
+	List<Club> findAllByTeacherId(int teacherId);
 
 //	@Transactional
 //	@Modifying
@@ -44,13 +44,5 @@ public interface ClubDao extends JpaRepository<Club, Integer> {
 //
 //	@Query(value = "select * from club where semester like concat('%',?1,'%')", nativeQuery = true)
 //	public List<Club> selectBySemester(String semester);
-//	
-//	@Query(value = "select * from club where "
-//            + "(:clubId is null or club_id = :clubId) and "
-//            + "(:name is null or name like concat('%', :name, '%')) and "
-//            + "(:teacherId is null or teacher_id LIKE CONCAT('%', :teacherId, '%')) and "
-//            + "(:semester is null or semester like concat('%', :semester, '%'))", 
-//      nativeQuery = true)
-//		public List<Club> search(Integer clubId, String name, String teacherId, String semester);
 
 }

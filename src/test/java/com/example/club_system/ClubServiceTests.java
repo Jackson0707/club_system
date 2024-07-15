@@ -244,10 +244,6 @@ public class ClubServiceTests {
 			Integer[] choices = studentChoiceMap.get(studentId);
 			boolean assigned = false;
 
-			// 如果學生
-//			if(studentChoiceMap.entrySet()) {
-//				
-//			}
 			for (int clubId : choices) {
 				int clubMax = clubMaxMap.get(clubId);
 				if (clubMax > 0) {
@@ -272,15 +268,20 @@ public class ClubServiceTests {
 				
 				// 學生Id的列表，拿到學生Id
 				List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
-				System.out.println("++++" + studentIdResult);
+//				System.out.println("++++" + studentIdResult);
 				
 				// 學生抽籤抽到社團的列表，拿到學生抽重的社團
 				List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
-				System.out.println(studentClubResult);
+//				System.out.println("-------" + studentClubResult);
+				
+				List<Integer> studentClubResult1 = new ArrayList<>(drawResult.values());
+				studentClubResult1.addAll(studentIdResult);
+				studentClubResult1.addAll(studentClubResult);
+				
 			}
 		}
 		
-		System.out.println(drawResult);
+//		System.out.println(drawResult);
 	}
 
 

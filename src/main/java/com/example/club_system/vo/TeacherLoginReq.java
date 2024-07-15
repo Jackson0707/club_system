@@ -3,10 +3,9 @@ package com.example.club_system.vo;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class TeacherLoginReq {
-
+	
+	@JsonAlias("teacher_id")
 	private int teacherId;
-
-//	private int clubId;
 	
 	@JsonAlias("password")
 	private String pwd;
