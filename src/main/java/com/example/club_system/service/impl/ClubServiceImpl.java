@@ -20,7 +20,6 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
-import com.example.club_system.vo.StudentSearchRes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -34,7 +33,7 @@ public class ClubServiceImpl implements ClubService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	// ³Ğ«Ø¤Î§ó·sªÀ¹Î¸ê®Æ
+	// å‰µå»ºåŠæ›´æ–°ç¤¾åœ˜è³‡æ–™
 	@Override
 	public BasicRes createOrUpdate(ClubCreateOrUpdateReq req) {
 		System.out.println(req.getClubId());
@@ -77,12 +76,12 @@ public class ClubServiceImpl implements ClubService {
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-	// §R°£ªÀ¹Î¸ê®Æ
+	// åˆªé™¤ç¤¾åœ˜è³‡æ–™
 	@Override
 	public BasicRes delete(ClubDeleteReq req) {
 
 		if (!CollectionUtils.isEmpty(req.getIdList())) {
-			// §R°£°İ¨÷
+			// åˆªé™¤å•å·
 			try {
 				for (Integer id : req.getIdList()) {
 					System.out.println(id);
@@ -91,67 +90,68 @@ public class ClubServiceImpl implements ClubService {
 				}
 
 			} catch (Exception e) {
-				// ·í deleteAllById ¤èªk¤¤¡Aid ªº­È¤£¦s¦b¡AJPA ·|³ø¿ù
-				// ¦]¬°¦b§R°£¤§«e¡A JPA·|¥ı·j±a¤Jªº id ­È¡A­Y¨Sµ²ªG´N·|³ø¿ù
-				// ¥Ñ©ó¹ê»Ú¤W¤]¨S§R°£¥ô¦ó¸ê®Æ¡A¦]¦¹´N¤£»İ­n¹ï³o­ÓException °µ³B²z
+				// ç•¶ deleteAllById æ–¹æ³•ä¸­ï¼Œid çš„å€¼ä¸å­˜åœ¨ï¼ŒJPA æœƒå ±éŒ¯
+				// å› ç‚ºåœ¨åˆªé™¤ä¹‹å‰ï¼Œ JPAæœƒå…ˆæœå¸¶å…¥çš„ id å€¼ï¼Œè‹¥æ²’çµæœå°±æœƒå ±éŒ¯
+				// ç”±æ–¼å¯¦éš›ä¸Šä¹Ÿæ²’åˆªé™¤ä»»ä½•è³‡æ–™ï¼Œå› æ­¤å°±ä¸éœ€è¦å°é€™å€‹Exception åšè™•ç†
 			}
 		}
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-	// ·j´MªÀ¹Î
-	@Override
-	public ClubSearchRes search(ClubSearchReq req) {
+////	 æœå°‹ç¤¾åœ˜
+//	@Override
+//	public ClubSearchRes search(ClubSearchReq req) {
+//
+//		String name = req.getName();
+//
+//		String semester = req.getSemester();
+//
+//		int clubId = req.getClubId();
+//
+//		int teacherId = req.getTeacherId();
+//
+//		// å‡è¨­ name æ˜¯ null æˆ–æ˜¯å…¨ç©ºç™½å­—ä¸²ï¼Œå¯ä»¥è¦–ç‚ºæ²’æœ‰è¼¸å…¥æ¢ä»¶å€¼ï¼Œå°±è¡¨ç¤ºè¦å–å¾—å…¨éƒ¨
+//		// JPA çš„ containing æ–¹æ³•ï¼Œæ¢ä»¶å€¼æ˜¯ç©ºå­—ä¸²æ™‚ï¼Œæœƒæœå°‹å…¨éƒ¨
+//		// æ‰€ä»¥è¦æŠŠ name çš„å€¼æ˜¯ null æˆ–æ˜¯å…¨ç©ºç™½å­—ä¸²æ™‚ï¼Œè½‰æ›æˆç©ºå­—ä¸²
+//		if (!StringUtils.hasText(name)) {
+//			name = "";
+//		}
+//		if (!StringUtils.hasText(semester)) {
+//			semester = "";
+//
+//		}
+//		if (clubId == 0 && teacherId == 0) {
+//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+//					clubDao.findByNameContainingAndSemester(name, semester));
+//		}
+//		if (clubId != 0 && teacherId != 0) {
+//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+//					clubDao.findByClubIdContainingAndTeacherId(clubId, teacherId));
+//		}
+//		if (teacherId != 0) { // V
+//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+//					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
+//		}
+//		if (clubId != 0) {  // V
+//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+//					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
+//		}
+//
+//		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+//				clubDao.findByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester,
+//						teacherId, clubId));
+//	}
 
-		String name = req.getName();
-
-		String semester = req.getSemester();
-
-		int clubId = req.getClubId();
-
-		int teacherId = req.getTeacherId();
-
-		// °²³] name ¬O null ©Î¬O¥şªÅ¥Õ¦r¦ê¡A¥i¥Hµø¬°¨S¦³¿é¤J±ø¥ó­È¡A´Nªí¥Ü­n¨ú±o¥ş³¡
-		// JPA ªº containing ¤èªk¡A±ø¥ó­È¬OªÅ¦r¦ê®É¡A·|·j´M¥ş³¡
-		// ©Ò¥H­n§â name ªº­È¬O null ©Î¬O¥şªÅ¥Õ¦r¦ê®É¡AÂà´«¦¨ªÅ¦r¦ê
-		if (!StringUtils.hasText(name)) {
-			name = "";
-		}
-		if (!StringUtils.hasText(semester)) {
-			semester = "";
-
-		}
-		if (clubId == 0 && teacherId == 0) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemester(name, semester));
-		}
-		if (teacherId != 0) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
-		}
-		if (clubId != 0) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
-		}
-		if (clubId != 0 && teacherId != 0) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findAllByClubIdContainingAndTeacherId(clubId, teacherId));
-		}
-		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-				clubDao.findAllByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester,
-						teacherId, clubId));
-
-	}
-
+	// ç¤¾åœ˜æŠ½ç±¤åŠŸèƒ½
 	@Override
 	public BasicRes clubRandom() {
 
-		// ¥ı¹M¾ú¨C­Ó¾Ç¥Íªº§ÓÄ@§Ç
-		// ¬d¬İ¨C­ÓªÀ¹Î¤H¼Æ¤W­­
-		// ifªÀ¹Î¤H¼Æ°÷¡AªÀ¹Î¤H¼Æ´î1¡Ahashmap¦skey¾Ç¥Í¬O­ş­Ó valueªÀ¹Î
-		// else¤H¼Æ¤£°÷¡A¬İ²Ä¤G§ÓÄ@ªÀ¹Î¤H¼Æ¤W­­
+		// å…ˆéæ­·æ¯å€‹å­¸ç”Ÿçš„å¿—é¡˜åº
+		// æŸ¥çœ‹æ¯å€‹ç¤¾åœ˜äººæ•¸ä¸Šé™
+		// ifç¤¾åœ˜äººæ•¸å¤ ï¼Œç¤¾åœ˜äººæ•¸æ¸›1ï¼Œhashmapå­˜keyå­¸ç”Ÿæ˜¯å“ªå€‹ valueç¤¾åœ˜
+		// elseäººæ•¸ä¸å¤ ï¼Œçœ‹ç¬¬äºŒå¿—é¡˜ç¤¾åœ˜äººæ•¸ä¸Šé™
 
-		// ¾Ç¥Í§ÓÄ@§Ç key:¾Ç¸¹, value:§ÓÄ@§Ç
+		// å­¸ç”Ÿå¿—é¡˜åº key:å­¸è™Ÿ, value:å¿—é¡˜åº
 		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>();
 		List<Student> studentList = studentDao.findAll();
 		for (Student studentData : studentList) {
@@ -159,77 +159,93 @@ public class ClubServiceImpl implements ClubService {
 				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
 				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
 			} catch (Exception e) {
-				System.out.println("¸ê®Æ¦³¿ù: " + studentData.getStudentId());
+				System.out.println("è³‡æ–™æœ‰éŒ¯: " + studentData.getStudentId());
 			}
 		}
 
-		// ÀË¬d¦UªÀ¹Îªº¤W­­¤H¼Æ
+		// æª¢æŸ¥å„ç¤¾åœ˜çš„ä¸Šé™äººæ•¸
 		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
 		List<Club> clubList = clubDao.findAll();
 		for (Club clubData : clubList) {
 			clubMaxMap.put(clubData.getClubId(), clubData.getMax());
 		}
 
-		// ¦sÀx©âÅÒµ²ªG
-		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: ¾Ç¥ÍId, value: ªÀ¹ÎId
+		// å­˜å„²æŠ½ç±¤çµæœ
+		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: å­¸ç”ŸId, value: ç¤¾åœ˜Id
 
-		// ³Ğ«Ø¾Ç¥ÍIdªº¦Cªí¡A¥Î¨ÓÀH¾÷¿ï¾Ü¡A®³¨ì¾Ç¥ÍId
+		// å‰µå»ºå­¸ç”ŸIdçš„åˆ—è¡¨ï¼Œç”¨ä¾†éš¨æ©Ÿé¸æ“‡ï¼Œæ‹¿åˆ°å­¸ç”ŸId
 		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
 
-		// ³Ğ«Ø¤@­Ó¥i¥HÄ~Äò¤À°tªºªÀ¹Î¦Cªí
+		// å‰µå»ºä¸€å€‹å¯ä»¥ç¹¼çºŒåˆ†é…çš„ç¤¾åœ˜åˆ—è¡¨
 		List<Integer> availableClubs = new ArrayList<>(clubMaxMap.keySet());
 
 		while (!studentDrawList.isEmpty() && !availableClubs.isEmpty()) {
-			// ÀH¾÷¿ï¾Ü¤@­Ó¾Ç¥Í
+			// éš¨æ©Ÿé¸æ“‡ä¸€å€‹å­¸ç”Ÿ
 			int randomChooseStudent = (int) (Math.random() * studentDrawList.size());
-			int randomStudentId = studentDrawList.get(randomChooseStudent); // ÀH¾÷©âªº¾Ç¥ÍId
-			Integer[] randomStudentChoices = studentChoiceMap.get(randomStudentId); // ¨ú±oMap¤¤¬Û¹ïÀ³ªº¾Ç¥ÍIdªº§ÓÄ@§Ç
+			int randomStudentId = studentDrawList.get(randomChooseStudent); // éš¨æ©ŸæŠ½çš„å­¸ç”ŸId
+			Integer[] randomStudentChoices = studentChoiceMap.get(randomStudentId); // å–å¾—Mapä¸­ç›¸å°æ‡‰çš„å­¸ç”ŸIdçš„å¿—é¡˜åº
 
 			System.out.println(randomChooseStudent);
-			// ¯Á¤Ş­È±q0¶}©l¹M¾ú¾Ç¥Íªº§ÓÄ@
+			// ç´¢å¼•å€¼å¾0é–‹å§‹éæ­·å­¸ç”Ÿçš„å¿—é¡˜
 			for (int i = 0; i < randomStudentChoices.length; i++) {
 				int clubId = randomStudentChoices[i];
-				System.out.printf("²Ä %d ­Ó§ÓÄ@§Ç: %d \n", i, clubId);
-				// ÀË¬d³o­ÓªÀ¹Î¬O§_ÁÙ¦³ªÅ¦ì
-				System.out.println("¦¹§ÓÄ@§Ç¬O§_¥i¶i¤J?" + availableClubs.contains(clubId));
+				System.out.printf("ç¬¬ %d å€‹å¿—é¡˜åº: %d \n", i, clubId);
+				// æª¢æŸ¥é€™å€‹ç¤¾åœ˜æ˜¯å¦é‚„æœ‰ç©ºä½
+				System.out.println("æ­¤å¿—é¡˜åºæ˜¯å¦å¯é€²å…¥?" + availableClubs.contains(clubId));
 				if (availableClubs.contains(clubId)) {
-					// ¤À°t¾Ç¥Í¨ì³o­ÓªÀ¹Î
+					// åˆ†é…å­¸ç”Ÿåˆ°é€™å€‹ç¤¾åœ˜
 					drawResult.put(randomStudentId, clubId);
 
-					// §ó·sªÀ¹Î³Ñ¾l¦WÃB
+					// æ›´æ–°ç¤¾åœ˜å‰©é¤˜åé¡
 					int remainingSpots = clubMaxMap.get(clubId) - 1;
 					clubMaxMap.put(clubId, remainingSpots);
 
-					// ¦pªGªÀ¹Îº¡¤F¡A±q¥i¥ÎªÀ¹Î¦Cªí¤¤²¾°£
+					// å¦‚æœç¤¾åœ˜æ»¿äº†ï¼Œå¾å¯ç”¨ç¤¾åœ˜åˆ—è¡¨ä¸­ç§»é™¤
 					if (remainingSpots == 0) {
-						System.out.println("§Ú¶i¨Ó¤F");
+						System.out.println("æˆ‘é€²ä¾†äº†");
 						availableClubs.remove(availableClubs.indexOf(clubId));
 					}
-					System.out.println("¦¹ªÀ¹Î³Ñ¾l¥i®e¯Ç¤H¼Æ: " + remainingSpots);
-					System.out.println("¦¹ªÀ¹Î¥i§_¦A®e¯Ç¤H¡H" + availableClubs.contains(clubId));
+					System.out.println("æ­¤ç¤¾åœ˜å‰©é¤˜å¯å®¹ç´äººæ•¸: " + remainingSpots);
+					System.out.println("æ­¤ç¤¾åœ˜å¯å¦å†å®¹ç´äººï¼Ÿ" + availableClubs.contains(clubId));
 					break;
 				}
 			}
 
-			// ±q«İ¤À°t¦Cªí¤¤²¾°£¸Ó¾Ç¥Í
+			// å¾å¾…åˆ†é…åˆ—è¡¨ä¸­ç§»é™¤è©²å­¸ç”Ÿ
 			studentDrawList.remove(randomChooseStudent);
-
-			System.out.println(drawResult);
+			
+			for (Student student : studentList) {
+		        Integer getResultClubId = drawResult.get(student.getStudentId());
+		        if (getResultClubId != null) {
+		            student.setClubId(getResultClubId);
+		        } else {
+		            // å¦‚æœå­¸ç”Ÿæ²’æœ‰è¢«åˆ†é…åˆ°ç¤¾åœ˜ï¼Œè¨­ç½®ä¸€å€‹ç‰¹æ®Šå€¼ï¼ˆä¾‹å¦‚ 0ï¼‰
+		            student.setClubId(0);
+		        }
+		    }
+		    
+		    // ä¿å­˜æ›´æ–°å¾Œçš„å­¸ç”Ÿä¿¡æ¯åˆ°æ•¸æ“šåº«
+		    studentDao.saveAll(studentList);
 		}
 		
-		//§â©âÅÒµ²ªG§ó·s¶i¸ê®Æ®w
-		// drawResult ©ñ¤F©âÅÒµ²ªG¡Akey: ¾Ç¸¹, value: ªÀ¹ÎId
+		//æŠŠæŠ½ç±¤çµæœæ›´æ–°é€²è³‡æ–™åº«
+		// drawResult æ”¾äº†æŠ½ç±¤çµæœï¼Œkey: å­¸è™Ÿ, value: ç¤¾åœ˜Id
 		
-		// ©âÅÒµ²ªG
+		// æŠ½ç±¤çµæœ
 		List<Student> updatedStudentsClub = new ArrayList<>();
 
-		// ¾Ç¥ÍIdªº¦Cªí¡A®³¨ì¾Ç¥ÍId
+		// å­¸ç”ŸIdçš„åˆ—è¡¨ï¼Œæ‹¿åˆ°å­¸ç”ŸId
 		List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
 		
-		// ®³¨ì¾Ç¥Í©â¤¤ªºªÀ¹ÎId
+		// æ‹¿åˆ°å­¸ç”ŸæŠ½ä¸­çš„ç¤¾åœ˜Id
 		List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
 				
 		
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
+
+//	 @Override
+//	    public List<Club> search1(String name, int teacherId, String semester) {
+//	        return clubDao.search1(name, teacherId, semester);
+//	    }
 }

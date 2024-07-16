@@ -7,12 +7,14 @@ public class ClubSearchReq {
 	@JsonProperty("club_id")
 	private int clubId;
 	
+	@JsonProperty("teacher_id")
+	private int teacherId;
+	
 	private String name;
 	
 	private String semester;
 	
-	@JsonProperty("teacher_id")
-	private int teacherId;
+
 
 	public int getClubId() {
 		return clubId;

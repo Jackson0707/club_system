@@ -17,16 +17,16 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	private int clubId;
 
 	@JsonProperty("type")
-	@NotNull(message = "Param teacher id error!!")
+	@NotNull(message = "Param teacher type error!!")
 	private String type;
 	
-	@NotBlank(message = "Param password error!!")
+	@NotBlank(message = "Param teacher password error!!")
 	private String pwd;
 
 	@NotBlank(message = "Param teacher name error!!")
 	private String name;
 
-	@NotBlank(message = "Param email error!!")
+	@NotBlank(message = "Param teacher email error!!")
 	private String email;
 	
 	@NotBlank(message = "Param status error!!")
@@ -50,6 +50,23 @@ public class TeacherDatabaseCreateOrUpdateReq {
 		super();
 		this.teacherId = teacherId;
 		this.clubId = clubId;
+		this.type = type;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.status = status;
+	}
+
+
+
+
+
+	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher type error!!") String type,
+			@NotBlank(message = "Param teacher password error!!") String pwd,
+			@NotBlank(message = "Param teacher name error!!") String name,
+			@NotBlank(message = "Param teacher email error!!") String email,
+			@NotBlank(message = "Param status error!!") String status) {
+		super();
 		this.type = type;
 		this.pwd = pwd;
 		this.name = name;

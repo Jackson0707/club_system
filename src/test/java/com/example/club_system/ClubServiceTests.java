@@ -264,25 +264,31 @@ public class ClubServiceTests {
 				
 				// drawResult 放了抽籤結果，key: 學號, value: 社團Id
 				// 更新數據庫
-//				List<Student> updatedStudentsClub = new ArrayList<>();
+				for (Student student : studentList) {
+			        Integer assignedClubId = drawResult.get(student.getStudentId());
+			        if (assignedClubId != null) {
+			            student.setClubId(assignedClubId);
+			        } else {
+			            // 如果學生沒有被分配到社團，設置一個特殊值（例如 -1）
+			            student.setClubId(0);
+			        }
+			    }
+			    
+			    // 保存更新後的學生信息到數據庫
+			    studentDao.saveAll(studentList);
 				
-				// 學生Id的列表，拿到學生Id
-				List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
-//				System.out.println("++++" + studentIdResult);
 				
-				// 學生抽籤抽到社團的列表，拿到學生抽重的社團
-				List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
-//				System.out.println("-------" + studentClubResult);
 				
-				List<Integer> studentClubResult1 = new ArrayList<>(drawResult.values());
-				studentClubResult1.addAll(studentIdResult);
-				studentClubResult1.addAll(studentClubResult);
+
 				
 			}
 		}
-		
-//		System.out.println(drawResult);
 	}
 
 
+	@Test
+	public void selectall() {
+		List<Club> res = clubDao.selectall();
+		System.out.println(res.size());
+	}
 }

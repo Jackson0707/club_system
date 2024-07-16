@@ -1,5 +1,8 @@
 package com.example.club_system.service.ifs;
 
+import java.util.List;
+
+import com.example.club_system.entity.Club;
 import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
@@ -12,8 +15,10 @@ public interface ClubService {
 	
 	public BasicRes delete(ClubDeleteReq req);
 	
-	public ClubSearchRes search(ClubSearchReq req);
+//	public ClubSearchRes search(ClubSearchReq req);
 	
 	public BasicRes clubRandom();
+
+//	List<Club> searchSql(String name, int teacherId, String semester);
 	
 }
