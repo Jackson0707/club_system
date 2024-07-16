@@ -286,9 +286,4 @@ public class ClubServiceTests {
 	}
 
 
-	@Test
-	public void selectall() {
-		List<Club> res = clubDao.selectall();
-		System.out.println(res.size());
-	}
 }

@@ -98,50 +98,64 @@ public class ClubServiceImpl implements ClubService {
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-////	 搜尋社團
-//	@Override
-//	public ClubSearchRes search(ClubSearchReq req) {
-//
-//		String name = req.getName();
-//
-//		String semester = req.getSemester();
-//
-//		int clubId = req.getClubId();
-//
-//		int teacherId = req.getTeacherId();
-//
-//		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
-//		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
-//		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
-//		if (!StringUtils.hasText(name)) {
-//			name = "";
-//		}
-//		if (!StringUtils.hasText(semester)) {
-//			semester = "";
-//
-//		}
-//		if (clubId == 0 && teacherId == 0) {
-//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//					clubDao.findByNameContainingAndSemester(name, semester));
-//		}
-//		if (clubId != 0 && teacherId != 0) {
-//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//					clubDao.findByClubIdContainingAndTeacherId(clubId, teacherId));
-//		}
-//		if (teacherId != 0) { // V
-//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
-//		}
-//		if (clubId != 0) {  // V
-//			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
-//		}
-//
-//		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//				clubDao.findByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester,
-//						teacherId, clubId));
-//	}
+//	 搜尋社團
+	@Override
+	public ClubSearchRes search(ClubSearchReq req) {
 
+		String name = req.getName();
+
+		String semester = req.getSemester();
+
+		int clubId = req.getClubId();
+
+		int teacherId = req.getTeacherId();
+
+		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
+		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
+		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
+		if (!StringUtils.hasText(name)) {
+			name = "";
+		}
+		if (!StringUtils.hasText(semester)) {
+			semester = "";
+
+		}
+		if (clubId == 0 && teacherId == 0) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByNameContainingAndSemester(name, semester));
+		}
+		if (clubId != 0 && teacherId != 0) {
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByClubIdContainingAndTeacherId(clubId, teacherId));
+		}
+		if (teacherId != 0) { // V
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
+		}
+		if (clubId != 0) {  // V
+			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
+		}
+
+		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+				clubDao.findByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester,
+						teacherId, clubId));
+	}
+
+	
+//	@Override
+//	public ClubSearchRes searchClubs(ClubSearchReq req) {
+//	    String name = StringUtils.hasText(req.getName()) ? req.getName() : "";
+//	    String semester = StringUtils.hasText(req.getSemester()) ? req.getSemester() : "";
+//	    String clubId = req.getClubId() != 0 ? String.valueOf(req.getClubId()) : "";
+//	    String teacherId = req.getTeacherId() != 0 ? String.valueOf(req.getTeacherId()) : "";
+//
+//	    List<Club> results = clubDao.searchClubs(name, semester, clubId, teacherId);
+//
+//	    return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), results);
+//	}
+	
+	
 	// 社團抽籤功能
 	@Override
 	public BasicRes clubRandom() {

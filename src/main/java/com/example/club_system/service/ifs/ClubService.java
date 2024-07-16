@@ -15,9 +15,11 @@ public interface ClubService {
 	
 	public BasicRes delete(ClubDeleteReq req);
 	
-//	public ClubSearchRes search(ClubSearchReq req);
+	public ClubSearchRes search(ClubSearchReq req);
 	
 	public BasicRes clubRandom();
+
+//	public ClubSearchRes searchClubs(ClubSearchReq req);
 
 //	List<Club> searchSql(String name, int teacherId, String semester);
 	

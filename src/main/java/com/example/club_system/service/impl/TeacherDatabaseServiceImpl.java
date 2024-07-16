@@ -122,24 +122,34 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		String status = req.getStatus();
 
 		int clubId = req.getClubId();
+		
+		int teacherId = req.getTeacherId();
 
 		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
 		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
 		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
-		if (!StringUtils.hasText(name)) {
-			name = "";
+		if (StringUtils.hasText(name)) {
+			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
+					teacherDatabaseDao.findByName(name));
 		}
-		if (!StringUtils.hasText(status)) {
-			status = "";
+		if (StringUtils.hasText(status)) {
+			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
+					teacherDatabaseDao.findByStatus(status));
 		}
-//		if (clubId != 0) {
+
+		if(teacherId !=0) {
+			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
+					teacherDatabaseDao.findByTeacherId(teacherId));
+		}
+		
+		if (clubId != 0 || clubId == 0) {
 		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
-				teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(name, status,
-						clubId));
+				teacherDatabaseDao.findByClubId(clubId));
 		}
-//		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-//				teacherDatabaseDao.findByNameContainingAndStatusContainingOrderByTeacherIdAsc(name, status));
-//	}
+		
+		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+				teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdContainingAndTeacherId(name, status, clubId, teacherId));
+	}
 
 	@Override
 	public BasicRes delete(TeacherDeleteReq req) {

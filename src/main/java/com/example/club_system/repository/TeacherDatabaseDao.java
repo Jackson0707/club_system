@@ -9,6 +9,10 @@ import com.example.club_system.entity.TeacherDatabase;
 
 @Repository
 public interface TeacherDatabaseDao extends JpaRepository<TeacherDatabase, Integer> {
-	List<TeacherDatabase> findByNameContainingAndStatusContainingAndClubIdOrderByTeacherIdAsc(String name,
-			String status, int clubId);
+	List<TeacherDatabase> findByNameContainingAndStatusContainingAndClubIdContainingAndTeacherId(String name,
+			String status, int clubId, int teacherId);
+	List<TeacherDatabase> findByTeacherId(int teacherId);
+	List<TeacherDatabase> findByClubId(int clubId);
+	List<TeacherDatabase> findByName(String name);
+	List<TeacherDatabase> findByStatus(String status);
 }

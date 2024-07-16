@@ -20,6 +20,7 @@ import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
+import com.example.club_system.vo.ClubSearchRes;
 
 @CrossOrigin
 @RestController
@@ -40,11 +41,18 @@ public class ClubController {
 		return clubService.delete(req);
 	}
 	
-	// 社團搜尋功能(還在測試一個小bug)
-//	@PostMapping(value = "Club/search")
-//	public BasicRes search(@RequestBody ClubSearchReq req) {
-//		return clubService.search(req);
-//	}
+//	 社團搜尋功能(還在測試一個小bug)
+	@PostMapping(value = "Club/search")
+	public BasicRes search(@RequestBody ClubSearchReq req) {
+		return clubService.search(req);
+	}
+	
+//	 @GetMapping(value="Club/search")
+//	    public ClubSearchRes searchClubs(ClubSearchReq req) {
+//	        return clubService.searchClubs(req);
+//	    }
+//	
+	
 	
 	// 抽籤功能
 	@PostMapping(value = "Club/random")

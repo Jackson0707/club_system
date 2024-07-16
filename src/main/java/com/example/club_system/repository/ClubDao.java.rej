@@ -1,0 +1,23 @@
+diff a/src/main/java/com/example/club_system/repository/ClubDao.java b/src/main/java/com/example/club_system/repository/ClubDao.java	(rejected hunks)
+@@ -16,17 +16,17 @@
+ 
+ 	List<Club> findByNameContainingAndSemester( String name, String semester);
+ 	
+-	List<Club> findByNameContainingAndSemesterContainingAndTeacherIdContainingAndClubId( String name, String semester, int teacherId, int clubId);
++	List<Club> findAllByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId( String name, String semester, int teacherId, int clubId);
+ 	
+ 	List<Club> findByNameContainingAndSemesterContainingAndTeacherId( String name, String semester, int teacherId);
+ 
+ 	List<Club> findByNameContainingAndSemesterContainingAndClubId( String name, String semester, int clubId);
+ 
+-	List<Club> findByClubIdAndTeacherId(int sclubId, int teacherId);
++	List<Club> findAllByClubIdContainingAndTeacherId(int sclubId, int teacherId);
+ 	
+-	List<Club> findByClubId(int sclubId);
++	List<Club> findAllByClubId(int sclubId);
+ 	
+-	List<Club> findByTeacherId(int teacherId);
++	List<Club> findAllByTeacherId(int teacherId);
+ 
+ //	@Transactional
+ //	@Modifying
