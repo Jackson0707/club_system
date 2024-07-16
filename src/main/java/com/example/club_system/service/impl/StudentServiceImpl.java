@@ -24,6 +24,7 @@ import com.example.club_system.vo.StudentUpdataPwdReq;
 import com.example.club_system.vo.StudentcreateOrUpdateReq;
 import com.example.club_system.vo.StudentdeleteReq;
 import com.example.club_system.vo.StudentsearchReq;
+import com.example.club_system.vo.TeacherSearchRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -145,46 +146,32 @@ public class StudentServiceImpl implements StudentService {
 
 		int studentId = req.getStudentId();
 
-		int clubId = req.getClubId();
-
 		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
 		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
 		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
-		if (!StringUtils.hasText(name)) {
-			name = "";
-		}
-		if (!StringUtils.hasText(status)) {
-			status = "";
-		}
-		if (!StringUtils.hasText(semester)) {
-			semester = "";
-		}
-		if (!StringUtils.hasText(grade)) {
-			grade = "";
-		}
-		if (studentId == 0 && clubId == 0) {
+		if (StringUtils.hasText(name)) {
 			return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					studentDao.findByNameContainingAndStatusContainingAndSemesterContainingAndGrade(name,
-							status, semester, grade));
+					studentDao.findByName(name));
 		}
-		if (studentId == 0 && clubId != 0) {
+		if (StringUtils.hasText(status)) {
 			return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					studentDao.findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndClubId(
-							name, status, semester, grade, clubId));
+					studentDao.findByStatus(status));
 		}
-		if (studentId != 0 && clubId == 0) {
+		if (StringUtils.hasText(semester)) {
 			return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					studentDao
-							.findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndStudentId(
-									name, status, semester, grade, studentId));
+					studentDao.findBySemester(semester));
 		}
-		if (studentId != 0 && clubId != 0) {
+		if (StringUtils.hasText(grade)) {
 			return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					studentDao.findByStudentIdAndClubId(studentId, clubId));
+					studentDao.findByGrade(grade));
+		}
+		if(studentId !=0) {
+			return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
+					studentDao.findByStudentId(studentId));
 		}
 		return new StudentSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), studentDao
-				.findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndStudentIdAndClubId(
-						name, status, semester, grade, clubId, studentId));
+				.findByNameContainingAndStudentIdContainingAndSemesterContainingAndGradeContainingAndStatus(name, 
+						studentId, semester, grade, status));
 	}
 
 	@Override

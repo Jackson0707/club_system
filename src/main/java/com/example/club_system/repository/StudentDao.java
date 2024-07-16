@@ -18,17 +18,13 @@ public interface StudentDao extends JpaRepository<Student, StudentId> {
 
 	boolean existsBySemester(String semester);
 
-	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGrade(String name,
-			String status, String semester, String grade);
-
-	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndStudentIdAndClubId(
-			String name, String status, String semester, String grade, int studentId, int clubId);
-
-	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndStudentId(
-			String name, String status, String semester, String grade, int studentId);
-
-	List<Student> findByNameContainingAndStatusContainingAndSemesterContainingAndGradeContainingAndClubId(
-			String name, String status, String semester, String grade, int clubId);
+	List<Student> findByNameContainingAndStudentIdContainingAndSemesterContainingAndGradeContainingAndStatus(
+			String name, int studentId, String semester, String grade, String status);
+	List<Student> findByName(String name);
+	List<Student> findByStudentId(int studentId);
+	List<Student> findBySemester(String semester);
+	List<Student> findByGrade(String grade);
+	List<Student> findByStatus(String sttus);
 
 	Optional<Student> findFirstBystudentIdOrderByUpdateTimeDesc(int studentId);
 

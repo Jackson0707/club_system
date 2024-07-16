@@ -11,13 +11,13 @@ public class StudentsearchReq {
 	@JsonProperty("student_id")
 	private int  studentId;
 
-	@JsonProperty("club_id")
-	private int  clubId;
-
-	@JsonProperty("semester")
 	private String semester;
 
 	private String grade;
+
+	public String getName() {
+		return name;
+	}
 
 	public String getStatus() {
 		return status;
@@ -25,10 +25,6 @@ public class StudentsearchReq {
 
 	public int getStudentId() {
 		return studentId;
-	}
-
-	public int getClubId() {
-		return clubId;
 	}
 
 	public String getSemester() {
@@ -39,9 +35,6 @@ public class StudentsearchReq {
 		return grade;
 	}
 
-	public String getName() {
-		return name;
-	}
-
+	
 	
 }
