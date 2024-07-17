@@ -1,22 +1,20 @@
 package com.example.club_system.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.club_system.constants.ResMessage;
 import com.example.club_system.entity.Student;
-import com.example.club_system.entity.StudentId;
 import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
-import com.example.club_system.vo.StudentDeleteList;
 import com.example.club_system.vo.StudentLoginReq;
 import com.example.club_system.vo.StudentLoginRes;
 import com.example.club_system.vo.StudentSearchRes;
@@ -113,11 +111,17 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public BasicRes delete(StudentdeleteReq req) {
 
-		List<StudentDeleteList> studentsToDelete = req.getStudentIdList();
-		for (StudentDeleteList student : studentsToDelete) {
-			StudentId studentId = new StudentId(student.getStudentId(), student.getSemester());
-			studentDao.delete(null);
+		if (!CollectionUtils.isEmpty(req.getStudentIdList())) {
+			// 刪除學生
+			try {
+				studentDao.deleteAllById(req.getStudentIdList());
+			} catch (Exception e) {
+				// 當 deleteAllById 方法中，id 的值不存在，JPA 會報錯
+				// 因為在刪除之前， JPA會先搜帶入的 id 值，若沒結果就會報錯
+				// 由於實際上也沒刪除任資料，因此就不需要對這個Exception 做處理
+			}
 		}
+
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 

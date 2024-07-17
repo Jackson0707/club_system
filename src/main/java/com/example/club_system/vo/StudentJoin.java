@@ -2,11 +2,11 @@ package com.example.club_system.vo;
 
 public class StudentJoin {
 
-	private int studentId;
+	private Integer studentId;
 	
-	private int clubId;
+	private Integer clubId;
 	
-	private int choiceList;
+	private Integer choiceList;
 	
 	private String semester;
 
@@ -14,7 +14,7 @@ public class StudentJoin {
 		super();
 	}
 
-	public StudentJoin(int studentId, int clubId, int choiceList, String semester) {
+	public StudentJoin(Integer studentId, Integer clubId, Integer choiceList, String semester) {
 		super();
 		this.studentId = studentId;
 		this.clubId = clubId;
@@ -22,27 +22,27 @@ public class StudentJoin {
 		this.semester = semester;
 	}
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 
-	public int getChoiceList() {
+	public Integer getChoiceList() {
 		return choiceList;
 	}
 
-	public void setChoiceList(int choiceList) {
+	public void setChoiceList(Integer choiceList) {
 		this.choiceList = choiceList;
 	}
 

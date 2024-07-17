@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 public class StudentLoginReq {
 
 	@JsonAlias("student_id")
-	private int studentId;
+	private Integer studentId;
 
 	@JsonAlias("pwd")
 	private String pwd;
@@ -14,17 +14,17 @@ public class StudentLoginReq {
 		super();
 	}
 
-	public StudentLoginReq(int studentId, String pwd) {
+	public StudentLoginReq(Integer studentId, String pwd) {
 		super();
 		this.studentId = studentId;
 		this.pwd = pwd;
 	}
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
 

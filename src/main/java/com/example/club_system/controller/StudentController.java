@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +45,8 @@ public class StudentController {
 		return studentService.search(req);
 	}
 	
-	@PostMapping(value = "student/delete")
+	// 學生刪除方法，切記 Postman 方法是 DeleteMapping !!!
+	@DeleteMapping(value = "student/delete")
 	public BasicRes delete(@Valid @RequestBody StudentdeleteReq req) {
 		return studentService.delete(req);
 	}

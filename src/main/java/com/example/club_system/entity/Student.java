@@ -45,22 +45,7 @@ public class Student {
 
 	public Student() {
 		super();
-	}
-
-//	@Override
-//	public boolean equals(Object obj) {
-//		if(obj == null) {
-//			return false;
-//		}
-//		if(!(obj instanceof Student)) {
-//			return false;
-//		}
-//		Student other = (Student) obj;
-//		
-//		return this.getStudentId()==other.getStudentId();
-//	}
-	
-	
+	}	
 	
 	public Student(Integer studentId, String semester, String pwd, String grade, String name, String email, Integer clubId,
 			String status) {
@@ -90,7 +75,7 @@ public class Student {
 		this.updateTime = updateTime;
 	}
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 

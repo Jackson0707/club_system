@@ -178,7 +178,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		if (!encoder.matches(pwd, teacherDatabase.getPwd())) { // 前面有驚嘆號 表示密碼比對失敗
 			return new BasicRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
-		if (teacherDatabase.getType() != "管理員") {
+		if (teacherDatabase.getType() != "管理者") {
 			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());

@@ -56,11 +56,11 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public BasicRes delete(ClubDeleteReq req) {
 
-		if (!CollectionUtils.isEmpty(req.getIdList())) {
+		if (!CollectionUtils.isEmpty(req.getClubIdList())) {
 			// 刪除問卷
 			try {
-				for (Integer id : req.getIdList()) {
-					clubDao.deleteById(id);
+				for (Integer id : req.getClubIdList()) {
+					clubDao.deleteById(id);;
 					;
 				}
 

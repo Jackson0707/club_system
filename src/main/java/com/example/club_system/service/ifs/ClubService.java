@@ -15,7 +15,5 @@ public interface ClubService {
 	public ClubSearchRes search(ClubSearchReq req);
 	
 	public BasicRes clubRandom();
-
-//	List<Club> searchSql(String name, int teacherId, String semester);
 	
 }

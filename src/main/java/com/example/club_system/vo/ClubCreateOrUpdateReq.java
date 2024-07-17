@@ -1,52 +1,45 @@
 package com.example.club_system.vo;
 
-import java.time.LocalDate;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClubCreateOrUpdateReq {
 
-	@JsonAlias("club_id")
-	private int clubId;
+	@JsonProperty("club_id")
+	@NotNull(message = "Param clubId error!!")
+	private Integer clubId;
 	
 	@NotNull(message = "Param teacher id error!!")
-	@JsonAlias("teacher_id")
-	private int teacherId;
+	@JsonProperty("teacher_id")
+	private Integer teacherId;
 	
 	@NotBlank(message = "Param semester error!!")
-	@JsonAlias("semester")
 	private String semester;
 	
 	@NotBlank(message = "Param club name error!!")
-	@JsonAlias("name")
 	private String name;
 	
 	@NotBlank(message = "Param club intro error!!")
-	@JsonAlias("semester")
 	private String intro;
 	
 	@NotNull(message = "Param pay error!!")
-	@JsonAlias("pay")
 	private int pay;
 	
 	@NotBlank(message = "Param classroom error!!")
-	@JsonAlias("classroom")
 	private String classroom;
 	
 	@NotNull(message = "Param max error!!")
-	@JsonAlias("max")
 	private int max;
 	
 //	@NotNull(message = "Param choice time error!!")
-	@JsonAlias("choice_start_time")
-	private LocalDate choiceStartTime;
+//	@JsonAlias("choice_start_time")
+//	private LocalDate choiceStartTime;
 	
 //	@NotNull(message = "Param choice time error!!")
-	@JsonAlias("choice_end_time")
-	private LocalDate choiceEndTime; 
+//	@JsonAlias("choice_end_time")
+//	private LocalDate choiceEndTime; 
 	
 //	@NotNull(message = "Param club time error!!")
 //	@JsonAlias("club_start_time")
@@ -63,56 +56,67 @@ public class ClubCreateOrUpdateReq {
 	public ClubCreateOrUpdateReq() {
 		super();
 	}
-//
-//	public ClubCreateOrUpdateReq(int clubId, //
-//			@NotNull(message = "Param teacher id error!!") int teacherId,
-//			@NotBlank(message = "Param semester error!!") String semester,
-//			@NotBlank(message = "Param club name error!!") String name,
-//			@NotBlank(message = "Param club intro error!!") String intro,
-//			@NotNull(message = "Param pay error!!") int pay,
-//			@NotBlank(message = "Param classroom error!!") String classroom,
-//			@NotNull(message = "Param max error!!") int max) {
-//		super();
-//		this.clubId = clubId;
-//		this.teacherId = teacherId;
-//		this.semester = semester;
-//		this.name = name;
-//		this.intro = intro;
-//		this.pay = pay;
-//		this.classroom = classroom;
-//		this.max = max;
-//	}
-//
-//	public ClubCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") int teacherId,
-//			@NotBlank(message = "Param semester error!!") String semester,
-//			@NotBlank(message = "Param club name error!!") String name,
-//			@NotBlank(message = "Param club intro error!!") String intro,
-//			@NotNull(message = "Param pay error!!") int pay,
-//			@NotBlank(message = "Param classroom error!!") String classroom,
-//			@NotNull(message = "Param max error!!") int max) {
-//		super();
-//		this.teacherId = teacherId;
-//		this.semester = semester;
-//		this.name = name;
-//		this.intro = intro;
-//		this.pay = pay;
-//		this.classroom = classroom;
-//		this.max = max;
-//	}
 
-	public int getClubId() {
+
+
+
+
+	public ClubCreateOrUpdateReq(@NotNull(message = "Param clubId error!!") Integer clubId,
+		@NotNull(message = "Param teacher id error!!") Integer teacherId,
+		@NotBlank(message = "Param semester error!!") String semester,
+		@NotBlank(message = "Param club name error!!") String name,
+		@NotBlank(message = "Param club intro error!!") String intro, @NotNull(message = "Param pay error!!") int pay,
+		@NotBlank(message = "Param classroom error!!") String classroom,
+		@NotNull(message = "Param max error!!") int max) {
+	super();
+	this.clubId = clubId;
+	this.teacherId = teacherId;
+	this.semester = semester;
+	this.name = name;
+	this.intro = intro;
+	this.pay = pay;
+	this.classroom = classroom;
+	this.max = max;
+}
+
+
+
+
+
+	public ClubCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") Integer teacherId,
+			@NotBlank(message = "Param semester error!!") String semester,
+			@NotBlank(message = "Param club name error!!") String name,
+			@NotBlank(message = "Param club intro error!!") String intro,
+			@NotNull(message = "Param pay error!!") int pay,
+			@NotBlank(message = "Param classroom error!!") String classroom,
+			@NotNull(message = "Param max error!!") int max) {
+		super();
+		this.teacherId = teacherId;
+		this.semester = semester;
+		this.name = name;
+		this.intro = intro;
+		this.pay = pay;
+		this.classroom = classroom;
+		this.max = max;
+	}
+
+
+
+
+
+	public Integer getClubId() {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 
@@ -164,21 +168,21 @@ public class ClubCreateOrUpdateReq {
 		this.max = max;
 	}
 
-	public LocalDate getChoiceStartTime() {
-		return choiceStartTime;
-	}
-
-	public void setChoiceStartTime(LocalDate choiceStartTime) {
-		this.choiceStartTime = choiceStartTime;
-	}
-
-	public LocalDate getChoiceEndTime() {
-		return choiceEndTime;
-	}
-
-	public void setChoiceEndTime(LocalDate choiceEndTime) {
-		this.choiceEndTime = choiceEndTime;
-	}
+//	public LocalDate getChoiceStartTime() {
+//		return choiceStartTime;
+//	}
+//
+//	public void setChoiceStartTime(LocalDate choiceStartTime) {
+//		this.choiceStartTime = choiceStartTime;
+//	}
+//
+//	public LocalDate getChoiceEndTime() {
+//		return choiceEndTime;
+//	}
+//
+//	public void setChoiceEndTime(LocalDate choiceEndTime) {
+//		this.choiceEndTime = choiceEndTime;
+//	}
 
 //	public LocalDate getClubStartTime() {
 //		return clubStartTime;

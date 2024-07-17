@@ -13,8 +13,6 @@ public class ClubSearchReq {
 	private String name;
 	
 	private String semester;
-	
-
 
 	public Integer getClubId() {
 		return clubId;

@@ -21,7 +21,7 @@ public interface TeacherDatabaseService {
 	
 	public TeacherLoginRes login(TeacherLoginReq req);
 
-	public BasicRes loginAdmin(Integer teacherId,String pwd);
+	public BasicRes loginAdmin(Integer teacherId, String pwd);
 
 	public TeacherLoginRes teacherGetClubStudent(TeacherGetStudentReq req);
 }

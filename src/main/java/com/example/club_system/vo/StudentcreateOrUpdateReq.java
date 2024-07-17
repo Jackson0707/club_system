@@ -11,7 +11,7 @@ public class StudentcreateOrUpdateReq {
 
 	@JsonProperty("student_id")
 	@NotNull(message = "Param student id error!!")
-	private int studentId;
+	private Integer studentId;
 
 	@JsonProperty("semester")
 	@NotBlank(message = "Param semester error!!")
@@ -31,7 +31,7 @@ public class StudentcreateOrUpdateReq {
 
 	@JsonProperty("club_id")
 //	@NotNull(message = "Param club id error!!")
-	private int clubId;
+	private Integer clubId;
 
 	@JsonProperty("choice_list")
 //	@NotBlank(message = "Param choiceList error!!")
@@ -49,13 +49,13 @@ public class StudentcreateOrUpdateReq {
 	
 
 	public StudentcreateOrUpdateReq(
-			@NotNull(message = "Param student id error!!") int studentId,
+			@NotNull(message = "Param student id error!!") Integer studentId,
 			@NotBlank(message = "Param semester error!!") String semester,
 			@NotBlank(message = "Param PASSWORD error!!") String pwd,
 			@NotBlank(message = "Param grade error!!") String grade,
 			@NotBlank(message = "Param name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email, 
-			int clubId,//
+			Integer clubId,//
 			String choiceList,//
 			@NotBlank(message = "Param status error!!") String status) {
 		super();
@@ -75,13 +75,13 @@ public class StudentcreateOrUpdateReq {
 	
 
 	public StudentcreateOrUpdateReq(
-			@NotNull(message = "Param student id error!!") int studentId,
+			@NotNull(message = "Param student id error!!") Integer studentId,
 			@NotBlank(message = "Param semester error!!") String semester,
 			@NotBlank(message = "Param PASSWORD error!!") String pwd,
 			@NotBlank(message = "Param grade error!!") String grade,
 			@NotBlank(message = "Param name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email, 
-			int clubId, //
+			Integer clubId, //
 			String choiceList,//
 			@NotBlank(message = "Param status error!!") String status, LocalDateTime updateTime) {
 		super();
@@ -99,11 +99,11 @@ public class StudentcreateOrUpdateReq {
 
 
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
 
@@ -147,11 +147,11 @@ public class StudentcreateOrUpdateReq {
 		this.email = email;
 	}
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 

@@ -6,25 +6,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClubDeleteReq {
 
-	@JsonProperty("club_id")
-	private List<Integer> idList;
+	@JsonProperty("club_id_list")
+	private List<Integer> clubIdList;
 
 	public ClubDeleteReq() {
 		super();
 	}
 
-	public ClubDeleteReq(List<Integer> idList) {
+	public ClubDeleteReq(List<Integer> clubIdList) {
 		super();
-		this.idList = idList;
+		this.clubIdList = clubIdList;
 	}
 
-	public List<Integer> getIdList() {
-		return idList;
+	public List<Integer> getClubIdList() {
+		return clubIdList;
 	}
 
-	public void setIdList(List<Integer> idList) {
-		this.idList = idList;
+	public void setClubIdList(List<Integer> clubIdList) {
+		this.clubIdList = clubIdList;
 	}
+
+	
 
 	
 

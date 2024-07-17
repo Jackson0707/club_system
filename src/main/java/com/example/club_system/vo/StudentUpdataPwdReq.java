@@ -11,7 +11,7 @@ public class StudentUpdataPwdReq {
 	
 	@JsonProperty("student_id")
 	@NotNull(message = "Param student id error!!")
-	private int studentId;
+	private Integer studentId;
 
 	@NotBlank(message = "Param old password error!!")
 	@JsonAlias("old_password")
@@ -25,7 +25,7 @@ public class StudentUpdataPwdReq {
 		super();
 	}
 
-	public StudentUpdataPwdReq(int studentId, @NotBlank(message = "Param old password error!!") String oldPwd,
+	public StudentUpdataPwdReq(Integer studentId, @NotBlank(message = "Param old password error!!") String oldPwd,
 			@NotBlank(message = "Param new password error!!") String newPwd) {
 		super();
 		this.studentId = studentId;
@@ -33,11 +33,11 @@ public class StudentUpdataPwdReq {
 		this.newPwd = newPwd;
 	}
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
 

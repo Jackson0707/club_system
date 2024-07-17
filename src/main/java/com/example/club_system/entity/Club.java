@@ -97,7 +97,7 @@ public class Club {
 	}
 
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
@@ -129,7 +129,7 @@ public class Club {
 		this.intro = intro;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
