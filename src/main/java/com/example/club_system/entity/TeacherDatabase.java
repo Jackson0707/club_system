@@ -20,10 +20,10 @@ public class TeacherDatabase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "teacher_id")
-	private int teacherId;
+	private Integer teacherId;
 
 	@Column(name = "club_id")
-	private int clubId;
+	private Integer clubId;
 
 	@Column(name = "pwd")
 	private String pwd;
@@ -41,7 +41,17 @@ public class TeacherDatabase {
 		super();
 	}
 
-	public TeacherDatabase(String status, int teacherId, int clubId, String pwd, String name, String email,
+	
+	
+	public TeacherDatabase(String status, Integer teacherId) {
+		super();
+		this.status = status;
+		this.teacherId = teacherId;
+	}
+
+
+
+	public TeacherDatabase(String status, Integer teacherId, Integer clubId, String pwd, String name, String email,
 			String type) {
 		super();
 		this.status = status;
@@ -53,7 +63,7 @@ public class TeacherDatabase {
 		this.type = type;
 	}
 
-	public TeacherDatabase(String status, int teacherId, String pwd, String name, String email, String type) {
+	public TeacherDatabase(String status, Integer teacherId, String pwd, String name, String email, String type) {
 		super();
 		this.status = status;
 		this.teacherId = teacherId;
@@ -63,7 +73,7 @@ public class TeacherDatabase {
 		this.type = type;
 	}
 
-	public TeacherDatabase(String status, int teacherId, String pwd, String name, String email) {
+	public TeacherDatabase(String status, Integer teacherId, String pwd, String name, String email) {
 		super();
 		this.status = status;
 		this.teacherId = teacherId;
@@ -80,11 +90,11 @@ public class TeacherDatabase {
 		this.status = status;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 
@@ -120,15 +130,15 @@ public class TeacherDatabase {
 		this.type = type;
 	}
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 
-	public void setCluId(int cluId) {
+	public void setCluId(Integer cluId) {
 		this.clubId = cluId;
 	}
 

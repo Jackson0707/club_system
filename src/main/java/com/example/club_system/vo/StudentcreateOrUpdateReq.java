@@ -34,7 +34,7 @@ public class StudentcreateOrUpdateReq {
 	private int clubId;
 
 	@JsonProperty("choice_list")
-	@NotBlank(message = "Param choiceList error!!")
+//	@NotBlank(message = "Param choiceList error!!")
 	private String choiceList;
 
 	@NotBlank(message = "Param status error!!")
@@ -56,7 +56,7 @@ public class StudentcreateOrUpdateReq {
 			@NotBlank(message = "Param name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email, 
 			int clubId,//
-			@NotBlank(message = "Param choiceList error!!") String choiceList,
+			String choiceList,//
 			@NotBlank(message = "Param status error!!") String status) {
 		super();
 		this.studentId = studentId;
@@ -82,7 +82,7 @@ public class StudentcreateOrUpdateReq {
 			@NotBlank(message = "Param name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email, 
 			int clubId, //
-			@NotBlank(message = "Param choiceList error!!") String choiceList,
+			String choiceList,//
 			@NotBlank(message = "Param status error!!") String status, LocalDateTime updateTime) {
 		super();
 		this.studentId = studentId;

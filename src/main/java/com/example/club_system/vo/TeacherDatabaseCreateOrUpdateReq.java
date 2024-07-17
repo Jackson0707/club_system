@@ -13,7 +13,6 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	private int teacherId;
 	
 	@JsonProperty("club_id")
-	@NotNull(message = "Param club id error!!")
 	private int clubId;
 
 	@JsonProperty("type")

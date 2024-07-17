@@ -50,7 +50,6 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		// 檢查參數
 		if (!StringUtils.hasText(String.valueOf(teacherId)) || !StringUtils.hasText(oldpwd)//
 				|| !StringUtils.hasText(newpwd)) {
-			System.out.println(ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getMessage());
 			return new BasicRes(ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getCode(),
 					ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getMessage());
 		}
@@ -88,67 +87,37 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 
 	@Override
 	public BasicRes createOrUpdate(TeacherDatabaseCreateOrUpdateReq req) {
-		TeacherDatabase teacherDatabase;
-		// 因為 Quiz 中 questions 的資料格式是 String，所以要將 req 的 List<Question> 轉成 String
-		// 透過 ObjectMapper 可以將物件(類別)轉成 JSON 格式的字串
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			String questionStr = mapper.writeValueAsString(req.getTeacherId());
-//					 若 req 中的 id > 0，表示更新已存在的資料;若 id = 0;則表示要新增
-			if (req.getTeacherId() > 0) {
-				
-				boolean boo = teacherDatabaseDao.existsById(req.getTeacherId());
-				if (!boo) {// !boo 表示資料不存在
-					return new BasicRes(ResMessage.UPDATE_TEACHER_ID_NOT_FOUND.getCode(),
-							ResMessage.UPDATE_TEACHER_ID_NOT_FOUND.getMessage());
-				}
+		if(req.getTeacherId() > 0) {
+			boolean teacherIdExist = teacherDatabaseDao.existsById(req.getTeacherId());
+			if(!teacherIdExist ) {
+				return new BasicRes(ResMessage.TEACHER_ID_NOT_FOUND.getCode(), 
+						ResMessage.TEACHER_ID_NOT_FOUND.getMessage());
 			}
-
-			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(), req.getTeacherId(), //
-					encoder.encode(req.getPwd()), req.getName(), req.getEmail(), req.getType()));
-
-		} catch (JsonProcessingException e) {
-			return new BasicRes(ResMessage.PROCESSING_EXCEPTION.getCode(),
-					ResMessage.PROCESSING_EXCEPTION.getMessage());
+			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),req.getPwd(),
+					req.getName(),req.getEmail(), req.getType()));
 		}
-
-		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+		if(req.getTeacherId() < 0) {
+			req.setTeacherId(0);
+		}
+		teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),req.getPwd(),
+				req.getName(),req.getEmail(), req.getType()));
+		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage()) ;
+		
 	}
 
 	@Override
 	public TeacherSearchRes search(TeacherSearchReq req) {
-		String name = req.getName();
-
-		String status = req.getStatus();
-
-		int clubId = req.getClubId();
 		
-		int teacherId = req.getTeacherId();
+		String name = !StringUtils.hasText(req.getName()) ?"":req.getName();
 
-		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
-		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
-		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
-		if (StringUtils.hasText(name)) {
-			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
-					teacherDatabaseDao.findByName(name));
-		}
-		if (StringUtils.hasText(status)) {
-			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
-					teacherDatabaseDao.findByStatus(status));
-		}
+		String status = !StringUtils.hasText(req.getStatus()) ?"":req.getStatus();
 
-		if(teacherId !=0) {
-			return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
-					teacherDatabaseDao.findByTeacherId(teacherId));
-		}
+		Integer clubId = req.getClubId();
 		
-		if (clubId != 0 || clubId == 0) {
-		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), //
-				teacherDatabaseDao.findByClubId(clubId));
-		}
-		
+		Integer teacherId = req.getTeacherId();
+
 		return new TeacherSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-				teacherDatabaseDao.findByNameContainingAndStatusContainingAndClubIdContainingAndTeacherId(name, status, clubId, teacherId));
+				teacherDatabaseDao.findByNameAndStatusAndClubIdAndTeacherId(name, status, clubId, teacherId));
 	}
 
 	@Override
@@ -176,7 +145,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		// 加密後的值，其特性是一樣的內容值，每次加密後得到的結果都會不同，所以無法直接透過加密後的值來比對資料庫中的內容
 		Optional<TeacherDatabase> clubTeacherId = teacherDatabaseDao.findById(req.getTeacherId());
 		// 確認帳號存在
-		if (clubTeacherId.isEmpty()) {// op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
+		if (clubTeacherId.isEmpty()) {  // op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
 			return new TeacherLoginRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
 
@@ -217,7 +186,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 
 	// 老師登入後取得的社團及學生資訊
 	@Override 
-	public TeacherLoginRes teacherClubStudent(TeacherGetStudentReq req) {
+	public TeacherLoginRes teacherGetClubStudent(TeacherGetStudentReq req) {
 		
 		// clubTeacherData: 取得老師Id的所有資訊
 		Optional<TeacherDatabase> clubTeacherData = teacherDatabaseDao.findById(req.getTeacherId());

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.StudentLoginReq;
+import com.example.club_system.vo.StudentLoginRes;
 import com.example.club_system.vo.StudentSearchRes;
 import com.example.club_system.vo.StudentUpdataPwdReq;
 import com.example.club_system.vo.StudentcreateOrUpdateReq;
@@ -39,7 +40,7 @@ public class StudentController {
 	}
 	
 	@PostMapping(value = "student/search")
-	public StudentSearchRes search(@Valid @RequestBody StudentsearchReq req) {
+	public BasicRes search(@Valid @RequestBody StudentsearchReq req) {
 		return studentService.search(req);
 	}
 	
@@ -49,7 +50,7 @@ public class StudentController {
 	}
 	
 	@PostMapping(value = "student/login")
-	public BasicRes login(@Valid @RequestBody  StudentLoginReq req) {
+	public BasicRes login(@Valid @RequestBody StudentLoginReq req) {
 		return studentService.login(req);
 	}
 }

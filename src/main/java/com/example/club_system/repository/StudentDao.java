@@ -5,44 +5,42 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.club_system.entity.Student;
 import com.example.club_system.entity.StudentId;
+import com.example.club_system.entity.TeacherDatabase;
 import com.example.club_system.vo.BasicRes;
 
 @Repository
-public interface StudentDao extends JpaRepository<Student, StudentId> {
+public interface StudentDao extends JpaRepository<Student, Integer> {
 
-	Optional<Student> findBystudentId(int studentId);
+	List<Student> findByClubId(Integer clubId);
+
+	Optional<Student> findBystudentId(Integer studentId);
 
 	boolean existsBySemester(String semester);
 
 	List<Student> findByNameContainingAndStudentIdContainingAndSemesterContainingAndGradeContainingAndStatus(
-			String name, int studentId, String semester, String grade, String status);
-	List<Student> findByName(String name);
-	List<Student> findByStudentId(int studentId);
-	List<Student> findBySemester(String semester);
-	List<Student> findByGrade(String grade);
-	List<Student> findByStatus(String sttus);
+			String name, Integer studentId, String semester, String grade, String status);
 
-	Optional<Student> findFirstBystudentIdOrderByUpdateTimeDesc(int studentId);
+	Optional<Student> findFirstBystudentIdOrderByUpdateTimeDesc(Integer studentId);
 
-	List<Student> findByStudentIdAndClubId(int studentId, int clubId);
+	@Query("SELECT s FROM Student s WHERE " +
+		       "(:name IS NULL OR s.name LIKE CONCAT('%', :name, '%')) AND " +
+		       "(:status IS NULL OR s.status LIKE CONCAT('%', :status, '%')) AND " +
+		       "(:grade IS NULL OR s.grade LIKE CONCAT('%', :grade, '%')) AND " +
+		       "(:semester IS NULL OR s.semester LIKE CONCAT('%', :semester, '%')) AND " +
+		       "(:studentId IS NULL OR s.studentId = :studentId)")
+		List<Student> findByNameAndStatusAndStudentIdAndSemesterAndGrade(
+		        @Param("name") String name,
+		        @Param("status") String status,
+		        @Param("studentId") Integer studentId,
+		        @Param("semester") String semester,
+		        @Param("grade") String grade);
+
+
 	
-	List<Student> findByClubId(int clubId);
 	
-//	@Query(value="select * from student where choice_list like concat('?1,%')", nativeQuery = true)
-//	List<Student> findByChoiceOne(int clubId);
-//	
-//	@Query(value="select * from student where choice_list like concat('%,?1,%')", nativeQuery = true)
-//	List<Student> findByChoiceTwo(int clubId);
-//	
-//	@Query(value="select * from student where choice_list like concat('%,?1')", nativeQuery = true)
-//	List<Student> findByChoiceThree(int clubId);
-	
-	// 因為 Entity student 中有多個(2個或以上)屬性有加上@Id:即復合(多)主鍵，
-	// 所以透過 studentId 類別將這些屬性集中管理，因此在 Dao 中，繼承的 JpaRepository<T,ID>
-	// 的 ID 原本是有加 @Id 的屬性之資料型態，但因複合(多)主鍵，就可以用 studentId 來代表整張表的所有PK
-	// 的資料型態
 }

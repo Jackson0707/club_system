@@ -9,7 +9,7 @@ public class StudentsearchReq {
 	private String status;
 
 	@JsonProperty("student_id")
-	private int  studentId;
+	private Integer  studentId;
 
 	private String semester;
 
@@ -23,7 +23,7 @@ public class StudentsearchReq {
 		return status;
 	}
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 

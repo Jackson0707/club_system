@@ -17,7 +17,7 @@ public class TeacherGetStudentReq {
 		super();
 	}
 
-	public TeacherGetStudentReq(@NotBlank(message = "Param teacher id error!!") int teacherId) {
+	public TeacherGetStudentReq(@NotBlank(message = "Param teacher id error!!") Integer teacherId) {
 		super();
 		this.teacherId = teacherId;
 	}
@@ -26,7 +26,7 @@ public class TeacherGetStudentReq {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 

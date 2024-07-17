@@ -59,8 +59,9 @@ public class TeacherDatabaseController {
 		return teacherDatabaseService.loginAdmin(req.getTeacherId(), req.getPwd());
 	}
 	
+	//老師端登入後，取得社團學生資訊方法
 	@PostMapping(value = "teacherDatabase/clubStudentData")
 	public TeacherLoginRes clubStudentData(@Valid @RequestBody TeacherGetStudentReq req) {
-		return teacherDatabaseService.teacherClubStudent(req);
+		return teacherDatabaseService.teacherGetClubStudent(req);
 	}
 }

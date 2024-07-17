@@ -273,17 +273,12 @@ public class ClubServiceTests {
 			            student.setClubId(0);
 			        }
 			    }
-			    
+			    System.out.println("+++++++++" + drawResult);
 			    // 保存更新後的學生信息到數據庫
 			    studentDao.saveAll(studentList);
-				
-				
-				
 
-				
 			}
 		}
 	}
-
 
 }

@@ -49,16 +49,16 @@ public class ClubCreateOrUpdateReq {
 	private LocalDate choiceEndTime; 
 	
 //	@NotNull(message = "Param club time error!!")
-	@JsonAlias("club_start_time")
-	private LocalDate clubStartTime;
+//	@JsonAlias("club_start_time")
+//	private LocalDate clubStartTime;
 	
 //	@NotNull(message = "Param club time error!!")
-	@JsonAlias("club_end_time")
-	private LocalDate clubEndTime;
+//	@JsonAlias("club_end_time")
+//	private LocalDate clubEndTime;
 	
 //	@NotNull(message = "Param draw time error!!")
-	@JsonAlias("draw_time")
-	private LocalDate drawTime;
+//	@JsonAlias("draw_time")
+//	private LocalDate drawTime;
 
 	public ClubCreateOrUpdateReq() {
 		super();
@@ -180,29 +180,29 @@ public class ClubCreateOrUpdateReq {
 		this.choiceEndTime = choiceEndTime;
 	}
 
-	public LocalDate getClubStartTime() {
-		return clubStartTime;
-	}
-
-	public void setClubStartTime(LocalDate clubStartTime) {
-		this.clubStartTime = clubStartTime;
-	}
-
-	public LocalDate getClubEndTime() {
-		return clubEndTime;
-	}
-
-	public void setClubEndTime(LocalDate clubEndTime) {
-		this.clubEndTime = clubEndTime;
-	}
-
-	public LocalDate getDrawTime() {
-		return drawTime;
-	}
-
-	public void setDrawTime(LocalDate drawTime) {
-		this.drawTime = drawTime;
-	}
+//	public LocalDate getClubStartTime() {
+//		return clubStartTime;
+//	}
+//
+//	public void setClubStartTime(LocalDate clubStartTime) {
+//		this.clubStartTime = clubStartTime;
+//	}
+//
+//	public LocalDate getClubEndTime() {
+//		return clubEndTime;
+//	}
+//
+//	public void setClubEndTime(LocalDate clubEndTime) {
+//		this.clubEndTime = clubEndTime;
+//	}
+//
+//	public LocalDate getDrawTime() {
+//		return drawTime;
+//	}
+//
+//	public void setDrawTime(LocalDate drawTime) {
+//		this.drawTime = drawTime;
+//	}
 
 	
 

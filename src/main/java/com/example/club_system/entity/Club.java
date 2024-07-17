@@ -48,25 +48,15 @@ public class Club {
 	@Column(name="choice_end_time")
 	private LocalDate choiceEndTime;
 	
-	@Column(name="club_start_time")
-	private LocalDate clubStartTime;
-	
-	@Column(name="club_end_time")
-	private LocalDate clubEndTime;
-	
 	@Column(name="draw_time")
 	private LocalDate drawTime;
-	
-	@Column(name="picture")
-	private String picture;
 
 	public Club() {
 		super();
 	}
 
 	public Club(int clubId, String semester, String name, String intro, int teacherId, int pay, String classroom,
-			int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime, LocalDate clubStartTime,
-			LocalDate clubEndTime, LocalDate drawTime) {
+			int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime, LocalDate drawTime) {
 		super();
 		this.clubId = clubId;
 		this.semester = semester;
@@ -79,8 +69,6 @@ public class Club {
 		this.attendees = attendees;
 		this.choiceStartTime = choiceStartTime;
 		this.choiceEndTime = choiceEndTime;
-		this.clubStartTime = clubStartTime;
-		this.clubEndTime = clubEndTime;
 		this.drawTime = drawTime;
 	}
 
@@ -195,22 +183,6 @@ public class Club {
 
 	public void setChoiceEndTime(LocalDate choiceEndTime) {
 		this.choiceEndTime = choiceEndTime;
-	}
-
-	public LocalDate getClubStartTime() {
-		return clubStartTime;
-	}
-
-	public void setClubStartTime(LocalDate clubStartTime) {
-		this.clubStartTime = clubStartTime;
-	}
-
-	public LocalDate getClubEndTime() {
-		return clubEndTime;
-	}
-
-	public void setClubEndTime(LocalDate clubEndTime) {
-		this.clubEndTime = clubEndTime;
 	}
 
 	public LocalDate getDrawTime() {

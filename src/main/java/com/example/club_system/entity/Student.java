@@ -5,20 +5,17 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "student")
-//複合主鍵用:指定的 CLASS 名稱是把所有主鍵集中管理的 CLASS
-@IdClass(value = StudentId.class)
 public class Student {
 
 	@Id
 	@Column(name = "student_id")
-	private int studentId;
+	private Integer studentId;
 
-	@Id
+	// 僅學年度:104年，因學號是用一整個年度
 	@Column(name = "semester")
 	private String semester;
 
@@ -35,7 +32,7 @@ public class Student {
 	private String email;
 
 	@Column(name = "club_id")
-	private int clubId;
+	private Integer clubId;
 
 	@Column(name = "choice_list")
 	private String choiceList;
@@ -50,20 +47,35 @@ public class Student {
 		super();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null) {
-			return false;
-		}
-		if(!(obj instanceof Student)) {
-			return false;
-		}
-		Student other = (Student) obj;
-		
-		return this.getStudentId()==other.getStudentId();
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if(obj == null) {
+//			return false;
+//		}
+//		if(!(obj instanceof Student)) {
+//			return false;
+//		}
+//		Student other = (Student) obj;
+//		
+//		return this.getStudentId()==other.getStudentId();
+//	}
 	
-	public Student(int studentId, String semester, String pwd, String grade, String name, String email, int clubId,
+	
+	
+	public Student(Integer studentId, String semester, String pwd, String grade, String name, String email, Integer clubId,
+			String status) {
+		super();
+		this.studentId = studentId;
+		this.semester = semester;
+		this.pwd = pwd;
+		this.grade = grade;
+		this.name = name;
+		this.email = email;
+		this.clubId = clubId;
+		this.status = status;
+	}
+
+	public Student(Integer studentId, String semester, String pwd, String grade, String name, String email, Integer clubId,
 			String choiceList, String status, LocalDateTime updateTime) {
 		super();
 		this.studentId = studentId;
@@ -82,7 +94,7 @@ public class Student {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
 
@@ -126,11 +138,11 @@ public class Student {
 		this.email = email;
 	}
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 

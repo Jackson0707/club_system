@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StudentdeleteReq {
 
-	@JsonProperty("student_id_list")
 	private List<StudentDeleteList> studentIdList;
 
 	public StudentdeleteReq() {

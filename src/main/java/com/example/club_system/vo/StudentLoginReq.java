@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class StudentLoginReq {
 
-	@JsonAlias("student_id")
+	@JsonAlias("studentId")
 	private int studentId;
 
-	@JsonAlias("password")
+	@JsonAlias("pwd")
 	private String pwd;
 
 	public StudentLoginReq() {

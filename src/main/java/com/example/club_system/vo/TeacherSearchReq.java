@@ -9,10 +9,10 @@ public class TeacherSearchReq {
 	private String status;
 	
 	@JsonProperty("club_id")
-	private int clubId;
+	private Integer clubId;
 	
 	@JsonProperty("teacher_id")
-	private int teacherId;
+	private Integer teacherId;
 
 	public String getName() {
 		return name;
@@ -22,13 +22,15 @@ public class TeacherSearchReq {
 		return status;
 	}
 
-	public int getTeacherId() {
+	public Integer getClubId() {
+		return clubId;
+	}
+
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public int getClubId() {
-		return clubId;
-	}
+
 
 
 }

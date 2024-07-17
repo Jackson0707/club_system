@@ -48,9 +48,6 @@ public class ClubServiceImpl implements ClubService {
 			club.setClassroom(req.getClassroom());
 			club.setChoiceStartTime(req.getChoiceStartTime());
 			club.setChoiceEndTime(req.getChoiceEndTime());
-			club.setClubStartTime(req.getClubStartTime());
-			club.setClubEndTime(req.getClubEndTime());
-			club.setDrawTime(req.getDrawTime());
 
 			clubDao.save(club);
 
@@ -66,9 +63,6 @@ public class ClubServiceImpl implements ClubService {
 			club.setClassroom(req.getClassroom());
 			club.setChoiceStartTime(req.getChoiceStartTime());
 			club.setChoiceEndTime(req.getChoiceEndTime());
-			club.setClubStartTime(req.getClubStartTime());
-			club.setClubEndTime(req.getClubEndTime());
-			club.setDrawTime(req.getDrawTime());
 
 			clubDao.save(club);
 
@@ -84,7 +78,6 @@ public class ClubServiceImpl implements ClubService {
 			// 刪除問卷
 			try {
 				for (Integer id : req.getIdList()) {
-					System.out.println(id);
 					clubDao.deleteById(id);
 					;
 				}
@@ -132,17 +125,16 @@ public class ClubServiceImpl implements ClubService {
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
 		}
-		if (clubId != 0) {  // V
+		if (clubId != 0) { // V
 			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
 					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
 		}
 
 		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-				clubDao.findByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester,
-						teacherId, clubId));
+				clubDao.findByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester, teacherId,
+						clubId));
 	}
 
-	
 //	@Override
 //	public ClubSearchRes searchClubs(ClubSearchReq req) {
 //	    String name = StringUtils.hasText(req.getName()) ? req.getName() : "";
@@ -154,8 +146,7 @@ public class ClubServiceImpl implements ClubService {
 //
 //	    return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), results);
 //	}
-	
-	
+
 	// 社團抽籤功能
 	@Override
 	public BasicRes clubRandom() {
@@ -173,7 +164,8 @@ public class ClubServiceImpl implements ClubService {
 				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
 				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
 			} catch (Exception e) {
-				System.out.println("資料有錯: " + studentData.getStudentId());
+				return new BasicRes(ResMessage.JSON_ERROR.getCode(), ResMessage.JSON_ERROR.getMessage());
+//				System.out.println("資料有錯: " + studentData.getStudentId());
 			}
 		}
 
@@ -227,39 +219,35 @@ public class ClubServiceImpl implements ClubService {
 
 			// 從待分配列表中移除該學生
 			studentDrawList.remove(randomChooseStudent);
-			
-			for (Student student : studentList) {
-		        Integer getResultClubId = drawResult.get(student.getStudentId());
-		        if (getResultClubId != null) {
-		            student.setClubId(getResultClubId);
-		        } else {
-		            // 如果學生沒有被分配到社團，設置一個特殊值（例如 0）
-		            student.setClubId(0);
-		        }
-		    }
-		    
-		    // 保存更新後的學生信息到數據庫
-		    studentDao.saveAll(studentList);
-		}
-		
-		//把抽籤結果更新進資料庫
-		// drawResult 放了抽籤結果，key: 學號, value: 社團Id
-		
-		// 抽籤結果
-		List<Student> updatedStudentsClub = new ArrayList<>();
 
-		// 學生Id的列表，拿到學生Id
-		List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
-		
-		// 拿到學生抽中的社團Id
-		List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
-				
-		
+			for (Student student : studentList) {
+				Integer getResultClubId = drawResult.get(student.getStudentId());
+				if (getResultClubId != null) {
+					student.setClubId(getResultClubId);
+				} else {
+					// 如果學生沒有被分配到社團，設置一個特殊值（例如 0）
+					student.setClubId(0);
+				}
+			}
+
+			// 保存更新後的學生信息到數據庫
+			studentDao.saveAll(studentList);
+		}
+
+//		// 把抽籤結果更新進資料庫
+//		// drawResult 放了抽籤結果，key: 學號, value: 社團Id
+//
+//		// 抽籤結果
+//		List<Student> updatedStudentsClub = new ArrayList<>();
+//
+//		// 學生Id的列表，拿到學生Id
+//		List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
+//
+//		// 拿到學生抽中的社團Id
+//		List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
+//
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-//	 @Override
-//	    public List<Club> search1(String name, int teacherId, String semester) {
-//	        return clubDao.search1(name, teacherId, semester);
-//	    }
+
 }
