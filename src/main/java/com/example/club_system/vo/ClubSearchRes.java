@@ -12,7 +12,11 @@ public class ClubSearchRes extends BasicRes{
 		super();
 	}
 
-	public ClubSearchRes(int statusCode, String message,List<Club> clubList) {
+	public ClubSearchRes(int statusCode, String message) {
+		super(statusCode, message);
+	}
+
+	public ClubSearchRes(int statusCode, String message, List<Club> clubList) {
 		super(statusCode, message);
 		this.clubList = clubList;
 	}
@@ -24,6 +28,8 @@ public class ClubSearchRes extends BasicRes{
 	public void setClubList(List<Club> clubList) {
 		this.clubList = clubList;
 	}
+
+	
 	
 	
 }

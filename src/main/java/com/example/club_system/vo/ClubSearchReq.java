@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ClubSearchReq {
 	
 	@JsonProperty("club_id")
-	private int clubId;
+	private Integer clubId;
 	
 	@JsonProperty("teacher_id")
-	private int teacherId;
+	private Integer teacherId;
 	
 	private String name;
 	
@@ -16,7 +16,7 @@ public class ClubSearchReq {
 	
 
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
@@ -28,7 +28,7 @@ public class ClubSearchReq {
 		return semester;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 

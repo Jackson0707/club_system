@@ -9,9 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.club_system.entity.Student;
-import com.example.club_system.entity.StudentId;
-import com.example.club_system.entity.TeacherDatabase;
-import com.example.club_system.vo.BasicRes;
 
 @Repository
 public interface StudentDao extends JpaRepository<Student, Integer> {
@@ -27,6 +24,8 @@ public interface StudentDao extends JpaRepository<Student, Integer> {
 
 	Optional<Student> findFirstBystudentIdOrderByUpdateTimeDesc(Integer studentId);
 
+	
+	
 	@Query("SELECT s FROM Student s WHERE " +
 		       "(:name IS NULL OR s.name LIKE CONCAT('%', :name, '%')) AND " +
 		       "(:status IS NULL OR s.status LIKE CONCAT('%', :status, '%')) AND " +

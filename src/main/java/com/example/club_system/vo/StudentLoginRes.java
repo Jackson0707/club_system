@@ -1,19 +1,22 @@
 package com.example.club_system.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StudentLoginRes extends BasicRes{
 
+	@JsonProperty("student_id")
+	private Integer studentId;
 	
-	private int studentId;
+	@JsonProperty("club_id")
+	private Integer clubId;
 	
 	private String studentName;
-	
-	private int clubId;
 	
 	private String clubName;
 	
 	private String clssroom;
 	
-	private String pay;
+	private int pay;
 	
 	private String teacherName;
 
@@ -25,28 +28,36 @@ public class StudentLoginRes extends BasicRes{
 		super(statusCode, message);
 	}
 
-	public StudentLoginRes(int statusCode, String message, int studentId) {
+	public StudentLoginRes(int statusCode, String message, Integer studentId) {
 		super(statusCode, message);
 		this.studentId = studentId;
 	}
 
-	public StudentLoginRes(String studentName, int clubId, String clubName, String clssroom, String pay,
+	public StudentLoginRes(int statusCode, String message, Integer clubId, String studentName, String clubName, String clssroom, int pay,
 			String teacherName) {
-		super();
-		this.studentName = studentName;
+		super(statusCode, message);
 		this.clubId = clubId;
+		this.studentName = studentName;
 		this.clubName = clubName;
 		this.clssroom = clssroom;
 		this.pay = pay;
 		this.teacherName = teacherName;
 	}
 
-	public int getStudentId() {
+	public Integer getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
+	}
+
+	public Integer getClubId() {
+		return clubId;
+	}
+
+	public void setClubId(Integer clubId) {
+		this.clubId = clubId;
 	}
 
 	public String getStudentName() {
@@ -55,14 +66,6 @@ public class StudentLoginRes extends BasicRes{
 
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
-	}
-
-	public int getClubId() {
-		return clubId;
-	}
-
-	public void setClubId(int clubId) {
-		this.clubId = clubId;
 	}
 
 	public String getClubName() {
@@ -81,11 +84,11 @@ public class StudentLoginRes extends BasicRes{
 		this.clssroom = clssroom;
 	}
 
-	public String getPay() {
+	public int getPay() {
 		return pay;
 	}
 
-	public void setPay(String pay) {
+	public void setPay(int pay) {
 		this.pay = pay;
 	}
 
@@ -96,6 +99,8 @@ public class StudentLoginRes extends BasicRes{
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
 	}
+
+	
 	
 	
 	

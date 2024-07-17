@@ -3,14 +3,17 @@ package com.example.club_system.vo;
 import java.util.List;
 
 import com.example.club_system.entity.Student;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TeacherLoginRes extends BasicRes{
 
-	private int teacherId;
+	@JsonProperty("teacher_id")
+	private Integer teacherId;
 	
 	private String teacherName;
 	
-	private int clubId;
+	 @JsonProperty("club_id")
+	private Integer clubId;
 	
 	private String clubName;
 	
@@ -25,12 +28,12 @@ public class TeacherLoginRes extends BasicRes{
 	}
 
 
-	public TeacherLoginRes(int statusCode, String message, int teacherId) {
+	public TeacherLoginRes(int statusCode, String message, Integer teacherId) {
 		super(statusCode, message);
 		this.teacherId = teacherId;
 	}
 
-	public TeacherLoginRes(int statusCode, String message, String teacherName, int clubId, String clubName, List<Student> studentList) {
+	public TeacherLoginRes(int statusCode, String message, String teacherName, Integer clubId, String clubName, List<Student> studentList) {
 		super(statusCode, message);
 		this.teacherName = teacherName;
 		this.clubId = clubId;
@@ -46,11 +49,11 @@ public class TeacherLoginRes extends BasicRes{
 		this.teacherName = teacherName;
 	}
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 
@@ -70,11 +73,11 @@ public class TeacherLoginRes extends BasicRes{
 		this.studentList = studentList;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 	

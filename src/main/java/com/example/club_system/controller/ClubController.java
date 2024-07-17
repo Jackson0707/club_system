@@ -47,13 +47,6 @@ public class ClubController {
 		return clubService.search(req);
 	}
 	
-//	 @GetMapping(value="Club/search")
-//	    public ClubSearchRes searchClubs(ClubSearchReq req) {
-//	        return clubService.searchClubs(req);
-//	    }
-//	
-	
-	
 	// йт┼╥е\пр
 	@PostMapping(value = "Club/random")
 	public BasicRes clubRandom() {

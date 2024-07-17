@@ -46,7 +46,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@Override
-	public BasicRes updatePwd(int teacherId, String oldpwd, String newpwd) {
+	public BasicRes updatePwd(Integer teacherId, String oldpwd, String newpwd) {
 		// 檢查參數
 		if (!StringUtils.hasText(String.valueOf(teacherId)) || !StringUtils.hasText(oldpwd)//
 				|| !StringUtils.hasText(newpwd)) {
@@ -164,7 +164,7 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	}
 
 	@Override
-	public BasicRes loginAdmin(int teacherId, String pwd) {
+	public BasicRes loginAdmin(Integer teacherId, String pwd) {
 		Optional<TeacherDatabase> op = teacherDatabaseDao.findById(teacherId);
 		// 確認帳號存在
 		if (op.isEmpty()) {// op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
@@ -221,6 +221,8 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 				ResMessage.SUCCESS.getMessage(),teacher.getName(),teacher.getClubId(), clubData.getName(),
 				clubStudent);
 	}
+
+
 
 
 

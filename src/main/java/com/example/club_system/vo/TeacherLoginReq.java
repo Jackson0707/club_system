@@ -1,30 +1,30 @@
 package com.example.club_system.vo;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TeacherLoginReq {
 	
-	@JsonAlias("teacher_id")
-	private int teacherId;
+	@JsonProperty("teacher_id")
+	private Integer teacherId;
 	
-	@JsonAlias("password")
+	@JsonProperty("pwd")
 	private String pwd;
 
 	public TeacherLoginReq() {
 		super();
 	}
 
-	public TeacherLoginReq(int teacherId, String pwd) {
+	public TeacherLoginReq(Integer teacherId, String pwd) {
 		super();
 		this.teacherId = teacherId;
 		this.pwd = pwd;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 

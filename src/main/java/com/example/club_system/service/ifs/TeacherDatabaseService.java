@@ -11,7 +11,7 @@ import com.example.club_system.vo.TeacherSearchRes;
 
 public interface TeacherDatabaseService {
 	
-	public BasicRes updatePwd(int teacherId,String oldpwd,String newpwd);
+	public BasicRes updatePwd(Integer teacherId,String oldpwd,String newpwd);
 
  	public BasicRes createOrUpdate(TeacherDatabaseCreateOrUpdateReq req);
 
@@ -21,7 +21,7 @@ public interface TeacherDatabaseService {
 	
 	public TeacherLoginRes login(TeacherLoginReq req);
 
-	public BasicRes loginAdmin(int teacherId,String pwd);
+	public BasicRes loginAdmin(Integer teacherId,String pwd);
 
 	public TeacherLoginRes teacherGetClubStudent(TeacherGetStudentReq req);
 }

@@ -25,7 +25,8 @@ public enum ResMessage {
 	STUDENT_ID_ERROR(400, "Student id error"),
 	TEACHER_ID_NOT_FOUND(404,"Teacher id not found"),
 	JSON_ERROR(400,"Json error!!"),//JSON格式有錯
-	STUDENT_ID_NOT_FOUND(404,"Student id not found");//找不到帳號(帳號不存在)
+	STUDENT_ID_NOT_FOUND(404,"Student id not found"),
+	CLUB_ID_NOT_FOUND(404, "Update student id not found");//找不到帳號(帳號不存在)
 	
 	
 	private int code;

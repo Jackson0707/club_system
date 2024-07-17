@@ -1,10 +1,8 @@
 package com.example.club_system.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,7 +12,6 @@ import org.springframework.util.StringUtils;
 import com.example.club_system.constants.ResMessage;
 import com.example.club_system.entity.Student;
 import com.example.club_system.entity.StudentId;
-import com.example.club_system.entity.TeacherDatabase;
 import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.StudentService;
@@ -27,9 +24,6 @@ import com.example.club_system.vo.StudentUpdataPwdReq;
 import com.example.club_system.vo.StudentcreateOrUpdateReq;
 import com.example.club_system.vo.StudentdeleteReq;
 import com.example.club_system.vo.StudentsearchReq;
-import com.example.club_system.vo.TeacherSearchRes;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -147,7 +141,6 @@ public class StudentServiceImpl implements StudentService {
 			return new StudentLoginRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
 		{
-			System.out.println(ResMessage.SUCCESS.getMessage());
 			return new StudentLoginRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), studentIdData.getStudentId());
 		}
 	}

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class TeacherUpdatePwdReq {
 
-	private int teacherId;
+	private Integer teacherId;
 
 	@NotBlank(message = "Param old password error!!")
 	@JsonAlias("old_password")
@@ -20,18 +20,18 @@ public class TeacherUpdatePwdReq {
 		super();
 	}
 
-	public TeacherUpdatePwdReq(int teacherId, String oldPwd, String newPwd) {
+	public TeacherUpdatePwdReq(Integer teacherId, String oldPwd, String newPwd) {
 		super();
 		this.teacherId = teacherId;
 		this.oldPwd = oldPwd;
 		this.newPwd = newPwd;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 

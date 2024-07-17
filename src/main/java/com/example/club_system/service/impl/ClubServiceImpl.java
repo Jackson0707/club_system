@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import com.example.club_system.constants.ResMessage;
 import com.example.club_system.entity.Club;
 import com.example.club_system.entity.Student;
+import com.example.club_system.entity.TeacherDatabase;
 import com.example.club_system.repository.ClubDao;
 import com.example.club_system.repository.StudentDao;
 import com.example.club_system.service.ifs.ClubService;
@@ -20,6 +21,7 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
+import com.example.club_system.vo.StudentSearchRes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -36,38 +38,18 @@ public class ClubServiceImpl implements ClubService {
 	// 創建及更新社團資料
 	@Override
 	public BasicRes createOrUpdate(ClubCreateOrUpdateReq req) {
-		System.out.println(req.getClubId());
-		if (req.getClubId() == 0) {
-			Club club = new Club();
-			club.setName(req.getName());
-			club.setTeacherId(req.getTeacherId());
-			club.setPay(req.getPay());
-			club.setSemester(req.getSemester());
-			club.setIntro(req.getIntro());
-			club.setMax(req.getMax());
-			club.setClassroom(req.getClassroom());
-			club.setChoiceStartTime(req.getChoiceStartTime());
-			club.setChoiceEndTime(req.getChoiceEndTime());
-
-			clubDao.save(club);
-
-		} else {
-			Club club = new Club();
-			club.setClubId(req.getClubId());
-			club.setName(req.getName());
-			club.setTeacherId(req.getTeacherId());
-			club.setPay(req.getPay());
-			club.setSemester(req.getSemester());
-			club.setIntro(req.getIntro());
-			club.setMax(req.getMax());
-			club.setClassroom(req.getClassroom());
-			club.setChoiceStartTime(req.getChoiceStartTime());
-			club.setChoiceEndTime(req.getChoiceEndTime());
-
-			clubDao.save(club);
-
+		if(req.getClubId() > 0) {
+			boolean clubIdExist = clubDao.existsById(req.getClubId());
+			if(!clubIdExist ) {
+				return new BasicRes(ResMessage.CLUB_ID_NOT_FOUND.getCode(), 
+						ResMessage.CLUB_ID_NOT_FOUND.getMessage());
+			}
+			clubDao.save(new Club(req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
+					req.getPay(),req.getClassroom(), req.getMax()));
 		}
-		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+		clubDao.save(new Club(req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
+				req.getPay(),req.getClassroom(), req.getMax()));
+		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage()) ;
 	}
 
 	// 刪除社團資料
@@ -95,57 +77,18 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public ClubSearchRes search(ClubSearchReq req) {
 
-		String name = req.getName();
+		String name = !StringUtils.hasText(req.getName()) ?"":req.getName();
 
-		String semester = req.getSemester();
-
-		int clubId = req.getClubId();
-
-		int teacherId = req.getTeacherId();
-
-		// 假設 name 是 null 或是全空白字串，可以視為沒有輸入條件值，就表示要取得全部
-		// JPA 的 containing 方法，條件值是空字串時，會搜尋全部
-		// 所以要把 name 的值是 null 或是全空白字串時，轉換成空字串
-		if (!StringUtils.hasText(name)) {
-			name = "";
-		}
-		if (!StringUtils.hasText(semester)) {
-			semester = "";
-
-		}
-		if (clubId == 0 && teacherId == 0) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemester(name, semester));
-		}
-		if (clubId != 0 && teacherId != 0) {
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByClubIdContainingAndTeacherId(clubId, teacherId));
-		}
-		if (teacherId != 0) { // V
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemesterContainingAndTeacherId(name, semester, teacherId));
-		}
-		if (clubId != 0) { // V
-			return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-					clubDao.findByNameContainingAndSemesterContainingAndClubId(name, semester, clubId));
-		}
-
+		String semester = !StringUtils.hasText(req.getSemester()) ?"":req.getSemester();
+		
+		Integer teacherId = req.getTeacherId();
+		
+		Integer clubId = req.getClubId();
+		
 		return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),
-				clubDao.findByNameContainingOrSemesterContainingOrTeacherIdContainingOrClubId(name, semester, teacherId,
-						clubId));
+				clubDao.findByNameAndSemesterAndTeacherIdAndClubId(name, semester, teacherId, clubId));
+		
 	}
-
-//	@Override
-//	public ClubSearchRes searchClubs(ClubSearchReq req) {
-//	    String name = StringUtils.hasText(req.getName()) ? req.getName() : "";
-//	    String semester = StringUtils.hasText(req.getSemester()) ? req.getSemester() : "";
-//	    String clubId = req.getClubId() != 0 ? String.valueOf(req.getClubId()) : "";
-//	    String teacherId = req.getTeacherId() != 0 ? String.valueOf(req.getTeacherId()) : "";
-//
-//	    List<Club> results = clubDao.searchClubs(name, semester, clubId, teacherId);
-//
-//	    return new ClubSearchRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), results);
-//	}
 
 	// 社團抽籤功能
 	@Override

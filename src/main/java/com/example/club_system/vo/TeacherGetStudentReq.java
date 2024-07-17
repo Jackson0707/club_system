@@ -11,7 +11,7 @@ public class TeacherGetStudentReq {
 
 	@NotNull(message = "Param teacher id error!!")
 	@JsonProperty("teacher_id")
-	private int teacherId;
+	private Integer teacherId;
 
 	public TeacherGetStudentReq() {
 		super();

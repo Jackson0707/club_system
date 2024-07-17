@@ -16,7 +16,7 @@ public class Club {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name="club_id")
-	private int clubId;
+	private Integer clubId;
 	
 	@Column(name="semester")
 	private String semester;
@@ -28,7 +28,7 @@ public class Club {
 	private String intro;
 	
 	@Column(name="teacher_id")
-	private int teacherId;
+	private Integer teacherId;
 	
 	@Column(name="pay")
 	private int pay;
@@ -55,7 +55,7 @@ public class Club {
 		super();
 	}
 
-	public Club(int clubId, String semester, String name, String intro, int teacherId, int pay, String classroom,
+	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay, String classroom,
 			int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime, LocalDate drawTime) {
 		super();
 		this.clubId = clubId;
@@ -72,7 +72,7 @@ public class Club {
 		this.drawTime = drawTime;
 	}
 
-	public Club(int clubId, String semester, String name, String intro, int teacherId, int pay, String classroom,
+	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay, String classroom,
 			int max) {
 		super();
 		this.clubId = clubId;
@@ -85,7 +85,7 @@ public class Club {
 		this.max = max;
 	}
 
-	public Club(String semester, String name, String intro, int teacherId, int pay, String classroom, int max) {
+	public Club(String semester, String name, String intro, Integer teacherId, int pay, String classroom, int max) {
 		super();
 		this.semester = semester;
 		this.name = name;
@@ -101,7 +101,7 @@ public class Club {
 		return clubId;
 	}
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 
@@ -133,7 +133,7 @@ public class Club {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 
