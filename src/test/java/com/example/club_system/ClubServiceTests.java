@@ -30,6 +30,7 @@ public class ClubServiceTests {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@Test
+	// 用社團去選學生(未完成)
 	public void clubRandom() {
 
 		// 宣告變數，紀錄社團可增加名額，一開始抓取所有社團的最大上限人數，用 HashMap 儲存
@@ -130,78 +131,8 @@ public class ClubServiceTests {
 		return;
 	}
 
-	@Test
-	public void clubRandom1() {
 
-		// 學生志願序 key:學號, value:志願序
-		HashMap<Integer, Integer[]> studentChoiceMap = new HashMap<>();
-		List<Student> studentList = studentDao.findAll();
-		for (int i = 0; i < studentList.size(); i++) {
-			Student studentData = studentList.get(i);
-			Integer[] choiceArr;
-			try {
-				choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
-				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
-			} catch (Exception e) {
-				System.out.println("資料有錯");
-//		            return new BasicRes(ResMessage.FAIL.getCode(), "學生資料處理錯誤");
-			}
-		}
-
-		// 檢查各社團的上限人數
-		HashMap<Integer, Integer> clubMaxMap = new HashMap<>();
-		List<Club> clubList = clubDao.findAll();
-		for (int i = 0; i < clubList.size(); i++) {
-			Club clubData = clubList.get(i);
-			clubMaxMap.put(clubData.getClubId(), clubData.getMax());
-		}
-
-		// 存儲分配結果
-		HashMap<Integer, Integer> drawResult = new HashMap<>(); // key: 學生Id, value: 社團Id
-
-		// 創建學生Id的列表，用於隨機選擇
-		List<Integer> studentDrawList = new ArrayList<>(studentChoiceMap.keySet());
-
-		// 隨機分配學生到社團
-
-		while (!studentDrawList.isEmpty()) {
-			// 隨機選擇一個學生
-			int randomIndex = (int) (Math.random() * studentDrawList.size());
-			int studentId = studentDrawList.get(randomIndex);
-			Integer[] choices = studentChoiceMap.get(studentId);
-
-			boolean assigned = false;
-			for (int clubId : choices) {
-				int drawClubMax = clubMaxMap.get(clubId);
-				if (drawClubMax > 0) {
-					// 分配學生到這個社團
-					drawResult.put(studentId, clubId);
-					clubMaxMap.put(clubId, drawClubMax - 1);
-					assigned = true;
-					break;
-				}
-			}
-
-			if (assigned) {
-				studentDrawList.remove(randomIndex);
-			} else {
-				// 如果學生無法被分配到任何志願社團，可以在這裡處理
-				System.out.println("學生 " + studentId + " 無法被分配到任何志願社團");
-				studentDrawList.remove(randomIndex);
-			}
-		}
-		System.out.println(drawResult);
-
-//		    // 更新數據庫
-//		    for (Map.Entry<Integer, Integer> entry : assignedStudents.entrySet()) {
-//		        int studentId = entry.getKey();
-//		        int clubId = entry.getValue();
-//		        studentDao.save(studentId, clubId);
-//		    }
-
-//		    return new BasicRes(ResMessage.SUCCESS.getCode(), "社團分配完成");
-	}
-
+	// 隨機抽選生，從志願序選社團
 	@Test
 	public void random() {
 
@@ -266,7 +197,7 @@ public class ClubServiceTests {
 	        if (assignedClubId != null) {
 	            student.setClubId(assignedClubId);
 	        } else {
-	            // 如果學生沒有被分配到社團，設置一個特殊值（例如 -1）
+	            // 如果學生沒有被分配到社團，設置一個特殊值（例如 0）
 	            student.setClubId(0);
 	        }
 	    }

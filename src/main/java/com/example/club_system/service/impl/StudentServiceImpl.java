@@ -1,7 +1,5 @@
 package com.example.club_system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
-import com.example.club_system.vo.StudentForgotPwdByEmailReq;
 import com.example.club_system.vo.StudentGetClubDataReq;
 import com.example.club_system.vo.StudentLoginReq;
 import com.example.club_system.vo.StudentLoginRes;
@@ -28,7 +25,6 @@ import com.example.club_system.vo.StudentUpdataPwdReq;
 import com.example.club_system.vo.StudentcreateOrUpdateReq;
 import com.example.club_system.vo.StudentdeleteReq;
 import com.example.club_system.vo.StudentsearchReq;
-import com.example.club_system.vo.TeacherLoginRes;
 
 @Service
 public class StudentServiceImpl implements StudentService {
