@@ -20,6 +20,7 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
+import com.example.club_system.vo.StudentdeleteReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -44,6 +45,9 @@ public class ClubServiceImpl implements ClubService {
 			}
 			clubDao.save(new Club(req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
 					req.getPay(),req.getClassroom(), req.getMax()));
+		}
+		if(req.getClubId() < 0) {
+			req.setClubId(0);
 		}
 		clubDao.save(new Club(req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
 				req.getPay(),req.getClassroom(), req.getMax()));
@@ -102,11 +106,16 @@ public class ClubServiceImpl implements ClubService {
 		List<Student> studentList = studentDao.findAll();
 		for (Student studentData : studentList) {
 			try {
+				if(studentData.getChoiceList() == null) {
+					continue;
+				}
 				Integer[] choiceArr = mapper.readValue(studentData.getChoiceList(), Integer[].class);
 				studentChoiceMap.put(studentData.getStudentId(), choiceArr);
 			} catch (Exception e) {
+				//資料有錯，可以把錯誤的地方顯示出來，看哪筆資料錯誤
+				System.out.println(studentData.getStudentId());
 				return new BasicRes(ResMessage.JSON_ERROR.getCode(), ResMessage.JSON_ERROR.getMessage());
-//				System.out.println("資料有錯: " + studentData.getStudentId());
+				
 			}
 		}
 
@@ -160,35 +169,37 @@ public class ClubServiceImpl implements ClubService {
 
 			// 從待分配列表中移除該學生
 			studentDrawList.remove(randomChooseStudent);
-
-			for (Student student : studentList) {
-				Integer getResultClubId = drawResult.get(student.getStudentId());
-				if (getResultClubId != null) {
-					student.setClubId(getResultClubId);
-				} else {
-					// 如果學生沒有被分配到社團，設置一個特殊值（例如 0）
-					student.setClubId(0);
-				}
+		}
+		//這邊要把抽完籤的結果存起來，所以記得要放在while迴圈之外，不然每筆資料都會進資料庫撈資料!!!
+		// 把抽完籤的學生Id遍歷，並找到相對應的社團Id，沒有抽到的學生社團Id設為0
+		for (Student student : studentList) {
+			Integer getResultClubId = drawResult.get(student.getStudentId());
+			if (getResultClubId != null) {
+				student.setClubId(getResultClubId);
+			} else {
+				// 如果學生沒有被分配到社團，設置一個特殊值（例如 0）
+				student.setClubId(0);
 			}
-
-			// 保存更新後的學生信息到數據庫
-			studentDao.saveAll(studentList);
 		}
 
-//		// 把抽籤結果更新進資料庫
-//		// drawResult 放了抽籤結果，key: 學號, value: 社團Id
-//
-//		// 抽籤結果
-//		List<Student> updatedStudentsClub = new ArrayList<>();
-//
-//		// 學生Id的列表，拿到學生Id
-//		List<Integer> studentIdResult = new ArrayList<>(drawResult.keySet());
-//
-//		// 拿到學生抽中的社團Id
-//		List<Integer> studentClubResult = new ArrayList<>(drawResult.values());
-//
+		// 保存更新後的學生信息到數據庫
+		studentDao.saveAll(studentList);
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
-
+	// 社團Id歸零功能
+		@Override
+		public BasicRes resetClubId(StudentdeleteReq req) {
+			// 拿到學生所有的資料
+		    List<Student> studentDataList = studentDao.findAll();
+		    for (Student studentData : studentDataList) {
+		        if (studentData.getClubId() != null && studentData.getClubId() != 0) {
+		            studentData.setClubId(0);
+		            studentDao.save(studentData);
+		        }
+		    }
+		    return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+		}
+	
+	
 }

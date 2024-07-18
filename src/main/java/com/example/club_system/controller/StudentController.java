@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.StudentGetClubDataReq;
 import com.example.club_system.vo.StudentLoginReq;
 import com.example.club_system.vo.StudentLoginRes;
 import com.example.club_system.vo.StudentSearchRes;
@@ -18,6 +19,8 @@ import com.example.club_system.vo.StudentUpdataPwdReq;
 import com.example.club_system.vo.StudentcreateOrUpdateReq;
 import com.example.club_system.vo.StudentdeleteReq;
 import com.example.club_system.vo.StudentsearchReq;
+import com.example.club_system.vo.TeacherGetStudentReq;
+import com.example.club_system.vo.TeacherLoginRes;
 
 //@RestController 包含了 @Controller 和 @ResponseBody
 //@Controller 是指將此類別交由 spring boot 託管成 Controller 物件
@@ -30,7 +33,7 @@ public class StudentController {
 	@Autowired
 	private StudentService studentService;
 	
-	@PostMapping(value = "student/updata_password")
+	@PostMapping(value = "student/updatePassword")
 	public BasicRes updataPwd(@Valid @RequestBody StudentUpdataPwdReq req) {
 		return studentService.updataPwd(req);
 	}
@@ -55,4 +58,12 @@ public class StudentController {
 	public BasicRes login(@Valid @RequestBody StudentLoginReq req) {
 		return studentService.login(req);
 	}
+	
+	//學生端登入後，取得學生社團資訊方法
+	@PostMapping(value = "student/studentClubData")
+	public StudentLoginRes clubStudentData(@Valid @RequestBody StudentGetClubDataReq req) {
+		return studentService.studentGetClubData(req);
+	}
+	
+	
 }

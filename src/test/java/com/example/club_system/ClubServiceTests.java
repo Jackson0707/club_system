@@ -255,25 +255,25 @@ public class ClubServiceTests {
 			} else {
 				// 如果學生無法被分配到任何志願社團，可以在這裡處理
 //				System.out.println("學生 " + studentId + " 無法被分配到任何志願社團");
-				studentDrawList.remove(randomIndex);
-				
-				// drawResult 放了抽籤結果，key: 學號, value: 社團Id
-				// 更新數據庫
-				for (Student student : studentList) {
-			        Integer assignedClubId = drawResult.get(student.getStudentId());
-			        if (assignedClubId != null) {
-			            student.setClubId(assignedClubId);
-			        } else {
-			            // 如果學生沒有被分配到社團，設置一個特殊值（例如 -1）
-			            student.setClubId(0);
-			        }
-			    }
-			    System.out.println("+++++++++" + drawResult);
-			    // 保存更新後的學生信息到數據庫
-			    studentDao.saveAll(studentList);
+				studentDrawList.remove(randomIndex);			   
 
 			}
 		}
+		// drawResult 放了抽籤結果，key: 學號, value: 社團Id
+		// 更新數據庫
+		for (Student student : studentList) {
+	        Integer assignedClubId = drawResult.get(student.getStudentId());
+	        if (assignedClubId != null) {
+	            student.setClubId(assignedClubId);
+	        } else {
+	            // 如果學生沒有被分配到社團，設置一個特殊值（例如 -1）
+	            student.setClubId(0);
+	        }
+	    }
+	    
+		 studentDao.saveAll(studentList);
+		// 保存更新後的學生信息到數據庫
+			System.out.println("抽籤結果:" + drawResult);
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.example.club_system.service.impl;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,16 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.club_system.constants.ResMessage;
+import com.example.club_system.entity.Club;
 import com.example.club_system.entity.Student;
+import com.example.club_system.entity.TeacherDatabase;
+import com.example.club_system.repository.ClubDao;
 import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.StudentForgotPwdByEmailReq;
+import com.example.club_system.vo.StudentGetClubDataReq;
 import com.example.club_system.vo.StudentLoginReq;
 import com.example.club_system.vo.StudentLoginRes;
 import com.example.club_system.vo.StudentSearchRes;
@@ -22,12 +28,16 @@ import com.example.club_system.vo.StudentUpdataPwdReq;
 import com.example.club_system.vo.StudentcreateOrUpdateReq;
 import com.example.club_system.vo.StudentdeleteReq;
 import com.example.club_system.vo.StudentsearchReq;
+import com.example.club_system.vo.TeacherLoginRes;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private StudentDao studentDao;
+	
+	@Autowired
+	private ClubDao clubDao;
 	
 	@Autowired
 	private TeacherDatabaseDao teacherDatabaseDao;
@@ -39,18 +49,17 @@ public class StudentServiceImpl implements StudentService {
 		// 檢查參數
 		if (!StringUtils.hasText(String.valueOf(req.getStudentId())) || !StringUtils.hasText(req.getOldPwd())//
 				|| !StringUtils.hasText(req.getNewPwd())) {
-			System.out.println(ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getMessage());
 			return new BasicRes(ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getCode(),
 					ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getMessage());
 		}
 
 		// 確認帳號是否存在
-		Optional<Student> op = studentDao.findFirstBystudentIdOrderByUpdateTimeDesc(req.getStudentId());
+		Optional<Student> op = studentDao.findById(req.getStudentId());
 		// 確認帳號存在
 		if (op.isEmpty()) {
 			System.out.println(ResMessage.UPDATE_STUDENT_ID_NOT_FOUND.getMessage());
-			return new BasicRes(ResMessage.UPDATE_STUDENT_ID_NOT_FOUND.getCode(),
-					ResMessage.UPDATE_STUDENT_ID_NOT_FOUND.getMessage());
+			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(),
+					ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
 
 		// 取得最新的學生資料
@@ -59,16 +68,13 @@ public class StudentServiceImpl implements StudentService {
 		// 檢查舊密碼是否正確
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		if (!encoder.matches(req.getOldPwd(), student.getPwd())) {
-			System.out.println(ResMessage.PSAAWORD_ERROR.getMessage());
 			return new BasicRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
 
 		// 更新密碼並保存
 		student.setPwd(encoder.encode(req.getNewPwd()));
-		student.setUpdateTime(LocalDateTime.now()); // 更新時間戳記
 		studentDao.save(student);
 
-		System.out.println(ResMessage.SUCCESS.getMessage());
 		return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
 	}
 
@@ -78,14 +84,14 @@ public class StudentServiceImpl implements StudentService {
 		if(req.getStudentId() > 0) {
 			boolean studentIdExist = studentDao.existsById(req.getStudentId());
 			if(!studentIdExist ) {
-				studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getPwd(), req.getGrade(), req.getName(), 
+				studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getGrade(), req.getName(), 
 						req.getEmail(), req.getClubId(),
-						req.getStatus()));
+						req.getChoiceList(),req.getStatus()));
 			}
 		}
-		studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getPwd(), req.getGrade(), req.getName(), 
+		studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getGrade(), req.getName(), 
 				req.getEmail(), req.getClubId(),
-				req.getStatus())) ;
+				req.getChoiceList(), req.getStatus())) ;
 		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
 		
 	}
@@ -148,6 +154,76 @@ public class StudentServiceImpl implements StudentService {
 			return new StudentLoginRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), studentIdData.getStudentId());
 		}
 	}
+
+	
+
+	@Override
+	public StudentLoginRes studentGetClubData(StudentGetClubDataReq req) {
+		// studentData: 取得學生Id的所有資訊
+				Optional<Student> studentData = studentDao.findById(req.getStudentId());
+				
+				if(studentData.isEmpty()) {
+					return new StudentLoginRes(ResMessage.STUDENT_ID_NOT_FOUND.getCode(), 
+							ResMessage.STUDENT_ID_NOT_FOUND.getMessage());
+				}
+				
+				// studentData:裡面有該學生的所有資訊
+				Student student = studentData.get();
+				
+				// op: 用學生的的社團Id去撈該社團的所有資訊
+				Optional<Club> op = clubDao.findById(student.getClubId());
+				
+				if(op.isEmpty()) {
+					return new StudentLoginRes(ResMessage.PARAM_CLUB_ID_NOT_EXIST.getCode(), 
+							ResMessage.PARAM_CLUB_ID_NOT_EXIST.getMessage());
+				}
+				
+				// clubData: 拿到該社團Id的所有資訊
+				Club clubData = op.get();
+				
+				Optional<TeacherDatabase> teacherData = teacherDatabaseDao.findById(clubData.getTeacherId());
+				 
+				  TeacherDatabase teacher = teacherData.get();
+				
+				return new StudentLoginRes(ResMessage.SUCCESS.getCode(), 
+						ResMessage.SUCCESS.getMessage(),student.getClubId(), student.getName(),clubData.getName(),
+						clubData.getClassroom(), clubData.getPay(), teacher.getName());
+	}
+
+//	@Override
+//	public BasicRes updataPwdByEmail(StudentForgotPwdByEmailReq req) {
+//		// 檢查參數
+//				if (!StringUtils.hasText(String.valueOf(req.getStudentId())) || !StringUtils.hasText(req.getEmail())//
+//						|| !StringUtils.hasText(req.getNewPwd())) {
+//					return new BasicRes(ResMessage.ACCOUNT_OR_EMAIL_ERROR.getCode(),
+//							ResMessage.ACCOUNT_OR_EMAIL_ERROR.getMessage());
+//				}
+//
+//				// 確認帳號是否存在
+//				Optional<Student> op = studentDao.findById(req.getStudentId());
+//				// 確認帳號存在
+//				if (op.isEmpty()) {
+//					return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(),
+//							ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+//				}
+//
+//				// 取得最新的學生資料
+//				Student student = op.get();
+//
+//				// 檢查舊密碼是否正確
+//				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//				if (StringUtils.hasText(req.getEmail())) {
+//					return new BasicRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
+//				}
+//
+//				// 更新密碼並保存
+//				student.setPwd(encoder.encode(req.getNewPwd()));
+//				studentDao.save(student);
+//
+//				return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+//		
+//		
+//	}
 
 
 

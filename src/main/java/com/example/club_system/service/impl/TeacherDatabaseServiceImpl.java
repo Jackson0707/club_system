@@ -214,9 +214,6 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		
 		List<Student> clubStudent = new ArrayList<>(clubStdentList);
 		
-		
-		
-		
 		return new TeacherLoginRes(ResMessage.SUCCESS.getCode(), 
 				ResMessage.SUCCESS.getMessage(),teacher.getName(),teacher.getClubId(), clubData.getName(),
 				clubStudent);

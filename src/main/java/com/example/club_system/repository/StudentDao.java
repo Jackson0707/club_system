@@ -22,7 +22,7 @@ public interface StudentDao extends JpaRepository<Student, Integer> {
 	List<Student> findByNameContainingAndStudentIdContainingAndSemesterContainingAndGradeContainingAndStatus(
 			String name, Integer studentId, String semester, String grade, String status);
 
-	Optional<Student> findFirstBystudentIdOrderByUpdateTimeDesc(Integer studentId);
+	Optional<Student> findFirstBystudentIdOrderByUpdateTime(Integer studentId);
 
 	
 	

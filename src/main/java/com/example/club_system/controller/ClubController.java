@@ -21,6 +21,7 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
+import com.example.club_system.vo.StudentdeleteReq;
 
 @CrossOrigin
 @RestController
@@ -41,7 +42,7 @@ public class ClubController {
 		return clubService.delete(req);
 	}
 	
-//	 社團搜尋功能(還在測試一個小bug)
+//	 社團搜尋功能
 	@PostMapping(value = "Club/search")
 	public BasicRes search(@RequestBody ClubSearchReq req) {
 		return clubService.search(req);
@@ -52,22 +53,10 @@ public class ClubController {
 	public BasicRes clubRandom() {
 		return clubService.clubRandom();
 	}
-	
 
-	
-//	@GetMapping(value ="Club/search/{name}")
-//	public ClubSearchRes searchByName(@PathVariable String name) {
-//		return clubService.searchByName(name);
-//	}
-	
-//	@GetMapping(value = "Club/search1")
-//    public ResponseEntity<List<Club>> search(
-//            @RequestParam(required = false) String name,
-//            @RequestParam(required = false) int teacherId,
-//            @RequestParam(required = false) String semester) {
-//        return (ResponseEntity<List<Club>>) clubService.search1(name, teacherId, semester);
-//    }
-
-	
+	@PostMapping(value = "Club/resetClubId")
+	public BasicRes reset(@RequestBody StudentdeleteReq req) {
+		return clubService.resetClubId(req);
+	}
 	
 }

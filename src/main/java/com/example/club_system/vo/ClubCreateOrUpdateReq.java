@@ -8,47 +8,45 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ClubCreateOrUpdateReq {
 
 	@JsonProperty("club_id")
-	@NotNull(message = "Param clubId error!!")
 	private Integer clubId;
-	
-	@NotNull(message = "Param teacher id error!!")
+
 	@JsonProperty("teacher_id")
 	private Integer teacherId;
-	
+
 	@NotBlank(message = "Param semester error!!")
 	private String semester;
-	
+
 	@NotBlank(message = "Param club name error!!")
 	private String name;
-	
+
 	@NotBlank(message = "Param club intro error!!")
 	private String intro;
-	
+
 	@NotNull(message = "Param pay error!!")
 	private int pay;
-	
+
 	@NotBlank(message = "Param classroom error!!")
 	private String classroom;
-	
+
 	@NotNull(message = "Param max error!!")
 	private int max;
-	
+
 //	@NotNull(message = "Param choice time error!!")
 //	@JsonAlias("choice_start_time")
 //	private LocalDate choiceStartTime;
-	
+
 //	@NotNull(message = "Param choice time error!!")
 //	@JsonAlias("choice_end_time")
 //	private LocalDate choiceEndTime; 
-	
+
 //	@NotNull(message = "Param club time error!!")
 //	@JsonAlias("club_start_time")
 //	private LocalDate clubStartTime;
-	
+
 //	@NotNull(message = "Param club time error!!")
 //	@JsonAlias("club_end_time")
 //	private LocalDate clubEndTime;
-	
+
 //	@NotNull(message = "Param draw time error!!")
 //	@JsonAlias("draw_time")
 //	private LocalDate drawTime;
@@ -57,33 +55,25 @@ public class ClubCreateOrUpdateReq {
 		super();
 	}
 
+	public ClubCreateOrUpdateReq(Integer clubId, Integer teacherId,
+			@NotBlank(message = "Param semester error!!") String semester,
+			@NotBlank(message = "Param club name error!!") String name,
+			@NotBlank(message = "Param club intro error!!") String intro,
+			@NotNull(message = "Param pay error!!") int pay,
+			@NotBlank(message = "Param classroom error!!") String classroom,
+			@NotNull(message = "Param max error!!") int max) {
+		super();
+		this.clubId = clubId;
+		this.teacherId = teacherId;
+		this.semester = semester;
+		this.name = name;
+		this.intro = intro;
+		this.pay = pay;
+		this.classroom = classroom;
+		this.max = max;
+	}
 
-
-
-
-	public ClubCreateOrUpdateReq(@NotNull(message = "Param clubId error!!") Integer clubId,
-		@NotNull(message = "Param teacher id error!!") Integer teacherId,
-		@NotBlank(message = "Param semester error!!") String semester,
-		@NotBlank(message = "Param club name error!!") String name,
-		@NotBlank(message = "Param club intro error!!") String intro, @NotNull(message = "Param pay error!!") int pay,
-		@NotBlank(message = "Param classroom error!!") String classroom,
-		@NotNull(message = "Param max error!!") int max) {
-	super();
-	this.clubId = clubId;
-	this.teacherId = teacherId;
-	this.semester = semester;
-	this.name = name;
-	this.intro = intro;
-	this.pay = pay;
-	this.classroom = classroom;
-	this.max = max;
-}
-
-
-
-
-
-	public ClubCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") Integer teacherId,
+	public ClubCreateOrUpdateReq( Integer teacherId,
 			@NotBlank(message = "Param semester error!!") String semester,
 			@NotBlank(message = "Param club name error!!") String name,
 			@NotBlank(message = "Param club intro error!!") String intro,
@@ -99,10 +89,6 @@ public class ClubCreateOrUpdateReq {
 		this.classroom = classroom;
 		this.max = max;
 	}
-
-
-
-
 
 	public Integer getClubId() {
 		return clubId;
@@ -207,10 +193,5 @@ public class ClubCreateOrUpdateReq {
 //	public void setDrawTime(LocalDate drawTime) {
 //		this.drawTime = drawTime;
 //	}
-
-	
-
-
-
 
 }
