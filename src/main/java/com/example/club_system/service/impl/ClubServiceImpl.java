@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import com.example.club_system.constants.ResMessage;
 import com.example.club_system.entity.Club;
 import com.example.club_system.entity.Student;
-import com.example.club_system.entity.TeacherDatabase;
 import com.example.club_system.repository.ClubDao;
 import com.example.club_system.repository.StudentDao;
 import com.example.club_system.service.ifs.ClubService;
@@ -21,7 +20,6 @@ import com.example.club_system.vo.ClubCreateOrUpdateReq;
 import com.example.club_system.vo.ClubDeleteReq;
 import com.example.club_system.vo.ClubSearchReq;
 import com.example.club_system.vo.ClubSearchRes;
-import com.example.club_system.vo.StudentSearchRes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service

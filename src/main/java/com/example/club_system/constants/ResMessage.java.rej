@@ -1,0 +1,11 @@
+diff a/src/main/java/com/example/club_system/constants/ResMessage.java b/src/main/java/com/example/club_system/constants/ResMessage.java	(rejected hunks)
+@@ -25,7 +25,8 @@
+ 	STUDENT_ID_ERROR(400, "Student id error"),
+ 	TEACHER_ID_NOT_FOUND(404,"Teacher id not found"),
+ 	JSON_ERROR(400,"Json error!!"),//JSON�榡����
+-	STUDENT_ID_NOT_FOUND(404,"Student id not found");//�䤣��b��(�b�����s�b)
++	STUDENT_ID_NOT_FOUND(404,"Student id not found"),
++	CLUB_ID_NOT_FOUND(404, "Update student id not found");//�䤣��b��(�b�����s�b)
+ 	
+ 	
+ 	private int code;
