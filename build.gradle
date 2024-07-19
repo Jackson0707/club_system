@@ -25,7 +25,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+ 	implementation 'javax.mail:javax.mail-api:1.6.2'
+  	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	
 	//Hot Deployment: 專案重啟中，修改程式碼並 "儲存" 之後，專案會自動重啟
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

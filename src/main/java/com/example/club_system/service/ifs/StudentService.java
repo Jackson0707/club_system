@@ -1,6 +1,7 @@
 package com.example.club_system.service.ifs;
 
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.ForgetPwdReq;
 import com.example.club_system.vo.StudentForgotPwdByEmailReq;
 import com.example.club_system.vo.StudentGetClubDataReq;
 import com.example.club_system.vo.StudentLoginReq;
@@ -26,6 +27,8 @@ public interface StudentService {
 	public StudentLoginRes login(StudentLoginReq req);
 	
 	public StudentLoginRes studentGetClubData(StudentGetClubDataReq req);
+	
+	public StudentLoginRes forgotPwd(ForgetPwdReq req);
 	
 
 }
