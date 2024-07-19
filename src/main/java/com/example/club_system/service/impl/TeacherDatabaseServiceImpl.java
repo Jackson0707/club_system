@@ -92,13 +92,13 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 				return new BasicRes(ResMessage.TEACHER_ID_NOT_FOUND.getCode(), 
 						ResMessage.TEACHER_ID_NOT_FOUND.getMessage());
 			}
-			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),req.getPwd(),
+			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),encoder.encode(req.getPwd()),
 					req.getName(),req.getEmail(), req.getType()));
 		}
 		if(req.getTeacherId() < 0) {
 			req.setTeacherId(0);
 		}
-		teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),req.getPwd(),
+		teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),encoder.encode(req.getPwd()),
 				req.getName(),req.getEmail(), req.getType()));
 		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage()) ;
 		

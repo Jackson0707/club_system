@@ -43,15 +43,15 @@ public class ClubServiceImpl implements ClubService {
 				return new BasicRes(ResMessage.CLUB_ID_NOT_FOUND.getCode(), 
 						ResMessage.CLUB_ID_NOT_FOUND.getMessage());
 			}
-			clubDao.save(new Club(req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
+			clubDao.save(new Club(req.getClubId(), req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
 					req.getPay(),req.getClassroom(), req.getMax()));
 		}
-		if(req.getClubId() == null) {
-//			req.setClubId(0);
+		if(req.getClubId() < 0) {
+			req.setClubId(0);
 		}
-		clubDao.save(new Club(req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
+		clubDao.save(new Club(req.getClubId(), req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
 				req.getPay(),req.getClassroom(), req.getMax()));
-		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage()) ;
+		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
 	}
 
 	// 刪除社團資料

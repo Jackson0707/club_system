@@ -9,11 +9,11 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	
 
 	@JsonProperty("teacher_id")
-	@NotNull(message = "Param teacher id error!!")
-	private int teacherId;
+//	@NotNull(message = "Param teacher id error!!")
+	private Integer teacherId;
 	
 	@JsonProperty("club_id")
-	private int clubId;
+	private Integer clubId;
 
 	@JsonProperty("type")
 	@NotNull(message = "Param teacher type error!!")
@@ -39,8 +39,8 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	
 	
 	
-	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") int teacherId,
-			@NotNull(message = "Param club id error!!") int clubId,
+	public TeacherDatabaseCreateOrUpdateReq( Integer teacherId,
+			@NotNull(message = "Param club id error!!") Integer clubId,
 			@NotNull(message = "Param teacher id error!!") String type,
 			@NotBlank(message = "Param password error!!") String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
@@ -77,7 +77,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 
 
-	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher id error!!") int teacherId,
+	public TeacherDatabaseCreateOrUpdateReq(Integer teacherId,
 			@NotBlank(message = "Param teacher id error!!") String type,
 			@NotBlank(message = "Param password error!!") String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
@@ -96,7 +96,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 	public TeacherDatabaseCreateOrUpdateReq(
 			@NotBlank(message = "Param status error!!") String status,//
-			@NotNull(message = "Param teacher id error!!") int teacherId,
+			Integer teacherId,
 			@NotBlank(message = "Param password error!!") String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email) {
@@ -128,11 +128,11 @@ public class TeacherDatabaseCreateOrUpdateReq {
 		this.status = status;
 	}
 
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 
@@ -170,13 +170,13 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 
 
-	public int getClubId() {
+	public Integer getClubId() {
 		return clubId;
 	}
 
 
 
-	public void setClubId(int clubId) {
+	public void setClubId(Integer clubId) {
 		this.clubId = clubId;
 	}
 

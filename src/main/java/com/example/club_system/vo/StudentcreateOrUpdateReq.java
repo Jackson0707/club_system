@@ -70,10 +70,6 @@ public class StudentcreateOrUpdateReq {
 		this.status = status;
 	}
 
-
-
-	
-
 	public StudentcreateOrUpdateReq(
 			@NotNull(message = "Param student id error!!") Integer studentId,
 			@NotBlank(message = "Param semester error!!") String semester,

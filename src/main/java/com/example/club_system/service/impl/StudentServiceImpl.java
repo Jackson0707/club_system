@@ -80,14 +80,14 @@ public class StudentServiceImpl implements StudentService {
 		if(req.getStudentId() > 0) {
 			boolean studentIdExist = studentDao.existsById(req.getStudentId());
 			if(!studentIdExist ) {
-				studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getGrade(), req.getName(), 
+				studentDao.save(new Student(req.getStudentId(), req.getSemester(),  req.getGrade(), req.getName(), 
 						req.getEmail(), req.getClubId(),
 						req.getChoiceList(),req.getStatus()));
 			}
 		}
-		studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getGrade(), req.getName(), 
+		studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getPwd(), req.getGrade(), req.getName(), 
 				req.getEmail(), req.getClubId(),
-				req.getChoiceList(), req.getStatus())) ;
+				req.getChoiceList(),req.getStatus())) ;
 		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
 		
 	}
