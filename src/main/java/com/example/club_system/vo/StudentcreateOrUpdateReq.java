@@ -2,9 +2,6 @@ package com.example.club_system.vo;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StudentcreateOrUpdateReq {
@@ -42,11 +39,8 @@ public class StudentcreateOrUpdateReq {
 		super();
 	}
 
-	
-
-	public StudentcreateOrUpdateReq(
-			Integer studentId, //
-			String semester,//
+	public StudentcreateOrUpdateReq(Integer studentId, //
+			String semester, //
 			String name, //
 			String email, //
 			String status) {
@@ -58,9 +52,8 @@ public class StudentcreateOrUpdateReq {
 		this.status = status;
 	}
 
-	public StudentcreateOrUpdateReq(Integer studentId,String semester,
-			String grade, String name, String email, Integer clubId,
-			String status) {
+	public StudentcreateOrUpdateReq(Integer studentId, String semester, String grade, String name, String email,
+			Integer clubId, String status) {
 		super();
 		this.studentId = studentId;
 		this.semester = semester;
@@ -70,8 +63,6 @@ public class StudentcreateOrUpdateReq {
 		this.clubId = clubId;
 		this.status = status;
 	}
-
-
 
 	public Integer getStudentId() {
 		return studentId;

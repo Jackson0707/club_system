@@ -2,7 +2,11 @@ package com.example.club_system.service.impl;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +21,7 @@ import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.ForgetPwdReq;
 import com.example.club_system.vo.StudentGetClubDataReq;
 import com.example.club_system.vo.StudentLoginReq;
 import com.example.club_system.vo.StudentLoginRes;
@@ -29,6 +34,10 @@ import com.example.club_system.vo.StudentsearchReq;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+	//信箱
+	@Autowired
+    private JavaMailSender javaMailSender; 
+	
 	@Autowired
 	private StudentDao studentDao;
 	
@@ -87,10 +96,8 @@ public class StudentServiceImpl implements StudentService {
 			studentData.setEmail(req.getEmail());
 			studentDao.save(studentData);
 			return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
-			
 		}
-		if(req.getClubId() < 0 || req.getStudentId() == null) {
-			req.setClubId(0);
+		if(req.getStudentId() == null) {
 			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
 		studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
@@ -194,6 +201,47 @@ public class StudentServiceImpl implements StudentService {
 						clubData.getClassroom(), clubData.getPay(), teacher.getName());
 	}
 
+	@Override
+	public StudentLoginRes forgotPwd(ForgetPwdReq req) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(req.getStudentId() == null) {
+			return new StudentLoginRes(ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getCode(),ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getMessage());
+		}
+		Optional<Student> studentId1 = studentDao.findBystudentId(req.getStudentId());
+		if( !studentId1.isPresent()) {
+			return new StudentLoginRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(),ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+		}
+		Student studentData = studentId1.get();
+		
+		String verificationCodeString = RandomStringUtils.randomNumeric(6);
+//        Integer verificationCode = Integer.parseInt(verificationCodeString);
+        
+        studentData.setPwd(encoder.encode(verificationCodeString));
+		studentDao.save(studentData);
+		sendVerificationEmail(studentData.getEmail(), verificationCodeString);
+		return new StudentLoginRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
+	}
+
+	private void sendVerificationEmail(String email, String verificationCodeString) {
+		  SimpleMailMessage message = new SimpleMailMessage();
+		     message.setTo(email);
+		     message.setSubject("Verify Your Email Address");
+		     message.setText("Your verification code is : " + verificationCodeString);
+		     
+		     try {
+		         // Send email
+		         javaMailSender.send(message);
+		         System.out.println("Email sent successfully.");
+		     } catch (MailException e) {
+		         System.err.println("Failed to send email: " + e.getMessage());
+		         // Handle exception appropriately
+		     }
+		
+	}
+	
+	
+
+	// 忘記密碼用Email認證
 //	@Override
 //	public BasicRes updataPwdByEmail(StudentForgotPwdByEmailReq req) {
 //		// 檢查參數

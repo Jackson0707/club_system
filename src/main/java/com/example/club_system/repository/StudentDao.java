@@ -14,6 +14,8 @@ import com.example.club_system.entity.Student;
 public interface StudentDao extends JpaRepository<Student, Integer> {
 
 	List<Student> findByClubId(Integer clubId);
+	
+	 boolean existsByStudentId(Integer studentId);
 
 	Optional<Student> findBystudentId(Integer studentId);
 

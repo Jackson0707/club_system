@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.ForgetPwdReq;
 import com.example.club_system.vo.StudentGetClubDataReq;
 import com.example.club_system.vo.StudentLoginReq;
 import com.example.club_system.vo.StudentLoginRes;
@@ -65,5 +66,9 @@ public class StudentController {
 		return studentService.studentGetClubData(req);
 	}
 	
-	
+	// ß—∞O±KΩX≈Á√“
+	@PostMapping(value = "student/pwdValidation")
+	public StudentLoginRes forgotPwd(@Valid @RequestBody ForgetPwdReq req) {
+		return studentService.forgotPwd(req);
+	}
 }
