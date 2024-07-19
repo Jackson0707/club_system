@@ -78,14 +78,22 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public BasicRes createOrUpdate(StudentcreateOrUpdateReq req) {
 		if(req.getStudentId() > 0) {
-			boolean studentIdExist = studentDao.existsById(req.getStudentId());
-			if(!studentIdExist ) {
-				studentDao.save(new Student(req.getStudentId(), req.getSemester(),  req.getGrade(), req.getName(), 
-						req.getEmail(), req.getClubId(),
-						req.getChoiceList(),req.getStatus()));
+			Optional<Student> studentId = studentDao.findById(req.getStudentId());
+			if( !studentId.isPresent()) {
+				return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 			}
+			Student studentData = studentId.get();
+			studentData.setName(req.getName());
+			studentData.setEmail(req.getEmail());
+			studentDao.save(studentData);
+			return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
+			
 		}
-		studentDao.save(new Student(req.getStudentId(), req.getSemester(), req.getPwd(), req.getGrade(), req.getName(), 
+		if(req.getClubId() < 0 || req.getStudentId() == null) {
+			req.setClubId(0);
+			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+		}
+		studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
 				req.getEmail(), req.getClubId(),
 				req.getChoiceList(),req.getStatus())) ;
 		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());

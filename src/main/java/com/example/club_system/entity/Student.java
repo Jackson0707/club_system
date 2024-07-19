@@ -50,6 +50,16 @@ public class Student {
 	
 	
 	
+	public Student(Integer studentId, String name, String email) {
+		super();
+		this.studentId = studentId;
+		this.name = name;
+		this.email = email;
+	}
+
+
+
+
 	public Student(Integer studentId, String semester, String pwd, String grade, String name, String email,
 			Integer clubId, String choiceList, String status) {
 		super();

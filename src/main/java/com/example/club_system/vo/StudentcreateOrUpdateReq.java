@@ -10,34 +10,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StudentcreateOrUpdateReq {
 
 	@JsonProperty("student_id")
-	@NotNull(message = "Param student id error!!")
 	private Integer studentId;
 
 	@JsonProperty("semester")
-	@NotBlank(message = "Param semester error!!")
+//	@NotBlank(message = "Param semester error!!")
 	private String semester;
 
-	@NotBlank(message = "Param PASSWORD error!!")
 	private String pwd;
 
-	@NotBlank(message = "Param grade error!!")
+//	@NotBlank(message = "Param grade error!!")
 	private String grade;
 
-	@NotBlank(message = "Param name error!!")
+//	@NotBlank(message = "Param name error!!")
 	private String name;
 
-	@NotBlank(message = "Param email error!!")
+//	@NotBlank(message = "Param email error!!")
 	private String email;
 
 	@JsonProperty("club_id")
-//	@NotNull(message = "Param club id error!!")
 	private Integer clubId;
 
 	@JsonProperty("choice_list")
-//	@NotBlank(message = "Param choiceList error!!")
 	private String choiceList;
 
-	@NotBlank(message = "Param status error!!")
+//	@NotBlank(message = "Param status error!!")
 	private String status;
 
 	private LocalDateTime updateTime;
@@ -49,48 +45,30 @@ public class StudentcreateOrUpdateReq {
 	
 
 	public StudentcreateOrUpdateReq(
-			@NotNull(message = "Param student id error!!") Integer studentId,
-			@NotBlank(message = "Param semester error!!") String semester,
-			@NotBlank(message = "Param PASSWORD error!!") String pwd,
-			@NotBlank(message = "Param grade error!!") String grade,
-			@NotBlank(message = "Param name error!!") String name,
-			@NotBlank(message = "Param email error!!") String email, 
-			Integer clubId,//
-			String choiceList,//
-			@NotBlank(message = "Param status error!!") String status) {
+			Integer studentId, //
+			String semester,//
+			String name, //
+			String email, //
+			String status) {
 		super();
 		this.studentId = studentId;
 		this.semester = semester;
-		this.pwd = pwd;
-		this.grade = grade;
 		this.name = name;
 		this.email = email;
-		this.clubId = clubId;
-		this.choiceList = choiceList;
 		this.status = status;
 	}
 
-	public StudentcreateOrUpdateReq(
-			@NotNull(message = "Param student id error!!") Integer studentId,
-			@NotBlank(message = "Param semester error!!") String semester,
-			@NotBlank(message = "Param PASSWORD error!!") String pwd,
-			@NotBlank(message = "Param grade error!!") String grade,
-			@NotBlank(message = "Param name error!!") String name,
-			@NotBlank(message = "Param email error!!") String email, 
-			Integer clubId, //
-			String choiceList,//
-			@NotBlank(message = "Param status error!!") String status, LocalDateTime updateTime) {
+	public StudentcreateOrUpdateReq(Integer studentId,String semester,
+			String grade, String name, String email, Integer clubId,
+			String status) {
 		super();
 		this.studentId = studentId;
 		this.semester = semester;
-		this.pwd = pwd;
 		this.grade = grade;
 		this.name = name;
 		this.email = email;
 		this.clubId = clubId;
-		this.choiceList = choiceList;
 		this.status = status;
-		this.updateTime = updateTime;
 	}
 
 
@@ -174,6 +152,5 @@ public class StudentcreateOrUpdateReq {
 	public void setUpdateTime(LocalDateTime updateTime) {
 		this.updateTime = updateTime;
 	}
-
 
 }
