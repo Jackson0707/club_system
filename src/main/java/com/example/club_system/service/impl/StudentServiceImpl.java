@@ -94,6 +94,7 @@ public class StudentServiceImpl implements StudentService {
 			Student studentData = studentId.get();
 			studentData.setName(req.getName());
 			studentData.setEmail(req.getEmail());
+			studentData.setChoiceList(req.getChoiceList());
 			studentDao.save(studentData);
 			return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
 		}
