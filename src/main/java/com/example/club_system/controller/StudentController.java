@@ -1,14 +1,17 @@
 package com.example.club_system.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.club_system.constants.ResMessage;
 import com.example.club_system.service.ifs.StudentService;
 import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.ForgetPwdReq;
@@ -23,10 +26,10 @@ import com.example.club_system.vo.StudentsearchReq;
 import com.example.club_system.vo.TeacherGetStudentReq;
 import com.example.club_system.vo.TeacherLoginRes;
 
-//@RestController ¥]§t¤F @Controller ©M @ResponseBody
-//@Controller ¬O«ü±N¦¹Ãş§O¥æ¥Ñ spring boot °UºŞ¦¨ Controller ª«¥ó
-//@ResponseBody:¥i¥H±N¦Û©w¸qªºª«¥ó(Response)Âà´«¦¨ JSON ®æ¦¡µ¹¥~³¡
-//¥[¤F @RestController «á¡A´N¤£»İ­n¦b AddInfoRes(©Î¨ä¥Lªº xxxRes) «e­±¥[¤W @ResponseBody
+//@RestController åŒ…å«äº† @Controller å’Œ @ResponseBody
+//@Controller æ˜¯æŒ‡å°‡æ­¤é¡åˆ¥äº¤ç”± spring boot è¨—ç®¡æˆ Controller ç‰©ä»¶
+//@ResponseBody:å¯ä»¥å°‡è‡ªå®šç¾©çš„ç‰©ä»¶(Response)è½‰æ›æˆ JSON æ ¼å¼çµ¦å¤–éƒ¨
+//åŠ äº† @RestController å¾Œï¼Œå°±ä¸éœ€è¦åœ¨ AddInfoRes(æˆ–å…¶ä»–çš„ xxxRes) å‰é¢åŠ ä¸Š @ResponseBody
 @CrossOrigin
 @RestController
 public class StudentController {
@@ -49,24 +52,37 @@ public class StudentController {
 		return studentService.search(req);
 	}
 	
-	// ¾Ç¥Í§R°£¤èªk¡A¤Á°O Postman ¤èªk¬O DeleteMapping !!!
+	// å­¸ç”Ÿåˆªé™¤æ–¹æ³•ï¼Œåˆ‡è¨˜ Postman æ–¹æ³•æ˜¯ DeleteMapping !!!
 	@DeleteMapping(value = "student/delete")
 	public BasicRes delete(@Valid @RequestBody StudentdeleteReq req) {
 		return studentService.delete(req);
 	}
 	
 	@PostMapping(value = "student/login")
-	public BasicRes login(@Valid @RequestBody StudentLoginReq req) {
-		return studentService.login(req);
+	public BasicRes login(@Valid @RequestBody StudentLoginReq req, HttpSession session) {
+		if(session.getAttribute("Account") != null) {
+			return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+		}
+		 StudentLoginRes res = studentService.login(req);
+		 if(res.getStatusCode() == 200) {
+			 session.setAttribute("Account", req.getStudentId());
+		 }
+		return res;
 	}
 	
-	//¾Ç¥Íºİµn¤J«á¡A¨ú±o¾Ç¥ÍªÀ¹Î¸ê°T¤èªk
+	 @GetMapping(value = "student/logout")
+	    public BasicRes logout(HttpSession session) {
+	        session.invalidate(); // æ¸…é™¤æ‰€æœ‰å±æ€§ï¼ŒåŒ…æ‹¬ç”¨æˆ·è³‡è¨Š
+	        return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+	    }
+	
+	//å­¸ç”Ÿç«¯ç™»å…¥å¾Œï¼Œå–å¾—å­¸ç”Ÿç¤¾åœ˜è³‡è¨Šæ–¹æ³•
 	@PostMapping(value = "student/studentClubData")
 	public StudentLoginRes clubStudentData(@Valid @RequestBody StudentGetClubDataReq req) {
 		return studentService.studentGetClubData(req);
 	}
 	
-	// §Ñ°O±K½XÅçÃÒ
+	// å¿˜è¨˜å¯†ç¢¼é©—è­‰
 	@PostMapping(value = "student/pwdValidation")
 	public StudentLoginRes forgotPwd(@Valid @RequestBody ForgetPwdReq req) {
 		return studentService.forgotPwd(req);
