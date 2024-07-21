@@ -1,7 +1,5 @@
 package com.example.club_system.entity;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,67 +38,28 @@ public class Club {
 	@Column(name="max")
 	private int max;
 	
-	@Column(name="attendees")
-	private int attendees;
+//	@Column(name="attendees")
+//	private int attendees;
 	
-	@Column(name="choice_start_time")
-	private LocalDate choiceStartTime;
+//	@Column(name="choice_start_time")
+//	private LocalDate choiceStartTime;
+//	
+//	@Column(name="choice_end_time")
+//	private LocalDate choiceEndTime;
+//	
+//	@Column(name="draw_time")
+//	private LocalDate drawTime;
 	
-	@Column(name="choice_end_time")
-	private LocalDate choiceEndTime;
-	
-	@Column(name="draw_time")
-	private LocalDate drawTime;
-	
-	 @Lob
-	    @Column(name = "image")
-	    private byte[] clubImage;
+
 
 	public Club() {
 		super();
 	}
 
-	
-
-	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay,
-			String classroom, int max, byte[] clubImage) {
-		super();
-		this.clubId = clubId;
-		this.semester = semester;
-		this.name = name;
-		this.intro = intro;
-		this.teacherId = teacherId;
-		this.pay = pay;
-		this.classroom = classroom;
-		this.max = max;
-		this.clubImage = clubImage;
-	}
-
 
 
 	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay,
-			String classroom, int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime,
-			LocalDate drawTime, byte[] clubImage) {
-		super();
-		this.clubId = clubId;
-		this.semester = semester;
-		this.name = name;
-		this.intro = intro;
-		this.teacherId = teacherId;
-		this.pay = pay;
-		this.classroom = classroom;
-		this.max = max;
-		this.attendees = attendees;
-		this.choiceStartTime = choiceStartTime;
-		this.choiceEndTime = choiceEndTime;
-		this.drawTime = drawTime;
-		this.clubImage = clubImage;
-	}
-
-
-
-	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay, String classroom,
-			int max) {
+			String classroom, int max) {
 		super();
 		this.clubId = clubId;
 		this.semester = semester;
@@ -111,6 +70,7 @@ public class Club {
 		this.classroom = classroom;
 		this.max = max;
 	}
+
 
 	public Club(String semester, String name, String intro, Integer teacherId, int pay, String classroom, int max) {
 		super();
@@ -188,49 +148,38 @@ public class Club {
 		this.max = max;
 	}
 
-	public int getAttendees() {
-		return attendees;
-	}
+//	public int getAttendees() {
+//		return attendees;
+//	}
+//
+//	public void setAttendees(int attendees) {
+//		this.attendees = attendees;
+//	}
+//
+//	public LocalDate getChoiceStartTime() {
+//		return choiceStartTime;
+//	}
+//
+//	public void setChoiceStartTime(LocalDate choiceStartTime) {
+//		this.choiceStartTime = choiceStartTime;
+//	}
+//
+//	public LocalDate getChoiceEndTime() {
+//		return choiceEndTime;
+//	}
+//
+//	public void setChoiceEndTime(LocalDate choiceEndTime) {
+//		this.choiceEndTime = choiceEndTime;
+//	}
+//
+//	public LocalDate getDrawTime() {
+//		return drawTime;
+//	}
+//
+//	public void setDrawTime(LocalDate drawTime) {
+//		this.drawTime = drawTime;
+//	}
 
-	public void setAttendees(int attendees) {
-		this.attendees = attendees;
-	}
-
-	public LocalDate getChoiceStartTime() {
-		return choiceStartTime;
-	}
-
-	public void setChoiceStartTime(LocalDate choiceStartTime) {
-		this.choiceStartTime = choiceStartTime;
-	}
-
-	public LocalDate getChoiceEndTime() {
-		return choiceEndTime;
-	}
-
-	public void setChoiceEndTime(LocalDate choiceEndTime) {
-		this.choiceEndTime = choiceEndTime;
-	}
-
-	public LocalDate getDrawTime() {
-		return drawTime;
-	}
-
-	public void setDrawTime(LocalDate drawTime) {
-		this.drawTime = drawTime;
-	}
-
-
-
-	public byte[] getClubImage() {
-		return clubImage;
-	}
-
-
-
-	public void setClubImage(byte[] clubImage) {
-		this.clubImage = clubImage;
-	}
 
 	
 	
