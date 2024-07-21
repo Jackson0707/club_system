@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -50,13 +51,36 @@ public class Club {
 	
 	@Column(name="draw_time")
 	private LocalDate drawTime;
+	
+	 @Lob
+	    @Column(name = "image")
+	    private byte[] clubImage;
 
 	public Club() {
 		super();
 	}
 
-	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay, String classroom,
-			int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime, LocalDate drawTime) {
+	
+
+	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay,
+			String classroom, int max, byte[] clubImage) {
+		super();
+		this.clubId = clubId;
+		this.semester = semester;
+		this.name = name;
+		this.intro = intro;
+		this.teacherId = teacherId;
+		this.pay = pay;
+		this.classroom = classroom;
+		this.max = max;
+		this.clubImage = clubImage;
+	}
+
+
+
+	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay,
+			String classroom, int max, int attendees, LocalDate choiceStartTime, LocalDate choiceEndTime,
+			LocalDate drawTime, byte[] clubImage) {
 		super();
 		this.clubId = clubId;
 		this.semester = semester;
@@ -70,7 +94,10 @@ public class Club {
 		this.choiceStartTime = choiceStartTime;
 		this.choiceEndTime = choiceEndTime;
 		this.drawTime = drawTime;
+		this.clubImage = clubImage;
 	}
+
+
 
 	public Club(Integer clubId, String semester, String name, String intro, Integer teacherId, int pay, String classroom,
 			int max) {
@@ -191,6 +218,18 @@ public class Club {
 
 	public void setDrawTime(LocalDate drawTime) {
 		this.drawTime = drawTime;
+	}
+
+
+
+	public byte[] getClubImage() {
+		return clubImage;
+	}
+
+
+
+	public void setClubImage(byte[] clubImage) {
+		this.clubImage = clubImage;
 	}
 
 	

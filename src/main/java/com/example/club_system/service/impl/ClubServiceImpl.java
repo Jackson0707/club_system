@@ -44,7 +44,7 @@ public class ClubServiceImpl implements ClubService {
 						ResMessage.CLUB_ID_NOT_FOUND.getMessage());
 			}
 			clubDao.save(new Club(req.getClubId(), req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
-					req.getPay(),req.getClassroom(), req.getMax()));
+					req.getPay(),req.getClassroom(), req.getMax(),req.getImage()));
 		}
 		if(req.getClubId() < 0) {
 			req.setClubId(0);
@@ -202,4 +202,23 @@ public class ClubServiceImpl implements ClubService {
 		}
 	
 	
+		// 還原用
+//		@Override
+//		public BasicRes createOrUpdate(ClubCreateOrUpdateReq req) {
+//			if(req.getClubId() > 0) {
+//				boolean clubIdExist = clubDao.existsById(req.getClubId());
+//				if(!clubIdExist ) {
+//					return new BasicRes(ResMessage.CLUB_ID_NOT_FOUND.getCode(), 
+//							ResMessage.CLUB_ID_NOT_FOUND.getMessage());
+//				}
+//				clubDao.save(new Club(req.getClubId(), req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
+//						req.getPay(),req.getClassroom(), req.getMax()));
+//			}
+//			if(req.getClubId() < 0) {
+//				req.setClubId(0);
+//			}
+//			clubDao.save(new Club(req.getClubId(), req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
+//					req.getPay(),req.getClassroom(), req.getMax()));
+//			return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
+//		}
 }
