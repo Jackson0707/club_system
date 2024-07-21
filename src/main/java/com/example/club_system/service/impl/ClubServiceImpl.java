@@ -44,7 +44,7 @@ public class ClubServiceImpl implements ClubService {
 						ResMessage.CLUB_ID_NOT_FOUND.getMessage());
 			}
 			clubDao.save(new Club(req.getClubId(), req.getSemester(),req.getName(),req.getIntro(),req.getTeacherId(),
-					req.getPay(),req.getClassroom(), req.getMax(),req.getImage()));
+					req.getPay(),req.getClassroom(), req.getMax()));
 		}
 		if(req.getClubId() < 0) {
 			req.setClubId(0);

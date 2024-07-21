@@ -30,8 +30,7 @@ public class ClubCreateOrUpdateReq {
 
 	@NotNull(message = "Param max error!!")
 	private int max;
-	
-	 private byte[] image;
+
 
 //	@NotNull(message = "Param choice time error!!")
 //	@JsonAlias("choice_start_time")
@@ -57,24 +56,6 @@ public class ClubCreateOrUpdateReq {
 		super();
 	}
 
-	public ClubCreateOrUpdateReq(Integer clubId, Integer teacherId,
-			@NotBlank(message = "Param semester error!!") String semester,
-			@NotBlank(message = "Param club name error!!") String name,
-			@NotBlank(message = "Param club intro error!!") String intro,
-			@NotNull(message = "Param pay error!!") int pay,
-			@NotBlank(message = "Param classroom error!!") String classroom,
-			@NotNull(message = "Param max error!!") int max, byte[] image) {
-		super();
-		this.clubId = clubId;
-		this.teacherId = teacherId;
-		this.semester = semester;
-		this.name = name;
-		this.intro = intro;
-		this.pay = pay;
-		this.classroom = classroom;
-		this.max = max;
-		this.image = image;
-	}
 
 	public ClubCreateOrUpdateReq(Integer clubId, Integer teacherId,
 			@NotBlank(message = "Param semester error!!") String semester,
@@ -175,13 +156,8 @@ public class ClubCreateOrUpdateReq {
 		this.max = max;
 	}
 
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
-	}
+	
+	
 
 //	public LocalDate getChoiceStartTime() {
 //		return choiceStartTime;
