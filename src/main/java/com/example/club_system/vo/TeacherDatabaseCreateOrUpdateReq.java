@@ -19,7 +19,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	@NotNull(message = "Param teacher type error!!")
 	private String type;
 	
-	@NotBlank(message = "Param teacher password error!!")
+//	@NotBlank(message = "Param teacher password error!!")
 	private String pwd;
 
 	@NotBlank(message = "Param teacher name error!!")
@@ -42,7 +42,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	public TeacherDatabaseCreateOrUpdateReq( Integer teacherId,
 			@NotNull(message = "Param club id error!!") Integer clubId,
 			@NotNull(message = "Param teacher id error!!") String type,
-			@NotBlank(message = "Param password error!!") String pwd,
+			 String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email,
 			@NotBlank(message = "Param status error!!") String status) {
@@ -61,7 +61,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 
 	public TeacherDatabaseCreateOrUpdateReq(@NotNull(message = "Param teacher type error!!") String type,
-			@NotBlank(message = "Param teacher password error!!") String pwd,
+			 String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param teacher email error!!") String email,
 			@NotBlank(message = "Param status error!!") String status) {
@@ -79,7 +79,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 	public TeacherDatabaseCreateOrUpdateReq(Integer teacherId,
 			@NotBlank(message = "Param teacher id error!!") String type,
-			@NotBlank(message = "Param password error!!") String pwd,
+			 String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email,
 			@NotBlank(message = "Param status error!!") String status) {
@@ -97,7 +97,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 	public TeacherDatabaseCreateOrUpdateReq(
 			@NotBlank(message = "Param status error!!") String status,//
 			Integer teacherId,
-			@NotBlank(message = "Param password error!!") String pwd,
+			String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email) {
 		super();
@@ -110,7 +110,7 @@ public class TeacherDatabaseCreateOrUpdateReq {
 
 	public TeacherDatabaseCreateOrUpdateReq(
 			@NotBlank(message = "Param status error!!") String status,//
-			@NotBlank(message = "Param password error!!") String pwd,
+			 String pwd,
 			@NotBlank(message = "Param teacher name error!!") String name,
 			@NotBlank(message = "Param email error!!") String email) {
 		super();

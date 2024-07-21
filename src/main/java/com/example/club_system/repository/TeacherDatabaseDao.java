@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.club_system.entity.Student;
 import com.example.club_system.entity.TeacherDatabase;
 
 @Repository
 public interface TeacherDatabaseDao extends JpaRepository<TeacherDatabase, Integer> {
+	
+	List<TeacherDatabase> findByTeacherId(Integer teacherId);
 	
 	@Query("SELECT rd FROM TeacherDatabase rd WHERE" //
 			+ "(:name IS NULL OR rd.name LIKE %:name%) AND"//

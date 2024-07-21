@@ -73,6 +73,19 @@ public class TeacherDatabase {
 		this.type = type;
 	}
 
+	
+	
+	
+	public TeacherDatabase(String status, Integer teacherId, String name, String email) {
+		super();
+		this.status = status;
+		this.teacherId = teacherId;
+		this.name = name;
+		this.email = email;
+	}
+
+
+
 	public TeacherDatabase(String status, Integer teacherId, String pwd, String name, String email) {
 		super();
 		this.status = status;
