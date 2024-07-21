@@ -1,27 +1,33 @@
 package com.example.club_system.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.club_system.constants.ResMessage;
 import com.example.club_system.service.ifs.TeacherDatabaseService;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.ForgetPwdReq;
+import com.example.club_system.vo.StudentLoginRes;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
+import com.example.club_system.vo.TeacherForgotPwdReq;
 import com.example.club_system.vo.TeacherGetStudentReq;
 import com.example.club_system.vo.TeacherLoginReq;
 import com.example.club_system.vo.TeacherLoginRes;
 import com.example.club_system.vo.TeacherSearchReq;
 import com.example.club_system.vo.TeacherUpdatePwdReq;
 
-//@RestController ¥]§t¤F @Controller ©M @ResponseBody
-//@Controller ¬O«ü±N¦¹Ãş§O¥æ¥Ñ spring boot °UºŞ¦¨ Controller ª«¥ó
-//@ResponseBody:¥i¥H±N¦Û©w¸qªºª«¥ó(Response)Âà´«¦¨ JSON ®æ¦¡µ¹¥~³¡
-//¥[¤F @RestController «á¡A´N¤£»İ­n¦b AddInfoRes(©Î¨ä¥Lªº xxxRes) «e­±¥[¤W @ResponseBody
+//@RestController åŒ…å«äº† @Controller å’Œ @ResponseBody
+//@Controller æ˜¯æŒ‡å°‡æ­¤é¡åˆ¥äº¤ç”± spring boot è¨—ç®¡æˆ Controller ç‰©ä»¶
+//@ResponseBody:å¯ä»¥å°‡è‡ªå®šç¾©çš„ç‰©ä»¶(Response)è½‰æ›æˆ JSON æ ¼å¼çµ¦å¤–éƒ¨
+//åŠ äº† @RestController å¾Œï¼Œå°±ä¸éœ€è¦åœ¨ AddInfoRes(æˆ–å…¶ä»–çš„ xxxRes) å‰é¢åŠ ä¸Š @ResponseBody
 @CrossOrigin
 @RestController
 public class TeacherDatabaseController {
@@ -29,14 +35,21 @@ public class TeacherDatabaseController {
 	@Autowired
 	private TeacherDatabaseService teacherDatabaseService;
 
-	@PostMapping(value = "teacherDatabase/updata_password")
+	@PostMapping(value = "teacherDatabase/updatePassword")
 	public BasicRes updataPwd(@Valid @RequestBody TeacherUpdatePwdReq req) {
 		return teacherDatabaseService.updatePwd(req.getTeacherId(), req.getOldPwd(), req.getNewPwd());
 	}
 
 	@PostMapping(value = "teacherDatabase/login")
-	public BasicRes login(@Valid @RequestBody TeacherLoginReq req) {
-		return teacherDatabaseService.login(req);
+	public BasicRes login(@Valid @RequestBody TeacherLoginReq req, HttpSession session) {
+		if(session.getAttribute("Account") != null) {
+			return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+		}
+		TeacherLoginRes res = teacherDatabaseService.login(req);
+		 if(res.getStatusCode() == 200) {
+			 session.setAttribute("Account", req.getTeacherId());
+		 }
+		return res;
 	}
 
 	@PostMapping(value = "teacherDatabase/createOrUpdate")
@@ -53,15 +66,36 @@ public class TeacherDatabaseController {
 	public BasicRes delete(@Valid @RequestBody TeacherDeleteReq req) {
 		return teacherDatabaseService.delete(req);
 	}
-	
+
 	@PostMapping(value = "teacherDatabase/loginAdmin")
 	public BasicRes loginAdmin(@Valid @RequestBody TeacherLoginReq req) {
 		return teacherDatabaseService.loginAdmin(req.getTeacherId(), req.getPwd());
 	}
-	
-	//¦Ñ®vºİµn¤J«á¡A¨ú±oªÀ¹Î¾Ç¥Í¸ê°T¤èªk
+
+	// è€å¸«ç«¯ç™»å…¥å¾Œï¼Œå–å¾—ç¤¾åœ˜å­¸ç”Ÿè³‡è¨Šæ–¹æ³•
 	@PostMapping(value = "teacherDatabase/clubStudentData")
 	public TeacherLoginRes clubStudentData(@Valid @RequestBody TeacherGetStudentReq req) {
 		return teacherDatabaseService.teacherGetClubStudent(req);
 	}
+	// å¿˜è¨˜å¯†ç¢¼é©—è­‰
+	@PostMapping(value = "teacherDatabase/pwdValidation")
+	public TeacherLoginRes forgotPwd(@Valid @RequestBody TeacherForgotPwdReq req) {
+		return teacherDatabaseService.forgotPwd(req);
+		}
+	
+	// è€å¸«ç™»å‡º
+	 @GetMapping(value = "teacherDatabase/logout")
+	    public BasicRes logout(HttpSession session) {
+	        session.invalidate(); // æ¸…é™¤æ‰€æœ‰å±æ€§ï¼ŒåŒ…æ‹¬ç”¨æˆ·è³‡è¨Š
+	        return new BasicRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage());
+	    }
+	
+	 @PostMapping(value = "teacherDatabase/createOrUpdateAll")
+		public BasicRes createOrUpdateAll(@Valid @RequestBody TeacherDatabaseCreateOrUpdateReq req) {
+			return teacherDatabaseService.createOrUpdate(req);
+		}
+	
+	
+	
+	
 }

@@ -162,9 +162,8 @@ public class StudentServiceImpl implements StudentService {
 		if (!encoder.matches(req.getPwd(), studentIdData.getPwd())) { // 前面有驚嘆號 表示密碼比對失敗
 			return new StudentLoginRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
-		{
 			return new StudentLoginRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(), studentIdData.getStudentId());
-		}
+		
 	}
 
 	
@@ -238,6 +237,27 @@ public class StudentServiceImpl implements StudentService {
 		         // Handle exception appropriately
 		     }
 		
+	}
+
+	@Override
+	public BasicRes createOrUpdateAll(StudentcreateOrUpdateReq req) {
+		if(req.getStudentId() > 0) {
+			boolean studentIdExist = studentDao.existsById(req.getStudentId());
+			if(!studentIdExist ) {
+				return new BasicRes(ResMessage.STUDENT_ID_NOT_FOUND.getCode(), 
+						ResMessage.STUDENT_ID_NOT_FOUND.getMessage());
+			}
+			studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
+					req.getEmail(), req.getClubId(),
+					req.getChoiceList(),req.getStatus())) ;
+		}
+		if(req.getStudentId() < 0) {
+			req.setStudentId(0);
+		}
+		studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
+				req.getEmail(), req.getClubId(),
+				req.getChoiceList(),req.getStatus())) ;
+		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage()) ;
 	}
 	
 	

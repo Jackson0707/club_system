@@ -3,6 +3,7 @@ package com.example.club_system.service.ifs;
 import com.example.club_system.vo.BasicRes;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
+import com.example.club_system.vo.TeacherForgotPwdReq;
 import com.example.club_system.vo.TeacherGetStudentReq;
 import com.example.club_system.vo.TeacherLoginReq;
 import com.example.club_system.vo.TeacherLoginRes;
@@ -24,4 +25,8 @@ public interface TeacherDatabaseService {
 	public BasicRes loginAdmin(Integer teacherId, String pwd);
 
 	public TeacherLoginRes teacherGetClubStudent(TeacherGetStudentReq req);
+	
+	public TeacherLoginRes forgotPwd(TeacherForgotPwdReq req);
+	
+	public BasicRes createOrUpdateAll(TeacherDatabaseCreateOrUpdateReq req);
 }

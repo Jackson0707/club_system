@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -19,8 +23,10 @@ import com.example.club_system.repository.StudentDao;
 import com.example.club_system.repository.TeacherDatabaseDao;
 import com.example.club_system.service.ifs.TeacherDatabaseService;
 import com.example.club_system.vo.BasicRes;
+import com.example.club_system.vo.StudentLoginRes;
 import com.example.club_system.vo.TeacherDatabaseCreateOrUpdateReq;
 import com.example.club_system.vo.TeacherDeleteReq;
+import com.example.club_system.vo.TeacherForgotPwdReq;
 import com.example.club_system.vo.TeacherGetStudentReq;
 import com.example.club_system.vo.TeacherLoginReq;
 import com.example.club_system.vo.TeacherLoginRes;
@@ -33,6 +39,9 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+	@Autowired
+    private JavaMailSender javaMailSender;
+	
 	@Autowired
 	private StudentDao studentDao;
 
@@ -75,7 +84,6 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 			System.out.println(ResMessage.PSAAWORD_ERROR.getMessage());
 			return new BasicRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
-
 		// 設定新密碼(加密後的密碼)
 		teacherDatabase.setPwd(encoder.encode(newpwd));
 		// 將新的資料存回 DB
@@ -87,16 +95,20 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 	@Override
 	public BasicRes createOrUpdate(TeacherDatabaseCreateOrUpdateReq req) {
 		if(req.getTeacherId() > 0) {
-			boolean teacherIdExist = teacherDatabaseDao.existsById(req.getTeacherId());
-			if(!teacherIdExist ) {
+			 Optional<TeacherDatabase> teacherId = teacherDatabaseDao.findById(req.getTeacherId());
+			if(!teacherId.isPresent() ) {
 				return new BasicRes(ResMessage.TEACHER_ID_NOT_FOUND.getCode(), 
 						ResMessage.TEACHER_ID_NOT_FOUND.getMessage());
 			}
-			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),encoder.encode(req.getPwd()),
-					req.getName(),req.getEmail(), req.getType()));
+			TeacherDatabase teacherData = teacherId.get();
+			teacherData.setName(req.getName());
+			teacherData.setEmail(req.getEmail());
+			teacherData.setStatus(req.getStatus());
+			teacherDatabaseDao.save(teacherData);
+			return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
 		}
-		if(req.getTeacherId() < 0) {
-			req.setTeacherId(0);
+		if(req.getTeacherId() == null) {
+			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
 		teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),encoder.encode(req.getPwd()),
 				req.getName(),req.getEmail(), req.getType()));
@@ -147,7 +159,6 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		if (clubTeacherId.isEmpty()) {  // op.isEmpty() 等同於 op.isEmpty() ==true，表示沒有資料
 			return new TeacherLoginRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
 		}
-
 		// 從 op 中取回 老師 資訊
 		TeacherDatabase teacherDatabase = clubTeacherId.get();
 
@@ -155,11 +166,9 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 		if (!encoder.matches(req.getPwd(), teacherDatabase.getPwd())) { // 前面有驚嘆號 表示密碼比對失敗
 			return new TeacherLoginRes(ResMessage.PSAAWORD_ERROR.getCode(), ResMessage.PSAAWORD_ERROR.getMessage());
 		}
-		{
 			System.out.println(ResMessage.SUCCESS.getMessage());
 			return new TeacherLoginRes(ResMessage.SUCCESS.getCode(), ResMessage.SUCCESS.getMessage(),teacherDatabase.getTeacherId()
 					);
-		}
 	}
 
 	@Override
@@ -218,7 +227,63 @@ public class TeacherDatabaseServiceImpl implements TeacherDatabaseService {
 				clubStudent);
 	}
 
+	@Override
+	public TeacherLoginRes forgotPwd(TeacherForgotPwdReq req) {
+		//BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(req.getTeacherId() == null) {
+			return new TeacherLoginRes(ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getCode(),ResMessage.ACCOUNT_OR_PASSWORD_ERROR.getMessage());
+		}
+		 Optional<TeacherDatabase> teacherId1 = teacherDatabaseDao.findById(req.getTeacherId());
+		if( !teacherId1.isPresent()) {
+			return new TeacherLoginRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(),ResMessage.ACCOUNT_NOT_FOUND.getMessage());
+		}
+		TeacherDatabase teacherData = teacherId1.get();
+		
+		String verificationCodeString = RandomStringUtils.randomNumeric(6);
+//        Integer verificationCode = Integer.parseInt(verificationCodeString);
+        
+		teacherData.setPwd(encoder.encode(verificationCodeString));
+		teacherDatabaseDao.save(teacherData);
+		sendVerificationEmail(teacherData.getEmail(), verificationCodeString);
+		return new TeacherLoginRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
+	}
 
+	private void sendVerificationEmail(String email, String verificationCodeString) {
+		  SimpleMailMessage message = new SimpleMailMessage();
+		     message.setTo(email);
+		     message.setSubject("Verify Your Email Address");
+		     message.setText("Your verification code is : " + verificationCodeString);
+		     
+		     try {
+		         // Send email
+		         javaMailSender.send(message);
+		         System.out.println("Email sent successfully.");
+		     } catch (MailException e) {
+		         System.err.println("Failed to send email: " + e.getMessage());
+		         // Handle exception appropriately
+		     }
+		
+	}
+
+	@Override
+	public BasicRes createOrUpdateAll(TeacherDatabaseCreateOrUpdateReq req) {
+		
+		if(req.getTeacherId() > 0) {
+			boolean teacherIdExist = teacherDatabaseDao.existsById(req.getTeacherId());
+			if(!teacherIdExist ) {
+				return new BasicRes(ResMessage.TEACHER_ID_NOT_FOUND.getCode(), 
+						ResMessage.TEACHER_ID_NOT_FOUND.getMessage());
+			}
+			teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),encoder.encode(req.getPwd()),
+					req.getName(),req.getEmail(), req.getType()));
+		}
+		if(req.getTeacherId() < 0) {
+			req.setTeacherId(0);
+		}
+		teacherDatabaseDao.save(new TeacherDatabase(req.getStatus(),req.getTeacherId(),req.getClubId(),encoder.encode(req.getPwd()),
+				req.getName(),req.getEmail(), req.getType()));
+		return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage()) ;
+	}
 
 
 

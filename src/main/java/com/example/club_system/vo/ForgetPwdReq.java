@@ -9,7 +9,6 @@ public class ForgetPwdReq {
 
 	public ForgetPwdReq() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ForgetPwdReq(Integer studentId) {

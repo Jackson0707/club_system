@@ -30,5 +30,5 @@ public interface StudentService {
 	
 	public StudentLoginRes forgotPwd(ForgetPwdReq req);
 	
-
+	public BasicRes createOrUpdateAll(StudentcreateOrUpdateReq req);
 }
