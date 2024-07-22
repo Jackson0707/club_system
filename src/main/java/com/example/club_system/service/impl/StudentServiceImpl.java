@@ -98,9 +98,6 @@ public class StudentServiceImpl implements StudentService {
 			studentDao.save(studentData);
 			return new BasicRes(ResMessage.SUCCESS.getCode(),ResMessage.SUCCESS.getMessage());
 		}
-		if(req.getStudentId() == null) {
-			return new BasicRes(ResMessage.ACCOUNT_NOT_FOUND.getCode(), ResMessage.ACCOUNT_NOT_FOUND.getMessage());
-		}
 		studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
 				req.getEmail(), req.getClubId(),
 				req.getChoiceList(),req.getStatus())) ;
@@ -250,9 +247,6 @@ public class StudentServiceImpl implements StudentService {
 			studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
 					req.getEmail(), req.getClubId(),
 					req.getChoiceList(),req.getStatus())) ;
-		}
-		if(req.getStudentId() < 0) {
-			req.setStudentId(0);
 		}
 		studentDao.save(new Student(req.getStudentId(), req.getSemester(), encoder.encode(req.getPwd()), req.getGrade(), req.getName(), 
 				req.getEmail(), req.getClubId(),

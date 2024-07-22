@@ -29,7 +29,7 @@ public enum ResMessage {
 	CLUB_ID_NOT_FOUND(404, "Update student id not found"),
 	ACCOUNT_OR_EMAIL_ERROR(404, "Account or email error"),
 	EMAIL_ERROR(404, "Email error"),//找不到信箱(帳號不存在)
-	VENUE_ERROR(400, "venue error"),//場所錯誤
+	VENUE_ID_ERROR(400, "Venue id error"),//場所錯誤
 	VENUE_EXISTS(400,"venue exists"),//場所已存在
 	VENUE_IS_RENTED(400,"venue is rented!!"),
 	;//場所已出借
